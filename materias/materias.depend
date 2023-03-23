@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1679581438 source:e:\archivos\universidad\utn_programacion02\práctica\materias\materias\main.cpp
+	<iostream>
+	<cstring>
+	"funciones.h"
+
+1679581793 e:\archivos\universidad\utn_programacion02\práctica\materias\materias\funciones.h
+
