@@ -3,6 +3,7 @@
 
 void cargarCadena(char *pal, int tam);
 char* elegirCadena(char *s, char *t);
+int elegirOpcion();
 
 #include "stringre.h"
 
@@ -21,10 +22,7 @@ int main(void)
         std::cout << "7. Concatenar cadenas\n";
         std::cout << "0. Salir\n";
 
-        int opcion;
-        std::cin >> opcion;
-
-        switch (opcion) {
+        switch (elegirOpcion()) {
             case 1:
                 std::cout << "Cargue la primer cadena: ";
                 cargarCadena(s, 80);
@@ -87,13 +85,23 @@ int main(void)
     std::cout << s << "\n";
 }
 
+int elegirOpcion() {
+    int num;
+    std::cin >> num;
+    while (std::cin.fail()) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        std::cout << "Número invalido. Use un entero: ";
+        std::cin >> num;
+    }
+    return num;
+}
+
 char* elegirCadena(char *s, char *t) {
     while (true) {
         std::cout << "Elija cadena: ";
-        int x;
-        std::cin >> x;
-
-        switch(int(x)) {
+        switch(elegirOpcion()) {
             case 1:
                 return s; 
             break;
