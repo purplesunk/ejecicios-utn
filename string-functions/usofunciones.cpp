@@ -4,6 +4,7 @@
 void cargarCadena(char *pal, int tam);
 char* elegirCadena(char *s, char *t);
 int elegirOpcion();
+void clearConsole();
 
 #include "stringre.h"
 
@@ -24,25 +25,30 @@ int main(void)
 
         switch (elegirOpcion()) {
             case 1:
+                clearConsole();
                 std::cout << "Cargue la primer cadena: ";
                 cargarCadena(s, 80);
                 std::cout << "\n";
             break;
             case 2:
+                clearConsole();
                 std::cout << "Cargue la segunda cadena: ";
                 cargarCadena(t, 80);
                 std::cout << "\n";
             break;
             case 3:
+                clearConsole();
                 std::cout << "Primer cadena: " << s << "\n";
                 std::cout << "Segunda cadena: " << t << "\n";
             break;
             case 4: {
+                clearConsole();
                 char *cadena = elegirCadena(s, t);
                 std::cout << "La cadena \"" << cadena << "\" tiene " << strlen(cadena) << " caracteres.\n";
-                break;
             }
+            break;
             case 5: {
+                clearConsole();
                 std::cout << "Cadena que elija va a ser la que se copie a la otra.\n"; 
                 char *cadena = elegirCadena(s, t);
                 if (strcmp(s, cadena) == 0) {
@@ -55,6 +61,7 @@ int main(void)
             }
             break;
             case 6: {
+                clearConsole();
                 std::cout << "Cadena que elija va a ser la que se compare a la otra.\n"; 
                 char *cadena = elegirCadena(s, t);
                 if (strcmp(s, cadena) == 0) {
@@ -66,6 +73,7 @@ int main(void)
             }
             break;
             case 7:
+                clearConsole();
                 if (strlen(s) + strlen(t) < 160) {
                     strcat(s,t);
                     std::cout << "Cadena concatenada: " << s << "\n";
@@ -78,11 +86,15 @@ int main(void)
                 return 0;
             break;
             default:
+                clearConsole();
                 std::cout << "No existe esa opcion.\n";
             break;
         }
     }
-    std::cout << s << "\n";
+}
+
+void clearConsole() {
+    std::cout << "\033[2J\033[1;1H";
 }
 
 int elegirOpcion() {
