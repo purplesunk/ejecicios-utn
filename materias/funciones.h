@@ -1,19 +1,37 @@
 #ifndef FUNCIONES_H_INCLUDED
 #define FUNCIONES_H_INCLUDED
 
+
 const int CANTIDAD_MATERIAS = 2;
 
-void cargarCadena(char *pal,int tam)
+void clearConsoleW() {
+    std::system("cls");
+}
+void clearConsole() {
+    std::cout << "\033[2J\033[1;1H";
+}
+#ifdef _WIN32
+    #define clearConsole clearConsoleW
+#endif
+
+
+
+void pause() {
+    std::cout << "Presione Enter para continuar...";
+    std::cin.get();
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
+
+void cargarCadena(char *pal, int tam)
 {
-    int i;
-    fflush(stdin);
-    for (i = 0; i < tam; i++)
-    {
-        pal[i] = std::cin.get();
-        if (pal[i] == '\n') break;
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+    std::cin.getline(pal, tam);
+    if (std::cin.fail()) {
+        std::cin.clear();
+        while ((c = getchar()) != '\n' && c != EOF) {}
     }
-    pal[i] = '\0';
-    fflush(stdin);
 }
 
 
@@ -22,30 +40,30 @@ void cargarMaterias(char nombreMateria[][40])
     for (int i = 0; i < CANTIDAD_MATERIAS; i++)
     {
         int nro, cantAlum, cantProf;
-        std::cout << "Ingrese número de materia: ";
+        std::cout << "Ingrese nï¿½mero de materia: ";
         std::cin >> nro;
         std::cout << "Ingrese nombre de materia: ";
         cargarCadena(nombreMateria[nro - 1], 40);
-        std::cout << "Ingrese número de Alumnos: ";
+        std::cout << "Ingrese nï¿½mero de Alumnos: ";
         std::cin >> cantAlum;
-        std::cout << "Ingrese número de Profesores: ";
+        std::cout << "Ingrese nï¿½mero de Profesores: ";
         std::cin >> cantProf;
     }
-    system("cls");
+    clearConsole();
 }
 
 void ingresosAlumnos(int *horasMateria, int accesoMarzo[][31])
 {
     int legajo, dia, mes, nroMateria, horas;
-    std::cout << "Ingrese número de legajo: ";
+    std::cout << "Ingrese nï¿½mero de legajo: ";
     std::cin >> legajo;
     while (legajo != 0)
     {
-        std::cout << "Ingrese número de  día: ";
+        std::cout << "Ingrese nï¿½mero de  dï¿½a: ";
         std::cin >> dia;
-        std::cout << "Ingrese número de mes: ";
+        std::cout << "Ingrese nï¿½mero de mes: ";
         std::cin >> mes;
-        std::cout << "Ingrese número de materia: ";
+        std::cout << "Ingrese nï¿½mero de materia: ";
         std::cin >> nroMateria;
         std::cout << "Ingrese cantidad de horas: ";
         std::cin >> horas;
@@ -57,10 +75,10 @@ void ingresosAlumnos(int *horasMateria, int accesoMarzo[][31])
             accesoMarzo[nroMateria - 1][dia - 1] += 1;
         }
 
-        std::cout << "Ingrese número de legajo: ";
+        std::cout << "Ingrese nï¿½mero de legajo: ";
         std::cin >> legajo;
     }
-    system("cls");
+    clearConsole();
 }
 
 void MateriasNoAcceso(int *horasMateria, char nombreMateria[][40])
@@ -73,13 +91,13 @@ void MateriasNoAcceso(int *horasMateria, char nombreMateria[][40])
             std::cout << nombreMateria[i] << "\n";
         }
     }
-    system("pause");
-    system("cls");
+    pause();
+    clearConsole();
 }
 
 void MayorAcceso(int *horasMateria, char nombreMateria[][40])
 {
-    std::cout << "Materia con más horas de acceso: \n";
+    std::cout << "Materia con mï¿½s horas de acceso: \n";
     int mayor = 0;
     for (int i = 1; i < CANTIDAD_MATERIAS; i++)
     {
@@ -89,13 +107,13 @@ void MayorAcceso(int *horasMateria, char nombreMateria[][40])
         }
     }
     std::cout << nombreMateria[mayor] << "\n";
-    system("pause");
-    system("cls");
+    pause();
+    clearConsole();
 }
 
 void CantidadAccesosMarzo(int accesoMarzo[][31], char nombreMateria[][40])
 {
-    std::cout << "Cantidad de accesos por día en Marzo: \n";
+    std::cout << "Cantidad de accesos por dï¿½a en Marzo: \n";
     for (int i = 0; i < CANTIDAD_MATERIAS; i++)
     {
         std::cout << nombreMateria[i] << ": \n";
@@ -104,8 +122,8 @@ void CantidadAccesosMarzo(int accesoMarzo[][31], char nombreMateria[][40])
             std::cout << "Dia " << j + 1 << ": " << accesoMarzo[i][j] << "\n";
         }
     }
-    system("pause");
-    system("cls");
+    pause();
+    clearConsole();
 }
 
 #endif // FUNCIONES_H_INCLUDED

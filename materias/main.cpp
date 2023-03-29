@@ -20,7 +20,7 @@ int main()
 
         int opcion;
         std::cin >> opcion;
-        std::system("cls");
+        clearConsole();
 
         switch(opcion)
         {
