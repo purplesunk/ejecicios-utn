@@ -1,10 +1,8 @@
 #include <iostream>
-#include <cstring>
-#include <limits>
 
 
 int main() {
-    const int CARGAR = 100;
+    const int CARGAR = 10;
     char matriz[5][10];
 
     for (int i = 0; i < 5; i++) {
@@ -12,7 +10,8 @@ int main() {
         std::cin.getline(matriz[i], CARGAR);
         if (std::cin.fail()) {
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF ) {}
         }
     }
 
