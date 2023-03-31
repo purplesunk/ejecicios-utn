@@ -1,9 +1,6 @@
 #ifndef FUNCIONES_H_INCLUDED
 #define FUNCIONES_H_INCLUDED
 
-
-const int CANTIDAD_MATERIAS = 2;
-
 void clearConsoleW() {
     std::system("cls");
 }
@@ -35,9 +32,9 @@ void cargarCadena(char *pal, int tam)
 }
 
 
-void cargarMaterias(char nombreMateria[][40])
+void cargarMaterias(char nombreMateria[][40], const int cantidadMaterias)
 {
-    for (int i = 0; i < CANTIDAD_MATERIAS; i++)
+    for (int i = 0; i < cantidadMaterias; i++)
     {
         int nro, cantAlum, cantProf;
         std::cout << "Ingrese n�mero de materia: ";
@@ -81,10 +78,10 @@ void ingresosAlumnos(int *horasMateria, int accesoMarzo[][31])
     clearConsole();
 }
 
-void MateriasNoAcceso(int *horasMateria, char nombreMateria[][40])
+void MateriasNoAcceso(int *horasMateria, char nombreMateria[][40], const int cantidadMaterias)
 {
     std::cout << "Materias que no tuvieron acceso: \n";
-    for (int i = 0; i < CANTIDAD_MATERIAS; i++)
+    for (int i = 0; i < cantidadMaterias; i++)
     {
         if (horasMateria[i] == 0)
         {
@@ -95,11 +92,11 @@ void MateriasNoAcceso(int *horasMateria, char nombreMateria[][40])
     clearConsole();
 }
 
-void MayorAcceso(int *horasMateria, char nombreMateria[][40])
+void MayorAcceso(int *horasMateria, char nombreMateria[][40], const int cantidadMaterias)
 {
     std::cout << "Materia con m�s horas de acceso: \n";
     int mayor = 0;
-    for (int i = 1; i < CANTIDAD_MATERIAS; i++)
+    for (int i = 1; i < cantidadMaterias; i++)
     {
         if (horasMateria[mayor] < horasMateria[i])
         {
@@ -111,10 +108,10 @@ void MayorAcceso(int *horasMateria, char nombreMateria[][40])
     clearConsole();
 }
 
-void CantidadAccesosMarzo(int accesoMarzo[][31], char nombreMateria[][40])
+void CantidadAccesosMarzo(int accesoMarzo[][31], char nombreMateria[][40], const int cantidadMaterias)
 {
     std::cout << "Cantidad de accesos por d�a en Marzo: \n";
-    for (int i = 0; i < CANTIDAD_MATERIAS; i++)
+    for (int i = 0; i < cantidadMaterias; i++)
     {
         std::cout << nombreMateria[i] << ": \n";
         for (int j = 0; j < 31; j++)

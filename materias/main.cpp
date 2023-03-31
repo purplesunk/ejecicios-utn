@@ -5,6 +5,7 @@
 
 int main()
 {
+    int const CANTIDAD_MATERIAS = 10;
     char nombreMateria[CANTIDAD_MATERIAS][40];
     int horasMateria[CANTIDAD_MATERIAS] = {};
     int accesoMarzo[CANTIDAD_MATERIAS][31] = {};
@@ -25,19 +26,19 @@ int main()
         switch(opcion)
         {
             case 1:
-                cargarMaterias(nombreMateria);
+                cargarMaterias(nombreMateria, CANTIDAD_MATERIAS);
                 break;
             case 2:
                 ingresosAlumnos(horasMateria, accesoMarzo);
                 break;
             case 3:
-                MateriasNoAcceso(horasMateria, nombreMateria);
+                MateriasNoAcceso(horasMateria, nombreMateria, CANTIDAD_MATERIAS);
                 break;
             case 4:
-                MayorAcceso(horasMateria, nombreMateria);
+                MayorAcceso(horasMateria, nombreMateria, CANTIDAD_MATERIAS);
                 break;
             case 5:
-                CantidadAccesosMarzo(accesoMarzo, nombreMateria);
+                CantidadAccesosMarzo(accesoMarzo, nombreMateria, CANTIDAD_MATERIAS);
                 break;
             case 0:
                 return 0;
