@@ -143,7 +143,7 @@ void cantidadAsistencias(int asistencias[][31], char materias[][30], const int c
         for (int i = 0; i < cantidadMaterias; i++) {
             if (j == -1) {
                 std::cout << materias[i];
-                for (int tamaño = strlen(materias[i]); tamaño < 32; tamaño++) {
+                for (int tam = strlen(materias[i]); tam < 32; ++tam) {
                     std::cout << char(32);
                 }
             } else {
