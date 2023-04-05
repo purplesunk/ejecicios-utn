@@ -1,4 +1,7 @@
 #include <iostream>
+#include <cstring>
+
+const int NUM_ART = 2;
 
 struct Articulo {
     char codigo[5];
@@ -7,21 +10,34 @@ struct Articulo {
     int stock;
 };
 
-Articulo cargarArticulo();
+void cargarArticulos(Articulo registros[]);
 void mostrarArticulo(Articulo registro);
+int checkArticulo(Articulo registros[], const char *codArt);
+Articulo devolverArticulo(Articulo registros[], const char *codArt);
 
 void clearInput() {
+    std::cin.clear();
     int c;
     while((c = getchar()) != '\n' && c != EOF);
 }
 
-int main() {
+void pause() {
+    std::cout << "\nPresione Enter para continuar...\n";
 
-    Articulo registro;
+    clearInput();
+    std::cin.get();
+    if(!std::cin) {
+        std::cin.clear();
+        clearInput();
+    }
+}
+
+int main() {
+    Articulo registros[NUM_ART];
 
     while (true) {
-        std::cout << "1. Cargar artículo\n";
-        std::cout << "2. Mostrar artículo\n";
+        std::cout << "1. Cargar artículos\n";
+        std::cout << "2. Mostrar artículos\n";
         std::cout << "0. Salir\n";
 
         std::cout << "Opción: ";
@@ -37,10 +53,14 @@ int main() {
 
         switch(opcion) {
             case 1:
-                registro = cargarArticulo();
+                cargarArticulos(registros);
             break;
             case 2:
-                mostrarArticulo(registro);
+                for (int i = 0; i < NUM_ART; ++i) {
+                    std::cout << "Artículo " << i + 1 << '\n';
+                    mostrarArticulo(registros[i]);
+                }
+                pause();           
             break;
             case 0:
                 return 0;
@@ -52,36 +72,51 @@ int main() {
     }
 }
 
-Articulo cargarArticulo() {
-    Articulo registro;
-    std::cout << "Ingrese código de artículo: ";
-    clearInput();
-    std::cin.getline(registro.codigo, 5);
-    if (!std::cin) {
+void cargarArticulos(Articulo registros[]) {
+    char codArt[5];
+    for (int i = 0; i < NUM_ART; ++i) {
+        std::cout << "Carga de artículo " << i + 1 << '\n';
+
+        std::cout << "Ingrese código de artículo: ";
         clearInput();
+        std::cin.getline(codArt, 5);
+        if (!std::cin) {
+            clearInput();
+        }
+        while (checkArticulo(registros, codArt) != -1) {
+            std::cout << "Código de artículo ya ingresado.\n";
+            std::cout << "Ingrese código de artículo: ";
+            std::cin.getline(codArt, 5);
+            if (!std::cin) {
+                clearInput();
+            }
+        }
+
+        strcpy(registros[i].codigo, codArt);
+
+        std::cout << "Ingrese descripción: ";
+        std::cin.getline(registros[i].descripcion, 30);
+        if (!std::cin) {
+            clearInput();
+        }
+
+        std::cout << "Ingrese precio unitario: ";
+        std::cin >> registros[i].precio;
+        while (!std::cin) {
+            clearInput();
+            std::cout << "Use un número.\nOpción: ";
+            std::cin >> registros[i].precio;
+        }
+
+        std::cout << "Ingrese cantidad de stock: ";
+        std::cin >> registros[i].stock;
+        while (!std::cin) {
+            clearInput();
+            std::cout << "Use un número.\nOpción: ";
+            std::cin >> registros[i].stock;
+        }
+
     }
-    std::cout << "Ingrese descripción: ";
-    std::cin.getline(registro.descripcion, 30);
-    if (!std::cin) {
-        clearInput();
-    }
-    std::cout << "Ingrese precio unitario: ";
-    std::cin >> registro.precio;
-    while (!std::cin) {
-        std::cin.clear();
-        clearInput();
-        std::cout << "Use un número.\nOpción: ";
-        std::cin >> registro.precio;
-    }
-    std::cout << "Ingrese cantidad de stock: ";
-    std::cin >> registro.stock;
-    while (!std::cin) {
-        std::cin.clear();
-        clearInput();
-        std::cout << "Use un número.\nOpción: ";
-        std::cin >> registro.stock;
-    }
-    return registro;
 }
 
 void mostrarArticulo(Articulo registro) {
@@ -89,13 +124,24 @@ void mostrarArticulo(Articulo registro) {
     std::cout << "Descripción: " << registro.descripcion << '\n';
     std::cout << "Precio Unitario: " << registro.precio << '\n';
     std::cout << "Cantidad de unidades en stock: " << registro.stock << '\n';
+}
 
-    std::cout << "\nPresione Enter para continuar...\n";
-
-    clearInput();
-    std::cin.get();
-    if(!std::cin) {
-        std::cin.clear();
-        clearInput();
+int checkArticulo(Articulo registros[], const char *codArt) {
+    for (int i = 0; i < NUM_ART; ++i) {
+        if (strcmp(registros[i].codigo, codArt) == 0) {
+            return i + 1;
+        }       
     }
+    return -1;
+}
+
+Articulo devolverArticulo(Articulo registros[], const char *codArt) {
+    for (int i = 0; i < NUM_ART; ++i) {
+        if (strcmp(registros[i].codigo, codArt) == 0) {
+            return registros[i];
+        }       
+    }
+    Articulo vacio;
+    vacio.precio = -1;
+    return vacio;
 }
