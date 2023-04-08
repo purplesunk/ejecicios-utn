@@ -109,6 +109,28 @@ class Punto {
             color = nuevoColor;
         }
     }
+    Punto(const char* indicador) {
+        if (strcmp(indicador, "principio") == 0) {
+            x = 0;
+            y = 0;
+            color = cNEGRO;
+        }
+        if (strcmp(indicador, "fin") == 0) {
+            x = tcols() - 1;
+            y = 0;
+            color = cAZUL;
+        }
+        if (strcmp(indicador, "medio") == 0) {
+            x = tcols() / 2;
+            y = trows() / 2;
+            color = cROJO;
+        }
+        if (strcmp(indicador, "aleatorio") == 0) {
+            x = rand() % tcols();
+            y = rand() % trows();
+            color = rand() % 16;
+        }
+    }
     void Mostrar() {
         textcolor(color, 15);
         gotoxy(x, y);
@@ -120,14 +142,17 @@ class Punto {
         cout << " ";
     }
     void setX(int valor) {
+        // if (valor > 0 && valor < 75)
         if (valor >= 0 && valor < tcols())
             x = valor;
     }
     void setY(int valor) {
+        // if (valor > 0 && valor < 30)
         if (valor >= 0 && valor < trows())
             y = valor;
     }
     void setColor(int nuevo) {
+        // if (valor > 0 && valor < 15)
         if (nuevo > 0 && nuevo <= 15) {
             color = nuevo;
         } else {
@@ -143,6 +168,7 @@ class Punto {
 		this->Ocultar();
 		Sleep(ms);
 	}
+    // Está función no sé si es lo que se requiere o si tendría que ser como caminar...
 	void Desplazar(char direccion, int desplazamiento) {
 		switch(direccion) {
 			case 'x':
@@ -170,14 +196,13 @@ void Punto::MostrarValores() {
 }
 
 void punto1(bool parpadear = false) {
-    Punto obj(10, 5, cAZUL);
     int x, y;
     cout << "INGRESE LA COORDENADA X: ";
     cin >> x;
     cout << "INGRESE LA COORDENADA Y: ";
     cin >> y;
-    obj.setX(x);
-    obj.setY(y);
+    Punto obj(x, y, cAZUL);
+    //Punto obj("aleatorio");
     system("cls");
 
     if (parpadear) {
@@ -452,7 +477,7 @@ int main() {
         case 7:
             punto6(true);
             break;
-        case 8: 
+        case 8:
             punto1(true);
             break;
         case 9:
