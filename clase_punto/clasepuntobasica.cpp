@@ -36,8 +36,7 @@ enum Color {
 /// Es más fácil usar cBLANCO para setear el color a blanco, que acordarse el
 /// número 15
 
-int
-tcols(void) {
+int tcols(void) {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
         return -1;
@@ -45,8 +44,7 @@ tcols(void) {
         return csbi.srWindow.Right - csbi.srWindow.Left + 1;
 }
 
-int
-trows(void) {
+int trows(void) {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     if (!GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
         return -1;
@@ -54,8 +52,7 @@ trows(void) {
         return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
 
-void
-ocultarCursor() {
+void ocultarCursor() {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO info;
     info.dwSize = 100;
@@ -63,8 +60,7 @@ ocultarCursor() {
     SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void
-mostrarCursor() {
+void mostrarCursor() {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO info;
     info.dwSize = 10;
@@ -72,17 +68,15 @@ mostrarCursor() {
     SetConsoleCursorInfo(consoleHandle, &info);
 }
 
-void
-gotoxy(short x,
-       short y) {   /// UBICA EL CURSOR EN LA POSICIÓN x,y DE LA PANTALLA
+void gotoxy(short x,
+            short y) {   /// UBICA EL CURSOR EN LA POSICIÓN x,y DE LA PANTALLA
     COORD a;
     a.X = x;
     a.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), a);
 }
 /// ASIGNA COLORES AL TEXTO Y AL FONDO DEL TEXTO
-void
-textcolor(int colorTexto = 15, int colorFondo = 0) {
+void textcolor(int colorTexto = 15, int colorFondo = 0) {
     int color = colorTexto + colorFondo * 16;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
@@ -137,15 +131,13 @@ class Punto {
     }
 };
 
-void
-Punto::MostrarValores() {
+void Punto::MostrarValores() {
     cout << x << endl;
     cout << y << endl;
     cout << color << endl;
 }
 
-void
-punto1(bool parpadear = false) {
+void punto1(bool parpadear = false) {
     Punto obj(10, 5, cAZUL);
     int x, y;
     cout << "INGRESE LA COORDENADA X: ";
@@ -168,8 +160,7 @@ punto1(bool parpadear = false) {
     }
 }
 
-void
-caminarHorizontal() {
+void caminarHorizontal() {
     Punto obj(0, trows() / 2, cAZUL);
     int cols{tcols()};
     int i{0};
@@ -184,8 +175,7 @@ caminarHorizontal() {
     }
 }
 
-void
-caminarVertical() {
+void caminarVertical() {
     Punto obj(tcols() / 2, 0, cAZUL);
     int rows{trows()};
     int i{0};
@@ -200,16 +190,14 @@ caminarVertical() {
     }
 }
 
-void
-movDiagonal(Punto &obj, int cols, int rows) {
+void movDiagonal(Punto &obj, int cols, int rows) {
     int x = obj.getX() + 1;
     int y = obj.getY() + 1;
     x >= cols ? obj.setX(0) : obj.setX(x);
     y >= rows ? obj.setY(0) : obj.setY(y);
 }
 
-void
-llover(bool esperarTecla = false) {
+void llover(bool esperarTecla = false) {
     int rows = trows();
     int cols = tcols();
     const int CANT = 7;
@@ -257,8 +245,7 @@ llover(bool esperarTecla = false) {
     }
 }
 
-void
-punto2(bool alternar = false) {
+void punto2(bool alternar = false) {
     cout << "INGRESE LA COORDENADA Y: ";
     int y{};
     cin >> y;
@@ -274,8 +261,7 @@ punto2(bool alternar = false) {
     }
 }
 
-void
-punto3(bool alternar = false) {
+void punto3(bool alternar = false) {
     cout << "INGRESE LA COORDENADA X: ";
     int x{};
     cin >> x;
@@ -291,8 +277,7 @@ punto3(bool alternar = false) {
     }
 }
 
-void
-punto6(bool hacerMas = false) {
+void punto6(bool hacerMas = false) {
     int rows = trows();
     int cols = tcols();
     int y{rows / 2};
@@ -319,8 +304,7 @@ punto6(bool hacerMas = false) {
     }
 }
 
-void
-dibujarRectangulo() {
+void dibujarRectangulo() {
     int rows = trows();
     int cols = tcols();
     cout << "INGRESE BASE: ";
@@ -357,8 +341,7 @@ dibujarRectangulo() {
     }
 }
 
-int
-main() {
+int main() {
     srand(time(NULL));
     ocultarCursor();
     textcolor(0, 15);
