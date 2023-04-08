@@ -89,12 +89,25 @@ class Punto {
     int x;
     int y;
     int color;
-
   public:
     Punto(int a = 0, int b = 0, int nuevoColor = cNEGRO) {
-        x = a;
-        y = b;
-        color = nuevoColor;
+        if (a < 0) {
+            x = rand() % tcols();
+        } else {
+            x = a;
+        }
+
+        if (b < 0) {
+            y = rand() % trows();
+        } else {
+            y = b;
+        }
+
+        if (nuevoColor < 0) {
+            color = rand() % 16;
+        } else {
+            color = nuevoColor;
+        }
     }
     void Mostrar() {
         textcolor(color, 15);
@@ -114,7 +127,6 @@ class Punto {
         if (valor >= 0 && valor < trows())
             y = valor;
     }
-
     void setColor(int nuevo) {
         if (nuevo > 0 && nuevo <= 15) {
             color = nuevo;
@@ -125,6 +137,26 @@ class Punto {
     int getX() { return x; }
     int getY() { return y; }
     int getColor() { return color; }
+	void Parpadear(int ms) {
+		this->Mostrar();
+		Sleep(ms);
+		this->Ocultar();
+		Sleep(ms);
+	}
+	void Desplazar(char direccion, int desplazamiento) {
+		switch(direccion) {
+			case 'x':
+				this->setX(this->getX() + desplazamiento);
+			break;
+			case 'y':
+				this->setY(this->getY() + desplazamiento);
+			break;
+		}
+	}
+	void setXY(int valX, int valY) {
+		this->setX(valX);
+		this->setY(valY);
+	}
     ~Punto() {   /// DESTRUCTOR: se ejecuta cuando el objeto cae fuera de su
         /// alcance.
         textcolor(cNEGRO, cBLANCO);
@@ -150,10 +182,7 @@ void punto1(bool parpadear = false) {
 
     if (parpadear) {
         while (!kbhit()) {
-            obj.Mostrar();
-            Sleep(150);
-            obj.Ocultar();
-            Sleep(150);
+			obj.Parpadear(150);
         }
     } else {
         obj.Mostrar();
@@ -423,7 +452,7 @@ int main() {
         case 7:
             punto6(true);
             break;
-        case 8:
+        case 8: 
             punto1(true);
             break;
         case 9:
