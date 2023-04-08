@@ -11,7 +11,6 @@
 #include <iostream>
 #include <windows.h>
 
-
 using namespace std;
 
 /// DEFINICIONES DE CONSTANTES Y FUNCIONES QUE SON UTILIZADAS POR LA CLASE PUNTO
@@ -127,7 +126,7 @@ public:
   int getY() { return y; }
   int getColor() { return color; }
   ~Punto() { /// DESTRUCTOR: se ejecuta cuando el objeto cae fuera de su
-             /// alcance.
+    /// alcance.
     textcolor(cNEGRO, cBLANCO);
   }
 };
