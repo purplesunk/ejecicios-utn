@@ -3,6 +3,8 @@
 
 #include <string.h>
 
+#include "utils.h"
+
 class Articulo {
   private:
     char codigo[5];
@@ -15,11 +17,10 @@ class Articulo {
     void Cargar();
     void Mostrar() const;
 
+    Articulo(const char *codArt = "AAAA",
+             const char *desc = "No hay descripción.", float valorPrecio = 0,
+             int valorStock = 0, bool valorEstado = false);
     Articulo(const char *string);
-    Articulo::Articulo(const char *codArt = "AAAA",
-                       const char *desc = "No hay descripción",
-                       float valorPrecio = 0, int valorStock = 0,
-                       bool valorEstado = false);
 
     const char *getCodigo() const;
     const char *getDescripcion() const;
@@ -32,6 +33,6 @@ class Articulo {
     void setPrecio(float valor);
     void setStock(int valor);
     void setEstado(bool valor);
-}
+};
 
 #endif   // CLASS_ARTICULO_H_INCLUDED
