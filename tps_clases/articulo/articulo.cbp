@@ -35,6 +35,8 @@
 		<Unit filename="class_articulo.cpp" />
 		<Unit filename="class_articulo.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="utils.cpp" />
+		<Unit filename="utils.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

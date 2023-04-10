@@ -52,7 +52,7 @@ void Articulo::Mostrar() const {
     std::cout << "Descripción: " << descripcion << '\n';
     std::cout << "Precio: " << precio << '\n';
     std::cout << "Stock: " << stock << '\n';
-    std::cout << "Estado: " << estado << '\n\n';
+    std::cout << "Estado: " << estado << "\n\n";
 }
 
 Articulo::Articulo(const char *string) { strncpy(descripcion, string, 29); }
