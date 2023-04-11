@@ -1,33 +1,30 @@
 #include "cliente.h"
 
-#include <iostream>
 #include <cstring>
+#include <iostream>
 
-Cliente::Cliente(const char *valorNombre) {
-    this->setNombre(valorNombre);
-}
+Cliente::Cliente(const char *valorNombre) { this->setNombre(valorNombre); }
 
-Cliente::Cliente(const char *valorDni, Fecha valorNac, const char *valorNom,
+Cliente::Cliente(int valorDni, int dia, int mes, int anio, const char *valorNom,
                  const char *valorApellido, const char *valorTel,
                  const char *valorEmail) {
     this->setApellido(valorApellido);
-    this->setNombre(valorNom);
-    this->setEmail(valorEmail);
-    this->setTelefono(valorTel);
-    this->setNacimiento(valorNac);
     this->setDni(valorDni);
+    this->setEmail(valorEmail);
+    this->setNombre(valorNom);
+    this->setTelefono(valorTel);
+    this->setNacimiento(dia, mes, anio);
 }
 
 void Cliente::Cargar() {
     char buffer[255];
     std::cout << "Ingrese DNI: ";
-    cargarCadena(buffer, 9);
-    this->setDni(buffer);
+    int valorDni{};
+    std::cin >> valorDni;
+    this->setDni(valorDni);
 
     std::cout << "Ingrese Fecha de nacimiento: \n";
-    Fecha valorNacimiento;
-    valorNacimiento.cargar();
-    this->setNacimiento(valorNacimiento);
+    nacimiento.cargar();
 
     std::cout << "Ingrese Nombre: ";
     cargarCadena(buffer, 50);
@@ -48,7 +45,7 @@ void Cliente::Cargar() {
 
 void Cliente::Mostrar() {
     std::cout << "--------------------------------------------\n";
-    std::cout << "Cliente: " << nombre << " " << apellido  << '\n';
+    std::cout << "Cliente: " << nombre << " " << apellido << '\n';
     std::cout << "DNI: " << dni << '\n';
     std::cout << "Email: " << email << '\n';
     std::cout << "Teléfono: " << telefono << '\n';
@@ -58,53 +55,30 @@ void Cliente::Mostrar() {
     std::cout << "--------------------------------------------\n";
 }
 
-Fecha Cliente::getNacimiento() {
-    return nacimiento;
+Fecha Cliente::getNacimiento() { return nacimiento; }
+
+int Cliente::getDni() { return dni; }
+
+const char *Cliente::getNombre() { return nombre; }
+
+const char *Cliente::getApellido() { return apellido; }
+
+const char *Cliente::getEmail() { return email; }
+
+const char *Cliente::getTelefono() { return telefono; }
+
+void Cliente::setDni(int valor) { dni = valor; }
+
+void Cliente::setNacimiento(int dia, int mes, int anio) {
+    nacimiento.setDay(dia);
+    nacimiento.setMonth(mes);
+    nacimiento.setYear(anio);
 }
 
-const char* Cliente::getDni() {
-    return dni;
-}
+void Cliente::setNombre(const char *valor) { strncpy(nombre, valor, 49); }
 
-const char* Cliente::getNombre() {
-    return nombre;
-}
+void Cliente::setApellido(const char *valor) { strncpy(apellido, valor, 49); }
 
-const char* Cliente::getApellido() {
-    return apellido;
-}
+void Cliente::setEmail(const char *valor) { strncpy(email, valor, 79); }
 
-const char* Cliente::getEmail() {
-    return email;
-}
-
-const char* Cliente::getTelefono() {
-    return telefono;
-}
-
-void Cliente::setDni(const char *valor) {
-    strncpy(dni, valor, 8);
-}
-
-void Cliente::setNacimiento(Fecha valor) {
-    nacimiento.setDay(valor.getDay());
-    nacimiento.setMonth(valor.getMonth());
-    nacimiento.setYear(valor.getYear());
-}
-
-void Cliente::setNombre(const char *valor) {
-    strncpy(nombre, valor, 49);
-}
-
-void Cliente::setApellido(const char *valor) {
-    strncpy(apellido, valor, 49);
-}
-
-void Cliente::setEmail(const char *valor) {
-    strncpy(email, valor, 79);
-}
-
-void Cliente::setTelefono(const char *valor) {
-    strncpy(telefono, valor, 19);
-}
-
+void Cliente::setTelefono(const char *valor) { strncpy(telefono, valor, 19); }
