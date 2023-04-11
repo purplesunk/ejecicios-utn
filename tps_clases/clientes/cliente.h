@@ -14,7 +14,11 @@ class Cliente {
         char telefono[20];
 
     public:
-        Cliente();
+        Cliente(const char* valorNombre);
+
+        Cliente(const char *valorDni = "11111111", Fecha valorNac = Fecha(10,10,2023), const char *valorNom = "Name",
+                const char *valorApellido = "Apellido", const char *valorTel = "+54 011 1234-3243",
+                const char *valorEmail = "noemail@clientes.h");
 
         void Cargar();
         void Mostrar();

@@ -3,7 +3,13 @@
 #include <iostream>
 #include <cstring>
 
-Cliente::Cliente(const char* valorDni, Fecha valorNac, const char* valorNom, const char* valorApellido, const char* valorTel, const char* valorEmail) {
+Cliente::Cliente(const char *valorNombre) {
+    this->setNombre(valorNombre);
+}
+
+Cliente::Cliente(const char *valorDni, Fecha valorNac, const char *valorNom,
+                 const char *valorApellido, const char *valorTel,
+                 const char *valorEmail) {
     this->setApellido(valorApellido);
     this->setNombre(valorNom);
     this->setEmail(valorEmail);
