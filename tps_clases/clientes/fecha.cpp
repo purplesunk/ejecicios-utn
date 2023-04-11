@@ -1,5 +1,7 @@
-#include <iostream>
 #include "fecha.h"
+
+#include <iostream>
+
 #include "utils.h"
 
 Fecha::Fecha(int valDay, int valMonth, int valYear) {
@@ -42,7 +44,7 @@ void Fecha::cargar() {
     int dia{}, mes{}, anio{};
 
     std::cout << "Ingresar día: ";
-    std::cin >> dia; 
+    std::cin >> dia;
     ignoreLine();
 
     std::cout << "Ingresar mes: ";
