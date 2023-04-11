@@ -2,16 +2,15 @@
 
 #include "utils.h"
 #include "fecha.h"
+#include "cliente.h"
 
 int main()
 {
-    Fecha diaDeAyer(1, 10, 2010);
+    Cliente forrazo;
 
-    diaDeAyer.mostrar();
+    forrazo.Cargar();
 
-    diaDeAyer.cargar();
-
-    diaDeAyer.mostrar();
+    forrazo.Mostrar();
 
     return 0;
 }

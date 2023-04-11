@@ -59,5 +59,5 @@ void Fecha::cargar() {
 }
 
 void Fecha::mostrar() {
-    std::cout << day << "/" << month << "/" << year << '\n';
+    std::cout << day << "/" << month << "/" << year;
 }
