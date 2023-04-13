@@ -118,17 +118,16 @@ Cliente buscarPorDni(Cliente vec[], int tam, int dni) {
 
 int cantidadMayores(Cliente vec[], int tam, Fecha fecha) {
     int cantidad{0};
+    Fecha nacimiento;
     for (int i = 0; i < tam; ++i) {
-        int anio = vec[i].getNacimiento().getYear();
-        if (anio < fecha.getYear()) {
+        nacimiento = vec[i].getNacimiento();
+        if (nacimiento.getYear() < fecha.getYear()) {
             cantidad += 1;
-        } else if (anio == fecha.getYear()) {
-            int mes = vec[i].getNacimiento().getMonth();
-            if (mes < fecha.getMonth()) {
+        } else if (nacimiento.getYear() == fecha.getYear()) {
+            if (nacimiento.getMonth() < fecha.getMonth()) {
                 cantidad += 1;
-            } else if (mes == fecha.getMonth()) {
-                int dia = vec[i].getNacimiento().getDay();
-                if (dia < fecha.getDay()) {
+            } else if (nacimiento.getMonth() == fecha.getMonth()) {
+                if (nacimiento.getDay() < fecha.getDay()) {
                     cantidad += 1;
                 }
             }
