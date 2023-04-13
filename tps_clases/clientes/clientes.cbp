@@ -40,6 +40,8 @@
 		<Unit filename="fecha.cpp" />
 		<Unit filename="fecha.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="puntos.cpp" />
+		<Unit filename="puntos.h" />
 		<Unit filename="utils.cpp" />
 		<Unit filename="utils.h" />
 		<Extensions>
