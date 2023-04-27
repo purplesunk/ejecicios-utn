@@ -12,6 +12,7 @@ class Persona {
     char apellido[25];
     char email[25];
     char telefono[20];
+    bool estado;
 
    public:
     Fecha getFechaNacimiento() {
@@ -23,6 +24,9 @@ class Persona {
     const char *getApellido() { return apellido; }
     const char *getEmail() { return email; }
     const char *getTelefono() { return telefono; }
+    bool getEstado() {
+        return estado;
+    }
 
     void setDNI(const int d) { DNI = d; }
     void setFechaNacimiento(Fecha f) { fechaNacimiento = f; }
@@ -30,6 +34,9 @@ class Persona {
     void setApellido(const char *a) { strcpy(apellido, a); }
     void setEmail(const char *e) { strcpy(email, e); }
     void setTelefono(const char *t) { strcpy(telefono, t); }
+    void setEstado(bool b) {
+        estado = b;
+    }
 
     void Cargar();
     void Mostrar();
@@ -49,6 +56,7 @@ void Persona::Cargar() {
     cargarCadena(email, 25);
     cout << "TELEFONO: ";
     cargarCadena(telefono, 20);
+    estado = true;
 }
 
 void Persona::Mostrar() {
