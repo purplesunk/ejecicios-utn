@@ -33,6 +33,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="archivo2.cpp" />
+		<Unit filename="archivoCliente.h" />
 		<Unit filename="cargarcadena.h" />
 		<Unit filename="cliente.h" />
 		<Unit filename="fecha.h" />
