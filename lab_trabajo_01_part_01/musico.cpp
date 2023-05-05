@@ -57,9 +57,9 @@ void Musico::Cargar() {
     std::cout << "DNI: ";
     // checkear que no esté en el chiche
     std::cin >> dni;
+    ignoreLine();
 
     std::cout << "NOMBRE: ";
-    ignoreLine();
     cargarCadena(nombre, 30);
     std::cout << "APELLIDO: ";
     cargarCadena(apellido, 30);

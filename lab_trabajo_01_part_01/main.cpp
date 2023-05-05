@@ -1,8 +1,13 @@
 #include <iostream>
 
+#include "archivoMusico.h"
 #include "cargarcadena.h"
+#include "fecha.h"
+#include "musico.h"
 
 int main() {
+    ArchivoMusico archivo("musicos.dat");
+
     while (true) {
         std::cout << "MENU MUSICOS\n";
         std::cout << "---------------------------------------\n";
@@ -22,14 +27,18 @@ int main() {
 
         switch (opcion) {
             case 1:
+                archivo.agregarRegistro();
                 break;
             case 2:
+                archivo.buscarPorDNI();
                 break;
             case 3:
+                archivo.mostrarRegistros();
                 break;
             case 4:
                 break;
             case 5:
+                archivo.bajaLogica();
                 break;
             case 0:
                 return 0;
