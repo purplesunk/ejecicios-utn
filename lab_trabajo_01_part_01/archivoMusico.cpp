@@ -1,20 +1,36 @@
 #include "archivoMusico.h"
 
+#include <cstring>
 #include <iostream>
 
 #include "cargarcadena.h"
+#include "fecha.h"
 #include "musico.h"
 
+ArchivoMusico::ArchivoMusico(const char *nuevoArchivo) {
+    strncpy(nombre, nuevoArchivo, 30);
+}
+
 void ArchivoMusico::agregarRegistro() {
-    FILE *pCli = fopen(nombre, "ab");
-    if (pCli == NULL) {
-        std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
+    Musico obj;
+    obj.Cargar();
+
+    int pos = buscarMusico(obj.getDni());
+
+    if (pos == -2) {
+        std::cout << "El archivo no se encontro. Creando archivo.\n";
+    } else if (pos != -1) {
+        std::cout << "Ya hay un registro con ese DNI.\n";
         return;
     }
 
-    Musico obj;
-    obj.Cargar();
-    fwrite(&obj, sizeof obj, 1, pCli);
+    FILE *pCli = fopen(nombre, "ab");
+    if (pCli == NULL) {
+        std::cout << "No se pudo abrir el archivo.\n";
+        return;
+    }
+
+    fwrite(&obj, sizeof(Musico), 1, pCli);
     fclose(pCli);
 }
 
@@ -76,7 +92,6 @@ Musico ArchivoMusico::leerMusico(int p) {
 int ArchivoMusico::buscarMusico(int dni) {
     FILE *pCli = fopen(nombre, "rb");
     if (pCli == NULL) {
-        std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
         return -2;
     }
 
@@ -93,7 +108,6 @@ int ArchivoMusico::buscarMusico(int dni) {
 
     fclose(pCli);
 
-    std::cout << "NO SE ENCONTRO CLIENTE CON ESE DNI.\n";
     return -1;
 }
 
@@ -144,4 +158,31 @@ void ArchivoMusico::buscarPorDNI() {
     } else {
         std::cout << "ERROR DE ARCHIVO.\n";
     }
+}
+
+bool ArchivoMusico::modificarFecha() {
+    int dni;
+    std::cout << "Ingrese el DNI a buscar:";
+    std::cin >> dni;
+    ignoreLine();
+
+    int pos = buscarMusico(dni);
+    if (pos == -1) {
+        std::cout << "NO EXISTE MUSICO CON ESE DNI.\n";
+        return false;
+    }
+    if (pos == -2) {
+        std::cout << "NO SE PUDO ABRIR ARCHIVO.\n";
+        return false;
+    }
+
+    Musico obj = leerMusico(pos);
+
+    Fecha nuevaFecha;
+    std::cout << "Ingrese la nueva fecha de inscripcion:\n";
+    nuevaFecha.Cargar();
+
+    obj.setFechaInscripcion(nuevaFecha);
+
+    return modificarRegistro(obj, pos);
 }

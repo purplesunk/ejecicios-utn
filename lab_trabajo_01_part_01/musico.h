@@ -1,6 +1,8 @@
 #ifndef MUSICO_H_INCLUDED
 #define MUSICO_H_INCLUDED
 
+#include "fecha.h"
+
 class Musico {
    protected:
     int dni;
@@ -29,6 +31,7 @@ class Musico {
     void setEmail(const char *e);
     void setTelefono(const char *t);
     void setEstado(bool b);
+    void setFechaInscripcion(Fecha nuevaFecha);
 
     void Cargar();
     void Mostrar();

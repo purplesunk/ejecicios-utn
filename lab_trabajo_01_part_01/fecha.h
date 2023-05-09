@@ -11,6 +11,8 @@ class Fecha {
 
     void Cargar();
 
+    void CargaValida();
+
     void Mostrar();
     /// sets
     void setDia(int x);
@@ -20,6 +22,8 @@ class Fecha {
     int getDia();
     int getMes();
     int getAnio();
+
+    bool anioBisiesto();
 };
 
 #endif  // FECHA_H_INCLUDED

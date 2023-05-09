@@ -1,14 +1,14 @@
 #ifndef ARCHIVOCLIENTE_H_INCLUDED
 #define ARCHIVOCLIENTE_H_INCLUDED
 
+#include "musico.h"
+
 class ArchivoMusico {
    private:
     char nombre[30];
 
    public:
-    ArchivoMusico(const char *nombreArchivo) {
-        strncpy(nombre, nombreArchivo, 30);
-    }
+    ArchivoMusico(const char *nombreArchivo);
     // ALTA
     void agregarRegistro();
     void mostrarRegistros();
@@ -20,6 +20,7 @@ class ArchivoMusico {
 
     // MODIFICACION
     bool modificarRegistro(Musico obj, int pos);
+    bool modificarFecha();
 
     // LISTADOS
     void buscarPorDNI();

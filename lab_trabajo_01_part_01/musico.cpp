@@ -1,5 +1,6 @@
 #include "musico.h"
 
+#include <cstring>
 #include <iostream>
 
 #include "cargarcadena.h"
@@ -53,11 +54,12 @@ void Musico::setEstado(bool b) {
     estado = b;
 }
 
+void Musico::setFechaInscripcion(Fecha nuevaFecha) {
+    fechaInscripcion = nuevaFecha;
+}
+
 void Musico::Cargar() {
-    std::cout << "DNI: ";
-    // checkear que no esté en el chiche
-    std::cin >> dni;
-    ignoreLine();
+    dni = cargarInt("DNI: ");
 
     std::cout << "NOMBRE: ";
     cargarCadena(nombre, 30);
@@ -68,7 +70,33 @@ void Musico::Cargar() {
     std::cout << "TELEFONO: ";
     cargarCadena(telefono, 30);
 
-    // Settear el estado cargado :)
+    claustro = cargarInt("CLAUSTRO: ");
+    while (claustro < 1 && claustro > 4) {
+        std::cout << "CLAUTRO INVALIDO. ";
+        claustro = cargarInt("CLAUSTRO: ");
+    }
+
+    instrumento = cargarInt("INSTRUMENTO: ");
+    while (instrumento < 1 && instrumento > 15) {
+        std::cout << "INSTRUMENTO INVALIDO. ";
+        instrumento = cargarInt("INSTRUMENTO: ");
+    }
+
+    tipoMusica = cargarInt("TIPO DE MÚSICA: ");
+    while (tipoMusica < 1 && tipoMusica > 10) {
+        std::cout << "TIPO DE MÚSICA INVALIDO. ";
+        tipoMusica = cargarInt("TIPO DE MUSICA: ");
+    }
+
+    std::cout << "FECHA DE INSCRIPCION: \n";
+    fechaInscripcion.CargaValida();
+
+    matricula = cargarFloat("MATRICULA: ");
+    while (matricula < 0) {
+        std::cout << "MATRICULA INVALIDA. ";
+        matricula = cargarFloat("MATRICULA: ");
+    }
+
     estado = true;
 }
 
@@ -82,5 +110,7 @@ void Musico::Mostrar() {
     std::cout << "INTRUMENTRO PRINCIPAL: " << instrumento << '\n';
     std::cout << "TIPO DE MÚSICA: " << tipoMusica << '\n';
     // Mostrar fecha de inscripción
-    std::cout << "MATRÍCULA: " << matricula << '\n';
+    std::cout << "FECHA DE INSCRIPCION: ";
+    fechaInscripcion.Mostrar();
+    std::cout << "\nMATRÍCULA: " << matricula << '\n';
 }
