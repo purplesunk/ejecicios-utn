@@ -5,15 +5,6 @@
 
 #include "cargarcadena.h"
 
-Fecha::Fecha() {
-    time_t tiempo = time(NULL);
-    struct tm *fechaActual = localtime(&tiempo);
-
-    dia = fechaActual->tm_mday;
-    mes = fechaActual->tm_mon + 1;
-    anio = fechaActual->tm_year + 1900;
-}
-
 Fecha::Fecha(int d, int m, int a) {
     dia = d;
     mes = m;
@@ -60,8 +51,7 @@ void Fecha::CargaValida() {
     int diaMax = 31;
     if (anio == anioActual && mes == mesActual) {
         diaMax = fechaActual->mday;
-    }
-    else if (mes == 2) {
+    } else if (mes == 2) {
         if (this->anioBisiesto()) {
             diaMax = 29;
         } else {
