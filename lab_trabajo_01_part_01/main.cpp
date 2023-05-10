@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "archivoGenero.h"
 #include "archivoMusico.h"
 #include "cargarcadena.h"
 
@@ -26,6 +27,7 @@ int main() {
                 menuMusicos();
                 break;
             case 2:
+                menuGeneros();
                 break;
             case 3:
                 break;

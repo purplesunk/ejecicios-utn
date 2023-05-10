@@ -3,7 +3,6 @@
 #include <cstring>
 #include <iostream>
 
-#include "archivoGeneroMusical.h"
 #include "cargarcadena.h"
 #include "fecha.h"
 #include "genero.h"
