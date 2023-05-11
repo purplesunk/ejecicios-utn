@@ -3,11 +3,11 @@
 
 #include "archivoGenero.h"
 #include "archivoMusico.h"
-#include "cargarcadena.h"
+#include "cargarCadena.h"
+#include "claseFecha.h"
+#include "claseGeneroMusical.h"
+#include "claseMusico.h"
 #include "configuracion.h"
-#include "fecha.h"
-#include "genero.h"
-#include "musico.h"
 #include "reportes.h"
 
 int menuMusicos();

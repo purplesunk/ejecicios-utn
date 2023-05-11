@@ -1,8 +1,6 @@
 #ifndef ARCHIVOCLIENTE_H_INCLUDED
 #define ARCHIVOCLIENTE_H_INCLUDED
 
-#include "musico.h"
-
 class ArchivoMusico {
    private:
     char nombre[30];

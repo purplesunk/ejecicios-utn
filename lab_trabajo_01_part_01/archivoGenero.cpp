@@ -3,9 +3,9 @@
 #include <cstring>
 #include <iostream>
 
-#include "cargarcadena.h"
-#include "fecha.h"
-#include "genero.h"
+#include "cargarCadena.h"
+#include "claseFecha.h"
+#include "claseGeneroMusical.h"
 
 ArchivoGeneroMusical::ArchivoGeneroMusical(const char *nuevoArchivo) {
     strncpy(nombre, nuevoArchivo, 30);

@@ -1,9 +1,9 @@
-#include "fecha.h"
+#include "claseFecha.h"
 
 #include <ctime>
 #include <iostream>
 
-#include "cargarcadena.h"
+#include "cargarCadena.h"
 
 Fecha::Fecha() {}
 

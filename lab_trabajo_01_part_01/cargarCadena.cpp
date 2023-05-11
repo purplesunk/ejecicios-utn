@@ -1,4 +1,4 @@
-#include "cargarcadena.h"
+#include "cargarCadena.h"
 
 #include <iostream>
 

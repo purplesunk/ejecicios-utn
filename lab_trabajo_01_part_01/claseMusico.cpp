@@ -1,10 +1,10 @@
-#include "musico.h"
+#include "claseMusico.h"
 
 #include <cstring>
 #include <iostream>
 
-#include "cargarcadena.h"
-#include "fecha.h"
+#include "cargarCadena.h"
+#include "claseFecha.h"
 
 int Musico::getDni() { return dni; }
 const char* Musico::getNombre() { return nombre; }

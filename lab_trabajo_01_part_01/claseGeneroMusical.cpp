@@ -1,10 +1,10 @@
-#include "genero.h"
+#include "claseGeneroMusical.h"
 
 #include <cstring>
 #include <ctime>
 #include <iostream>
 
-#include "cargarcadena.h"
+#include "cargarCadena.h"
 
 void GeneroMusical::Cargar(int autoId) {
     std::cout << "Nombre de Género: ";
