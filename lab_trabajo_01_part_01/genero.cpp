@@ -1,8 +1,8 @@
 #include "genero.h"
 
+#include <cstring>
 #include <ctime>
 #include <iostream>
-#include <cstring>
 
 #include "cargarcadena.h"
 
