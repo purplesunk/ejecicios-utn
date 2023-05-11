@@ -38,7 +38,7 @@ int main() {
                 menuGeneros();
                 break;
             case 3:
-                // reportesMenu();
+                menuReportes();
                 break;
             case 4:
                 menuConfiguracion();
