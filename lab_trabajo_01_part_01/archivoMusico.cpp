@@ -13,6 +13,8 @@ ArchivoMusico::ArchivoMusico(const char *nuevoArchivo) {
 
 void ArchivoMusico::agregarRegistro() {
     Musico obj;
+    std::cout << " Ingrese los datos del músico: \n";
+    std::cout << "--------------------------------\n";
     obj.Cargar();
 
     int pos = buscarMusico(obj.getDni());
@@ -83,6 +85,8 @@ Musico ArchivoMusico::leerMusico(int p) {
         obj.setDNI(-1);
     }
 
+    fclose(pCli);
+
     return obj;
 }
 
@@ -131,8 +135,13 @@ void ArchivoMusico::mostrarRegistros() {
     }
 
     Musico obj;
+    int cant = 0;
     while (fread(&obj, sizeof obj, 1, pCli) == 1) {
         if (obj.getEstado()) {
+            ++cant;
+            std::cout << "-------------------------------------\n";
+            std::cout << " Musico " << cant << '\n';
+            std::cout << "-------------------------------------\n";
             obj.Mostrar();
             std::cout << '\n';
         }
@@ -158,13 +167,27 @@ void ArchivoMusico::buscarPorDNI() {
     int DNI = cargarInt("INGRESE EL DNI A BUSCAR: ");
 
     int pos = buscarMusico(DNI);
+    if (pos == -2) {
+        std::cout << "No se pudo abrir el archivo.\n";
+        return;
+    } else if (pos == -1) {
+        std::cout << "No se encontró el registro.\n";
+        return;
+    }
+
     Musico obj = leerMusico(pos);
+
     if (obj.getDni() > 0) {
+        std::cout << "---------------------------------\n";
         obj.Mostrar();
-    } else if (obj.getDni() == -3 || obj.getDni() == -1) {
-        std::cout << "SE PUSO UNA POSICIÓN EQUIVOCADA\n";
+        std::cout << "---------------------------------\n";
+
+    } else if (obj.getDni() == -3) {
+        std::cout << "Se puso una posición inválida.\n";
+    } else if (obj.getDni() == -1) {
+        std::cout << "No se pudo leer el registro.\n";
     } else {
-        std::cout << "ERROR DE ARCHIVO.\n";
+        std::cout << "No se pudo abrir el archivo.\n";
     }
 }
 
@@ -177,7 +200,7 @@ bool ArchivoMusico::modificarFecha() {
         return false;
     }
     if (pos == -2) {
-        std::cout << "NO SE PUDO ABRIR ARCHIVO.\n";
+        std::cout << "NO SE PUDO ABRIR EL ARCHIVO.\n";
         return false;
     }
 
@@ -187,6 +210,12 @@ bool ArchivoMusico::modificarFecha() {
         std::cout << "Registro dado de baja.\n";
         return false;
     }
+
+    std::cout << "-------------------------------------------------------------------\n";
+    std::cout << "Musico: " << obj.getNombre() << " " << obj.getApellido() << '\n';
+    std::cout << "Fecha de Inscripción actual: ";
+    obj.getFechaInscripcion().Mostrar();
+    std::cout << "\n-------------------------------------------------------------------\n";
 
     Fecha nuevaFecha;
     std::cout << "Ingrese la nueva fecha de inscripcion:\n";
