@@ -6,57 +6,25 @@
 #include "cargarcadena.h"
 #include "fecha.h"
 
-int Musico::getDni() {
-    return dni;
-}
+int Musico::getDni() { return dni; }
+const char* Musico::getNombre() { return nombre; }
+const char* Musico::getApellido() { return apellido; }
+const char* Musico::getEmail() { return email; }
+const char* Musico::getTelefono() { return telefono; }
+Fecha Musico::getFechaInscripcion() { return fechaInscripcion; }
+int Musico::getClaustro() { return claustro; }
+int Musico::getInstrumentro() { return instrumento; }
+int Musico::getTipoMusica() { return tipoMusica; }
+float Musico::getMatricula() { return matricula; }
+bool Musico::getEstado() { return estado; }
 
-const char* Musico::getNombre() {
-    return nombre;
-}
-
-const char* Musico::getApellido() {
-    return apellido;
-}
-
-const char* Musico::getEmail() {
-    return email;
-}
-
-const char* Musico::getTelefono() {
-    return telefono;
-}
-
-bool Musico::getEstado() {
-    return estado;
-}
-
-void Musico::setDNI(const int d) {
-    dni = d;
-}
-
-void Musico::setNombre(const char* n) {
-    strcpy(nombre, n);
-}
-
-void Musico::setApellido(const char* a) {
-    strcpy(apellido, a);
-}
-
-void Musico::setEmail(const char* e) {
-    strcpy(email, e);
-}
-
-void Musico::setTelefono(const char* t) {
-    strcpy(telefono, t);
-}
-
-void Musico::setEstado(bool b) {
-    estado = b;
-}
-
-void Musico::setFechaInscripcion(Fecha nuevaFecha) {
-    fechaInscripcion = nuevaFecha;
-}
+void Musico::setDNI(const int d) { dni = d; }
+void Musico::setNombre(const char* n) { strcpy(nombre, n); }
+void Musico::setApellido(const char* a) { strcpy(apellido, a); }
+void Musico::setEmail(const char* e) { strcpy(email, e); }
+void Musico::setTelefono(const char* t) { strcpy(telefono, t); }
+void Musico::setEstado(bool b) { estado = b; }
+void Musico::setFechaInscripcion(Fecha nuevaFecha) { fechaInscripcion = nuevaFecha; }
 
 void Musico::Cargar() {
     dni = cargarInt("DNI: ");

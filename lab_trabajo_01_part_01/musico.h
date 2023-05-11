@@ -24,6 +24,11 @@ class Musico {
     const char *getEmail();
     const char *getTelefono();
     bool getEstado();
+    int getClaustro();
+    int getInstrumentro();
+    int getTipoMusica();
+    Fecha getFechaInscripcion();
+    float getMatricula();
 
     void setDNI(const int d);
     void setNombre(const char *n);
