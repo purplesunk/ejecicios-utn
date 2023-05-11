@@ -12,16 +12,17 @@ ArchivoGeneroMusical::ArchivoGeneroMusical(const char *nuevoArchivo) {
 }
 
 void ArchivoGeneroMusical::agregarRegistro() {
-    GeneroMusical obj;
-
     int autoId = contarRegistros();
-
     if (autoId == -1) {
         autoId = 1;
     } else {
         ++autoId;
     }
 
+    std::cout << " Ingrese los datos del género musical: \n";
+    std::cout << "-----------------------------------------\n";
+
+    GeneroMusical obj;
     obj.Cargar(autoId);
 
     int pos = buscarGeneroMusical(obj.getId());
@@ -47,7 +48,7 @@ void ArchivoGeneroMusical::agregarRegistro() {
 void ArchivoGeneroMusical::mostrarRegistros() {
     FILE *fileGeneroMusical = fopen(nombre, "rb");
     if (fileGeneroMusical == NULL) {
-        std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
+        std::cout << "NO SE PUDO LEER EL ARCHIVO.\n";
         return;
     }
 
@@ -55,7 +56,7 @@ void ArchivoGeneroMusical::mostrarRegistros() {
     while (fread(&obj, sizeof obj, 1, fileGeneroMusical) == 1) {
         if (obj.getEstado()) {
             obj.Mostrar();
-            std::cout << '\n';
+            std::cout << "-----------------------------------\n";
         }
     }
     fclose(fileGeneroMusical);
@@ -80,6 +81,8 @@ GeneroMusical ArchivoGeneroMusical::leerGeneroMusical(int p) {
     if (!fread(&obj, sizeof(GeneroMusical), 1, fileGeneroMusical)) {
         obj.setId(-1);
     }
+
+    fclose(fileGeneroMusical);
 
     return obj;
 }
@@ -134,12 +137,17 @@ bool ArchivoGeneroMusical::modificarAnioOrigen() {
         return false;
     }
 
-    GeneroMusical obj;
+    GeneroMusical obj = leerGeneroMusical(pos);
 
     if (!obj.getEstado()) {
         std::cout << "Registro dado de baja.\n";
         return false;
     }
+
+    std::cout << "-------------------------------------------------------------------\n";
+    std::cout << "Genero: " << obj.getNombre() << '\n';
+    std::cout << "Año de origen actual: " << obj.getAnioOrigen() << '\n';
+    std::cout << "-------------------------------------------------------------------\n";
 
     int nuevoAnio = cargarInt("Ingresar nuevo año de origen: ");
     obj.setAnioOrigen(nuevoAnio);
@@ -158,7 +166,7 @@ bool ArchivoGeneroMusical::bajaLogica() {
         return false;
     }
     if (pos == -2) {
-        std::cout << "NO SE PUDO ABRIR ARCHIVO\n";
+        std::cout << "NO SE PUDO ABRIR ARCHIVO.\n";
         return false;
     }
 
@@ -180,13 +188,26 @@ void ArchivoGeneroMusical::buscarPorID() {
     int ID = cargarInt("INGRESE EL ID A BUSCAR: ");
 
     int pos = buscarGeneroMusical(ID);
+    if (pos == -2) {
+        std::cout << "No se pudo abrir el archivo.\n";
+        return;
+    } else if (pos == -1) {
+        std::cout << "No se encontró el registro.\n";
+        return;
+    }
+
     GeneroMusical obj = leerGeneroMusical(pos);
     if (obj.getId() > 0) {
+        std::cout << "---------------------------------\n";
         obj.Mostrar();
-    } else if (obj.getId() == -3 || obj.getId() == -1) {
-        std::cout << "SE PUSO UNA POSICIÓN EQUIVOCADA\n";
+        std::cout << "---------------------------------\n";
+
+    } else if (obj.getId() == -3) {
+        std::cout << "Se puso una posición inválida.\n";
+    } else if (obj.getId() == -1) {
+        std::cout << "No se pudo leer el registro.\n";
     } else {
-        std::cout << "ERROR DE ARCHIVO.\n";
+        std::cout << "No se pudo abrir el archivo.\n";
     }
 }
 

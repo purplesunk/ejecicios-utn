@@ -1,6 +1,8 @@
 #ifndef ARCHIVOGENERO_H_INCLUDED
 #define ARCHIVOGENERO_H_INCLUDED
 
+#include "claseGeneroMusical.h"
+
 class ArchivoGeneroMusical {
    private:
     char nombre[30];
