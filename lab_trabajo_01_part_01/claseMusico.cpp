@@ -39,19 +39,19 @@ void Musico::Cargar() {
     cargarCadena(telefono, 30);
 
     claustro = cargarInt("CLAUSTRO: ");
-    while (claustro < 1 && claustro > 4) {
+    while (claustro < 1 || claustro > 4) {
         std::cout << "CLAUTRO INVALIDO. ";
         claustro = cargarInt("CLAUSTRO: ");
     }
 
     instrumento = cargarInt("INSTRUMENTO: ");
-    while (instrumento < 1 && instrumento > 15) {
+    while (instrumento < 1 || instrumento > 15) {
         std::cout << "INSTRUMENTO INVALIDO. ";
         instrumento = cargarInt("INSTRUMENTO: ");
     }
 
     tipoMusica = cargarInt("TIPO DE MÚSICA: ");
-    while (tipoMusica < 1 && tipoMusica > 10) {
+    while (tipoMusica < 1 || tipoMusica > 10) {
         std::cout << "TIPO DE MÚSICA INVALIDO. ";
         tipoMusica = cargarInt("TIPO DE MUSICA: ");
     }

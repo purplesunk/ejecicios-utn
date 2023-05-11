@@ -1,6 +1,8 @@
 #ifndef MUSICO_H_INCLUDED
 #define MUSICO_H_INCLUDED
 
+#include "claseFecha.h"
+
 class Musico {
    protected:
     int dni;
