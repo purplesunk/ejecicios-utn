@@ -5,6 +5,8 @@
 
 #include "cargarcadena.h"
 
+Fecha::Fecha() {}
+
 Fecha::Fecha(int d, int m, int a) {
     dia = d;
     mes = m;
@@ -50,7 +52,7 @@ void Fecha::CargaValida() {
 
     int diaMax = 31;
     if (anio == anioActual && mes == mesActual) {
-        diaMax = fechaActual->mday;
+        diaMax = fechaActual->tm_mday;
     } else if (mes == 2) {
         if (this->anioBisiesto()) {
             diaMax = 29;

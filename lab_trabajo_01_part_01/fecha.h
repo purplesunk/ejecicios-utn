@@ -6,6 +6,7 @@ class Fecha {
     int dia, mes, anio;
 
    public:
+    Fecha();
     Fecha(int d, int m, int a);
 
     void Cargar();
