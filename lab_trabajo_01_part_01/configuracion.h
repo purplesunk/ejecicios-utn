@@ -46,6 +46,13 @@ bool restaurarGeneros() {
 }
 
 bool restablecerInicio() {
+    GeneroMusical obj;
+    bool generos = copiarArchivo("datosInicialesGeneros.dat", "generos.dat", &obj, sizeof(obj));
+
+    Musico obj2;
+    bool musicos = copiarArchivo("datosInicialesMusicos.dat", "musicos.dat", &obj2, sizeof(obj2));
+
+    return (generos && musicos)
 }
 
 #endif
