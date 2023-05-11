@@ -30,7 +30,6 @@ void Fecha::CargaValida() {
     int anioActual = fechaActual->tm_year + 1900;
     int mesActual = fechaActual->tm_mon + 1;
 
-    std::cout << (int)fechaActual->tm_year << '\n';
     int x = cargarInt("Ingresar Año: ");
     while (x < 0 || x > anioActual) {
         std::cout << "Año no válido. ";
@@ -71,7 +70,20 @@ void Fecha::CargaValida() {
     dia = x;
 }
 
-void Fecha::Mostrar() { std::cout << dia << "/" << mes << "/" << anio; }
+void Fecha::Mostrar() {
+    if (dia < 10) {
+        std::cout << '0' << dia;
+    } else {
+        std::cout << dia;
+    }
+    std::cout << '/';
+    if (mes < 10) {
+        std::cout << '0' << mes;
+    } else {
+        std::cout << mes;
+    }
+    std::cout << '/' << anio;
+}
 
 void Fecha::setDia(int x) {
     if (x > 0 && x <= 31) {
