@@ -52,7 +52,7 @@ bool restablecerInicio() {
     Musico obj2;
     bool musicos = copiarArchivo("datosInicialesMusicos.dat", "musicos.dat", &obj2, sizeof(obj2));
 
-    return (generos && musicos)
+    return (generos && musicos);
 }
 
 #endif
