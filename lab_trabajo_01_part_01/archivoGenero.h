@@ -6,7 +6,6 @@
 class ArchivoGeneroMusical {
    private:
     char nombre[30];
-    int registros = 0;
 
    public:
     ArchivoGeneroMusical(const char *nombreArchivo);
@@ -19,9 +18,15 @@ class ArchivoGeneroMusical {
     int buscarGeneroMusical(int id);
     bool bajaLogica();
 
+    void buscarPorID();
+
+    bool escribirRegistro(GeneroMusical obj);
+
+    int contarRegistros();
+
     // MODIFICACION
     bool modificarRegistro(GeneroMusical obj, int pos);
-    bool modificarFecha();
+    bool modificarAnioOrigen();
 };
 
 #endif  // ARCHIVOGENERO_H_INCLUDED

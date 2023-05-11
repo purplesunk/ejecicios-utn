@@ -13,6 +13,8 @@ class ArchivoMusico {
     void agregarRegistro();
     void mostrarRegistros();
 
+    bool escribirRegistro(Musico obj);
+
     // BAJA
     Musico leerMusico(int p);
     int buscarMusico(int dni);
@@ -21,6 +23,8 @@ class ArchivoMusico {
     // MODIFICACION
     bool modificarRegistro(Musico obj, int pos);
     bool modificarFecha();
+
+    int contarRegistros();
 
     // LISTADOS
     void buscarPorDNI();

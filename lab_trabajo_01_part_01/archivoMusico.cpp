@@ -36,10 +36,7 @@ void ArchivoMusico::agregarRegistro() {
 
 bool ArchivoMusico::bajaLogica() {
     // Solicitar que registro se quiere dar de baja
-    int DNI;
-    std::cout << "INGRESE EL DNI A BUSCAR: ";
-    std::cin >> DNI;
-    ignoreLine();
+    int DNI = cargarInt("INGRESE EL DNI A BUSCAR: ");
 
     // Buscar el registro en el archivo
     int pos = buscarMusico(DNI);
@@ -129,7 +126,7 @@ bool ArchivoMusico::modificarRegistro(Musico obj, int pos) {
 void ArchivoMusico::mostrarRegistros() {
     FILE *pCli = fopen(nombre, "rb");
     if (pCli == NULL) {
-        std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
+        std::cout << "NO SE PUDO ABRIR EL ARCHIVO.\n";
         return;
     }
 
@@ -143,11 +140,22 @@ void ArchivoMusico::mostrarRegistros() {
     fclose(pCli);
 }
 
+bool ArchivoMusico::escribirRegistro(Musico obj) {
+    FILE *archivo = fopen(nombre, "ab");
+    if (archivo == NULL) {
+        std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
+        return false;
+    }
+
+    bool aux = fwrite(&obj, sizeof(obj), 1, archivo);
+
+    fclose(archivo);
+
+    return aux;
+}
+
 void ArchivoMusico::buscarPorDNI() {
-    int DNI;
-    std::cout << "INGRESE EL DNI A BUSCAR: ";
-    std::cin >> DNI;
-    ignoreLine();
+    int DNI = cargarInt("INGRESE EL DNI A BUSCAR: ");
 
     int pos = buscarMusico(DNI);
     Musico obj = leerMusico(pos);
@@ -161,10 +169,7 @@ void ArchivoMusico::buscarPorDNI() {
 }
 
 bool ArchivoMusico::modificarFecha() {
-    int dni;
-    std::cout << "Ingrese el DNI a buscar:";
-    std::cin >> dni;
-    ignoreLine();
+    int dni = cargarInt("Ingrese el DNI a buscar: ");
 
     int pos = buscarMusico(dni);
     if (pos == -1) {
@@ -178,6 +183,11 @@ bool ArchivoMusico::modificarFecha() {
 
     Musico obj = leerMusico(pos);
 
+    if (!obj.getEstado()) {
+        std::cout << "Registro dado de baja.\n";
+        return false;
+    }
+
     Fecha nuevaFecha;
     std::cout << "Ingrese la nueva fecha de inscripcion:\n";
     nuevaFecha.Cargar();
@@ -185,4 +195,19 @@ bool ArchivoMusico::modificarFecha() {
     obj.setFechaInscripcion(nuevaFecha);
 
     return modificarRegistro(obj, pos);
+}
+
+int ArchivoMusico::contarRegistros() {
+    FILE *musicos = fopen(nombre, "rb");
+    if (musicos == NULL) {
+        return -1;
+    }
+
+    fseek(musicos, 0, SEEK_END);
+
+    int cantidad = ftell(musicos) / sizeof(Musico);
+
+    fclose(musicos);
+
+    return cantidad;
 }

@@ -13,14 +13,23 @@ ArchivoGeneroMusical::ArchivoGeneroMusical(const char *nuevoArchivo) {
 
 void ArchivoGeneroMusical::agregarRegistro() {
     GeneroMusical obj;
-    obj.Cargar();
 
-    int pos = buscarGeneroMusical(obj.getDni());
+    int autoId = contarRegistros();
+
+    if (autoId == -1) {
+        autoId = 1;
+    } else {
+        ++autoId;
+    }
+
+    obj.Cargar(autoId);
+
+    int pos = buscarGeneroMusical(obj.getId());
 
     if (pos == -2) {
         std::cout << "El archivo no se encontro. Creando archivo.\n";
     } else if (pos != -1) {
-        std::cout << "Ya hay un registro con ese DNI.\n";
+        std::cout << "Ya hay un registro con ese ID.\n";
         return;
     }
 
@@ -31,6 +40,7 @@ void ArchivoGeneroMusical::agregarRegistro() {
     }
 
     fwrite(&obj, sizeof(GeneroMusical), 1, fileGeneroMusical);
+
     fclose(fileGeneroMusical);
 }
 
@@ -111,21 +121,40 @@ bool ArchivoGeneroMusical::modificarRegistro(GeneroMusical obj, int pos) {
     return aux;
 }
 
-bool ArchivoGeneroMusical::modificarFecha() {
-    return false;
+bool ArchivoGeneroMusical::modificarAnioOrigen() {
+    int ID = cargarInt("Ingrese el ID a buscar: ");
+
+    int pos = buscarGeneroMusical(ID);
+    if (pos == -1) {
+        std::cout << "No existe genero con ese ID.\n";
+        return false;
+    }
+    if (pos == -2) {
+        std::cout << "No se pudo abrir el archivo.\n";
+        return false;
+    }
+
+    GeneroMusical obj;
+
+    if (!obj.getEstado()) {
+        std::cout << "Registro dado de baja.\n";
+        return false;
+    }
+
+    int nuevoAnio = cargarInt("Ingresar nuevo año de origen: ");
+    obj.setAnioOrigen(nuevoAnio);
+
+    return modificarRegistro(obj, pos);
 }
 
 bool ArchivoGeneroMusical::bajaLogica() {
     // Solicitar que registro se quiere dar de baja
-    int id;
-    std::cout << "INGRESE EL ID A BUSCAR: ";
-    std::cin >> id;
-    ignoreLine();
+    int id = cargarInt("INGRESE EL ID A BUSCAR: ");
 
     // Buscar el registro en el archivo
     int pos = buscarGeneroMusical(id);
     if (pos == -1) {
-        std::cout << "NO EXISTE GENERO CON ESE DNI.\n";
+        std::cout << "NO EXISTE GENERO CON ESE ID.\n";
         return false;
     }
     if (pos == -2) {
@@ -145,4 +174,47 @@ bool ArchivoGeneroMusical::bajaLogica() {
 
     // Sobreescribir
     return modificarRegistro(obj, pos);
+}
+
+void ArchivoGeneroMusical::buscarPorID() {
+    int ID = cargarInt("INGRESE EL ID A BUSCAR: ");
+
+    int pos = buscarGeneroMusical(ID);
+    GeneroMusical obj = leerGeneroMusical(pos);
+    if (obj.getId() > 0) {
+        obj.Mostrar();
+    } else if (obj.getId() == -3 || obj.getId() == -1) {
+        std::cout << "SE PUSO UNA POSICIÓN EQUIVOCADA\n";
+    } else {
+        std::cout << "ERROR DE ARCHIVO.\n";
+    }
+}
+
+bool ArchivoGeneroMusical::escribirRegistro(GeneroMusical obj) {
+    FILE *archivo = fopen(nombre, "ab");
+    if (archivo == NULL) {
+        std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
+        return false;
+    }
+
+    bool aux = fwrite(&obj, sizeof(obj), 1, archivo);
+
+    fclose(archivo);
+
+    return aux;
+}
+
+int ArchivoGeneroMusical::contarRegistros() {
+    FILE *generos = fopen(nombre, "rb");
+    if (generos == NULL) {
+        return -1;
+    }
+
+    fseek(generos, 0, SEEK_END);
+
+    int cantidad = ftell(generos) / sizeof(GeneroMusical);
+
+    fclose(generos);
+
+    return cantidad;
 }
