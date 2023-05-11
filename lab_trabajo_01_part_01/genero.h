@@ -10,14 +10,20 @@ class GeneroMusical {
     bool estado;
 
    public:
-    void cargar(int autoId);
-    void mostrar();
+    void Cargar(int autoId);
+    void Mostrar();
 
     int getId();
+    bool getEstado();
+    int getPaisOrigen();
+    int getAnioOrigen();
+    const char* getNombre();
+
     void setId(int nuevoId);
-    int getEstado();
     void setEstado(bool nuevoEstado);
     void setAnioOrigen(int nuevoAnio);
+    void setPaisOrigen(int nuevoPais);
+    void setNombre(const char* n);
 };
 
 #endif
