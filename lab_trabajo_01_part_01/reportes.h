@@ -101,37 +101,4 @@ void generarMusicos2023() {
     fclose(archivo);
 }
 
-void reportesMenu() {
-    while (true) {
-        std::cout << "REPORTES\n";
-        std::cout << "---------------------------------------\n";
-        std::cout << "1)\n";
-        std::cout << "2)\n";
-        std::cout << "3)\n";
-        std::cout << "---------------------------------------\n";
-        std::cout << "0) VOLVER AL MENÚ PRINCIPAL\n";
-
-        int opcion = cargarInt("SELECCIONAR OPCION: ");
-
-        system("cls");
-
-        switch (opcion) {
-            case 1:
-                listarMusicosAlumnos();
-                break;
-            case 2:
-                tipoMusicaXorigen();
-                break;
-            case 3:
-                generarMusicos2023();
-                break;
-            case 0:
-                return;
-                break;
-        }
-        system("pause");
-        system("cls");
-    }
-}
-
 #endif
