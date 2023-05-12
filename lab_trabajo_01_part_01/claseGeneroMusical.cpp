@@ -37,15 +37,18 @@ void GeneroMusical::Mostrar() {
     std::cout << "AÑO DE ORIGEN: " << anioOrigen << '\n';
 }
 
+// gets
 int GeneroMusical::getId() { return id; }
 bool GeneroMusical::getEstado() { return estado; }
 int GeneroMusical::getPaisOrigen() { return paisOrigen; }
 int GeneroMusical::getAnioOrigen() { return anioOrigen; }
 const char *GeneroMusical::getNombre() { return nombre; }
 
+// sets
 void GeneroMusical::setId(int nuevoId) { id = nuevoId; }
 void GeneroMusical::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
 void GeneroMusical::setNombre(const char *n) { strncpy(nombre, n, 30); }
+
 void GeneroMusical::setPaisOrigen(int nuevoPais) {
     if (nuevoPais > 0 && nuevoPais < 101) {
         paisOrigen = nuevoPais;
