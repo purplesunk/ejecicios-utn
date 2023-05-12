@@ -176,6 +176,10 @@ void ArchivoMusico::buscarPorDNI() {
     }
 
     Musico obj = leerMusico(pos);
+    if (!obj.getEstado()) {
+        std::cout << "Registro dado de baja.\n";
+        return;
+    }
 
     if (obj.getDni() > 0) {
         std::cout << "---------------------------------\n";
