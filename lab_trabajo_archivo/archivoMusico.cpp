@@ -66,47 +66,40 @@ bool ArchivoMusico::bajaLogica() {
 }
 
 int ArchivoMusico::buscarMusico(int dni) {
-    FILE *pCli = fopen(nombre, "rb");
-    if (pCli == NULL) {
-        return -2;
-    }
-
-    int pos = 0;
     Musico obj;
 
-    while (fread(&obj, sizeof(obj), 1, pCli) == 1) {
+    int pos = 0;
+    while (leerRegistro(&obj, sizeof(obj), pos, nombre)) {
         if (dni == obj.getDni()) {
-            fclose(pCli);
             return pos;
         }
         ++pos;
     }
 
-    fclose(pCli);
-
     return -1;
 }
 
 void ArchivoMusico::mostrarMusicos() {
-    FILE *pCli = fopen(nombre, "rb");
-    if (pCli == NULL) {
-        std::cout << "NO SE PUDO ABRIR EL ARCHIVO.\n";
-        return;
-    }
-
     Musico obj;
+
+    int pos = 0;
     int cant = 0;
-    while (fread(&obj, sizeof obj, 1, pCli) == 1) {
+
+    while (leerRegistro(&obj, sizeof(obj), pos, nombre)) {
         if (obj.getEstado()) {
             ++cant;
+
             std::cout << "-------------------------------------\n";
             std::cout << " Musico " << cant << '\n';
             std::cout << "-------------------------------------\n";
+
             obj.Mostrar();
+
             std::cout << '\n';
         }
+
+        ++pos;
     }
-    fclose(pCli);
 }
 
 void ArchivoMusico::buscarPorDNI() {
