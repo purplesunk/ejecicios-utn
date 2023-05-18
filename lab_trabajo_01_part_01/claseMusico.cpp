@@ -26,6 +26,29 @@ void Musico::setTelefono(const char* t) { strcpy(telefono, t); }
 void Musico::setEstado(bool b) { estado = b; }
 void Musico::setFechaInscripcion(Fecha nuevaFecha) { fechaInscripcion = nuevaFecha; }
 
+void Musico::setClaustro(int x) {
+    if (x > 0 || x < 5) {
+        claustro = x;
+    }
+}
+void Musico::setInstrumento(int x) {
+    if (x > 0 || x < 16) {
+        instrumento = x;
+    }
+}
+
+void Musico::setTipoMusica(int x) {
+    if (x > 0 || x < 11) {
+        tipoMusica = x;
+    }
+}
+
+void Musico::setMatricula(int x) {
+    if (x >= 0) {
+        matricula = x;
+    }
+}
+
 void Musico::Cargar() {
     dni = cargarInt("DNI: ");
 

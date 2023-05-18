@@ -37,6 +37,10 @@ class Musico {
     void setTelefono(const char *t);
     void setEstado(bool b);
     void setFechaInscripcion(Fecha nuevaFecha);
+    void setClaustro(int x);
+    void setInstrumento(int x);
+    void setTipoMusica(int x);
+    void setMatricula(int x);
 
     void Cargar();
     void Mostrar();
