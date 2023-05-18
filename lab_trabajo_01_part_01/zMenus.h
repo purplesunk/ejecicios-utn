@@ -177,9 +177,9 @@ void menuReportes() {
     while (true) {
         std::cout << "  REPORTES\n";
         std::cout << "---------------------------------------\n";
-        std::cout << "1)\n";
-        std::cout << "2)\n";
-        std::cout << "3)\n";
+        std::cout << "1) Listar Bateristas\n";
+        std::cout << "2) Instrumento con menos Músicos\n";
+        std::cout << "3) Generar archivo\n";
         std::cout << "---------------------------------------\n";
         std::cout << "0) VOLVER AL MENÚ PRINCIPAL\n\n";
 
@@ -189,13 +189,13 @@ void menuReportes() {
 
         switch (opcion) {
             case 1:
-                listarMusicosAlumnos();
+                listarBateristas();
                 break;
             case 2:
-                tipoMusicaXorigen();
+                instrumentoMenosMusicos();
                 break;
             case 3:
-                generarMusicos2023();
+                generarNoGuitarristas();
                 break;
             case 0:
                 return;
