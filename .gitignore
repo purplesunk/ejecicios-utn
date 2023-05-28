@@ -1,0 +1,17 @@
+*.exe
+*.o
+.clang-format
+.vscode
+**/*.exe
+**/*.o
+obj
+bin
+*.depend
+*.layout
+*.cbp
+*clang*
+*.out
+*.dat
+*.bkp
+*.rar
+*.zip
