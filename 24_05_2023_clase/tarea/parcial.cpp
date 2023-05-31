@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 #include "parcial1.h"
 
 void mergeSort(Proyecto vProyecto[], int tam, int inicio);
@@ -32,9 +31,9 @@ int main() {
 
 
     /// REORDENAR EL VECTOR POR NOMBRE DE PROYECTO
-    // bubbleSort(vProy, cant);
+    mergeSort(vProy, 10, 0);
 
-    mergeSort(vProy, cant, 0);
+    //mergeSort(vProy, cant, 0);
 
     for (int i = 0; i < cant; i++) {
         vProy[i].Mostrar();
@@ -48,11 +47,11 @@ int main() {
 void mergeSort(Proyecto vProyecto[], int tam, int inicio) {
     if (tam <= 1) {
         return;
-    } 
+    }
 
     int mitad = tam / 2;
 
-    // sort izquierda: 
+    // sort izquierda:
     mergeSort(vProyecto, mitad, inicio);
 
     // sort derecha:
@@ -64,7 +63,7 @@ void mergeSort(Proyecto vProyecto[], int tam, int inicio) {
     int cantDerecha = 0;
     int cantIzquierda = 0;
     bool cmpDerecha = false;
-    
+
     for (int i = 0; i < tam - 1; ++i) {
 
         if (cantDerecha == mitad) {
@@ -77,7 +76,7 @@ void mergeSort(Proyecto vProyecto[], int tam, int inicio) {
         }
 
         if (cmpDerecha) {
-            if (strcasecmp(vProyecto[inicio + mitad + cantDerecha].getNombre(), vProyecto[inicio + cantIzquierda].getNombre()) < 0) {
+            if (strcmp(vProyecto[inicio + mitad + cantDerecha].getNombre(), vProyecto[inicio + cantIzquierda].getNombre()) < 0) {
                 vBuffer[i] = vProyecto[inicio + mitad + cantDerecha];
                 cmpDerecha = false;
                 ++cantDerecha;
@@ -87,7 +86,7 @@ void mergeSort(Proyecto vProyecto[], int tam, int inicio) {
                 ++cantIzquierda;
             }
         } else {
-            if (strcasecmp(vProyecto[inicio + cantIzquierda].getNombre(), vProyecto[inicio + mitad + cantDerecha].getNombre()) < 0) {
+            if (strcmp(vProyecto[inicio + cantIzquierda].getNombre(), vProyecto[inicio + mitad + cantDerecha].getNombre()) < 0) {
                 vBuffer[i] = vProyecto[inicio + cantIzquierda];
                 cmpDerecha = true;
                 ++cantIzquierda;
@@ -106,7 +105,6 @@ void mergeSort(Proyecto vProyecto[], int tam, int inicio) {
     delete[] vBuffer;
 }
 
-
 void bubbleSort(Proyecto vProy[], int cant) {
     bool cambio = true;
     Proyecto proyectoTmp;
@@ -114,7 +112,7 @@ void bubbleSort(Proyecto vProy[], int cant) {
     while (cambio) {
         cambio = false;
         for (int i = 0; i < cant - vueltas; ++i) {
-            if (strcasecmp(vProy[i].getNombre(), vProy[i + 1].getNombre()) > 0) {
+            if (strcmp(vProy[i].getNombre(), vProy[i + 1].getNombre()) > 0) {
                 proyectoTmp = vProy[i + 1];
                 vProy[i + 1] = vProy[i];
                 vProy[i] = proyectoTmp;
