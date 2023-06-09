@@ -5,10 +5,12 @@
 
 class ArchivoInstrumento {
 private:
-  char nombre[30];
+  char *nombre;
 
 public:
   ArchivoInstrumento(const char *nombreArchivo);
+  ~ArchivoInstrumento();
+
   // ALTA
   void agregarRegistro();
   void mostrarRegistros();
@@ -27,6 +29,10 @@ public:
   bool modificarRegistro(Instrumento obj, int pos);
   bool modificarClasificacion();
   bool modificarNombre();
+
+  // BACKUP
+  bool copiaSeguridad();
+  bool restaurarCopia();
 };
 
 #endif

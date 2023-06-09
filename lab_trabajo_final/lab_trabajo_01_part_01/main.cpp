@@ -1,17 +1,24 @@
 #include <cstring>
 #include <iostream>
 
-#include "archivoGenero.h"
-#include "archivoInstrumento.h"
-#include "archivoMusico.h"
-#include "archivoPais.h"
+// UTILIDADES
 #include "cargarCadena.h"
+#include "rlutil.h"
+
+// CLASES
 #include "claseFecha.h"
 #include "claseGeneroMusical.h"
 #include "claseInstrumento.h"
 #include "claseMusico.h"
 #include "clasePais.h"
-#include "configuracion.h"
+
+// ARCHIVOS
+#include "archivoGenero.h"
+#include "archivoInstrumento.h"
+#include "archivoMusico.h"
+#include "archivoPais.h"
+
+// OTROS
 #include "reportes.h"
 #include "zMenus.h"
 
@@ -30,7 +37,7 @@ int main() {
 
     int opcion = cargarInt("SELECCIONAR OPCION: ");
 
-    system("cls");
+    rlutil::cls();
 
     switch (opcion) {
     case 1:
@@ -50,6 +57,7 @@ int main() {
       break;
     case 4:
       menuPaises();
+      break;
     case 0:
       return 0;
       break;
@@ -57,6 +65,6 @@ int main() {
       std::cout << "LA OPCION NO EXISTE.\n";
       break;
     }
-    system("cls");
+    rlutil::cls();
   }
 }

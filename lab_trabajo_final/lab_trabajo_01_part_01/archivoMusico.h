@@ -4,30 +4,36 @@
 #include "claseMusico.h"
 
 class ArchivoMusico {
-   private:
-    char nombre[30];
+private:
+  char *nombre;
 
-   public:
-    ArchivoMusico(const char *nombreArchivo);
-    // ALTA
-    void agregarRegistro();
-    void mostrarRegistros();
+public:
+  ArchivoMusico(const char *nombreArchivo);
+  ~ArchivoMusico();
 
-    bool escribirRegistro(Musico obj);
+  // ALTA
+  void agregarRegistro();
+  void mostrarRegistros();
 
-    // BAJA
-    Musico leerMusico(int p);
-    int buscarMusico(int dni);
-    bool bajaLogica();
+  bool escribirRegistro(Musico obj);
 
-    // MODIFICACION
-    bool modificarRegistro(Musico obj, int pos);
-    bool modificarFecha();
+  // BAJA
+  Musico leerMusico(int p);
+  int buscarMusico(int dni);
+  bool bajaLogica();
 
-    int contarRegistros();
+  // MODIFICACION
+  bool modificarRegistro(Musico obj, int pos);
+  bool modificarFecha();
 
-    // LISTADOS
-    void buscarPorDNI();
+  int contarRegistros();
+
+  // LISTADOS
+  void buscarPorDNI();
+
+  // BACKUPS
+  bool copiaSeguridad();
+  bool restaurarCopia();
 };
 
-#endif  // ARCHIVOCLIENTE_H_INCLUDED
+#endif // ARCHIVOCLIENTE_H_INCLUDED

@@ -4,29 +4,35 @@
 #include "claseGeneroMusical.h"
 
 class ArchivoGeneroMusical {
-   private:
-    char nombre[30];
+private:
+  char *nombre;
 
-   public:
-    ArchivoGeneroMusical(const char *nombreArchivo);
-    // ALTA
-    void agregarRegistro();
-    void mostrarRegistros();
+public:
+  ArchivoGeneroMusical(const char *nombreArchivo);
 
-    // BAJA
-    GeneroMusical leerGeneroMusical(int p);
-    int buscarGeneroMusical(int id);
-    bool bajaLogica();
+  ~ArchivoGeneroMusical();
+  // ALTA
+  void agregarRegistro();
+  void mostrarRegistros();
 
-    void buscarPorID();
+  // BAJA
+  GeneroMusical leerGeneroMusical(int p);
+  int buscarGeneroMusical(int id);
+  bool bajaLogica();
 
-    bool escribirRegistro(GeneroMusical obj);
+  void buscarPorID();
 
-    int contarRegistros();
+  bool escribirRegistro(GeneroMusical obj);
 
-    // MODIFICACION
-    bool modificarRegistro(GeneroMusical obj, int pos);
-    bool modificarAnioOrigen();
+  int contarRegistros();
+
+  // MODIFICACION
+  bool modificarRegistro(GeneroMusical obj, int pos);
+  bool modificarAnioOrigen();
+
+  // BACKUP
+  bool copiaSeguridad();
+  bool restaurarCopia();
 };
 
-#endif  // ARCHIVOGENERO_H_INCLUDED
+#endif // ARCHIVOGENERO_H_INCLUDED

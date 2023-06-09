@@ -7,11 +7,20 @@
 #include "claseFecha.h"
 #include "clasePais.h"
 
-ArchivoPaises::ArchivoPaises(const char *nuevoArchivo) {
-  strncpy(nombre, nuevoArchivo, 30);
+ArchivoPais::ArchivoPais(const char *nuevoArchivo) {
+  int tam = strlen(nuevoArchivo) + 1;
+
+  nombre = new char[tam];
+  if (nombre == NULL) {
+    exit(1); // ver como hacer con este error :)
+  }
+
+  strncpy(nombre, nuevoArchivo, tam);
 }
 
-void ArchivoPaises::agregarRegistro() {
+ArchivoPais::~ArchivoPais() { delete nombre; }
+
+void ArchivoPais::agregarRegistro() {
   int autoId = contarRegistros();
   if (autoId == -1) {
     autoId = 1;
@@ -45,7 +54,7 @@ void ArchivoPaises::agregarRegistro() {
   fclose(fileGeneroMusical);
 }
 
-void ArchivoPaises::mostrarRegistros() {
+void ArchivoPais::mostrarRegistros() {
   FILE *fileGeneroMusical = fopen(nombre, "rb");
   if (fileGeneroMusical == NULL) {
     std::cout << "NO SE PUDO LEER EL ARCHIVO.\n";
@@ -62,7 +71,7 @@ void ArchivoPaises::mostrarRegistros() {
   fclose(fileGeneroMusical);
 }
 
-Pais ArchivoPaises::leerRegistro(int p) {
+Pais ArchivoPais::leerRegistro(int p) {
   Pais obj;
 
   if (p < 0) {
@@ -87,7 +96,7 @@ Pais ArchivoPaises::leerRegistro(int p) {
   return obj;
 }
 
-int ArchivoPaises::buscarRegistro(int id) {
+int ArchivoPais::buscarRegistro(int id) {
   FILE *fileGeneroMusical = fopen(nombre, "rb");
   if (fileGeneroMusical == NULL) {
     return -2;
@@ -109,7 +118,7 @@ int ArchivoPaises::buscarRegistro(int id) {
   return -1;
 }
 
-bool ArchivoPaises::modificarRegistro(Pais obj, int pos) {
+bool ArchivoPais::modificarRegistro(Pais obj, int pos) {
   FILE *fileGeneroMusical = fopen(nombre, "rb+");
   if (fileGeneroMusical == NULL) {
     std::cout << "ERROR AL REABRIR EL ARCHIVO.\n";
@@ -124,7 +133,7 @@ bool ArchivoPaises::modificarRegistro(Pais obj, int pos) {
   return aux;
 }
 
-int ArchivoPaises::contarRegistros() {
+int ArchivoPais::contarRegistros() {
   FILE *generos = fopen(nombre, "rb");
   if (generos == NULL) {
     return -1;
@@ -139,7 +148,7 @@ int ArchivoPaises::contarRegistros() {
   return cantidad;
 }
 
-void ArchivoPaises::buscarPorID() {
+void ArchivoPais::buscarPorID() {
   int ID = cargarInt("INGRESE EL ID A BUSCAR: ");
 
   int pos = buscarRegistro(ID);
@@ -171,7 +180,7 @@ void ArchivoPaises::buscarPorID() {
   }
 }
 
-bool ArchivoPaises::bajaLogica() {
+bool ArchivoPais::bajaLogica() {
   // Solicitar que registro se quiere dar de baja
   int id = cargarInt("INGRESE EL ID A BUSCAR: ");
 
@@ -200,7 +209,7 @@ bool ArchivoPaises::bajaLogica() {
   return modificarRegistro(obj, pos);
 }
 
-bool ArchivoPaises::modificarContinente() {
+bool ArchivoPais::modificarContinente() {
   int ID = cargarInt("Ingrese el ID a buscar: ");
 
   int pos = buscarRegistro(ID);
@@ -236,7 +245,7 @@ bool ArchivoPaises::modificarContinente() {
   return modificarRegistro(obj, pos);
 }
 
-bool ArchivoPaises::modificarNombre() {
+bool ArchivoPais::modificarNombre() {
   int ID = cargarInt("Ingrese el ID a buscar: ");
 
   int pos = buscarRegistro(ID);
@@ -270,4 +279,26 @@ bool ArchivoPaises::modificarNombre() {
   obj.setNombre(nombre);
 
   return modificarRegistro(obj, pos);
+}
+
+bool ArchivoPais::copiaSeguridad() {
+  const char *backup = agregarExtensionBackup(nombre);
+
+  Pais obj;
+  bool copiado = copiarArchivo(nombre, backup, &obj, sizeof(obj));
+
+  delete backup;
+
+  return copiado;
+}
+
+bool ArchivoPais::restaurarCopia() {
+  const char *backup = agregarExtensionBackup(nombre);
+
+  Pais obj;
+  bool restaurado = copiarArchivo(backup, nombre, &obj, sizeof(obj));
+
+  delete backup;
+
+  return restaurado;
 }

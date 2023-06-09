@@ -3,12 +3,14 @@
 
 #include "clasePais.h"
 
-class ArchivoPaises {
+class ArchivoPais {
 private:
-  char nombre[30];
+  char *nombre;
 
 public:
-  ArchivoPaises(const char *nombreArchivo);
+  ArchivoPais(const char *nombreArchivo);
+  ~ArchivoPais();
+
   // ALTA
   void agregarRegistro();
   void mostrarRegistros();
@@ -28,6 +30,10 @@ public:
 
   bool modificarNombre();
   bool modificarContinente();
+
+  // BACKUP
+  bool copiaSeguridad();
+  bool restaurarCopia();
 };
 
 #endif

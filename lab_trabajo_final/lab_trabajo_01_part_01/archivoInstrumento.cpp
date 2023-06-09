@@ -8,8 +8,17 @@
 #include "claseInstrumento.h"
 
 ArchivoInstrumento::ArchivoInstrumento(const char *nuevoArchivo) {
-  strncpy(nombre, nuevoArchivo, 30);
+  int tam = strlen(nuevoArchivo) + 1;
+
+  nombre = new char[tam];
+  if (nombre == NULL) {
+    exit(1); // ver como hacer con este error :)
+  }
+
+  strncpy(nombre, nuevoArchivo, tam);
 }
+
+ArchivoInstrumento::~ArchivoInstrumento() { delete nombre; }
 
 void ArchivoInstrumento::agregarRegistro() {
   int autoId = contarRegistros();
@@ -231,4 +240,24 @@ bool ArchivoInstrumento::modificarClasificacion() {
   obj.setClasificacion(nuevoAnio);
 
   return modificarRegistro(obj, pos);
+}
+
+bool ArchivoInstrumento::copiaSeguridad() {
+  const char *backup = agregarExtensionBackup(nombre);
+
+  Instrumento obj;
+  bool copiado = copiarArchivo(nombre, backup, &obj, sizeof(obj));
+
+  delete backup;
+  return copiado;
+}
+
+bool ArchivoInstrumento::restaurarCopia() {
+  const char *backup = agregarExtensionBackup(nombre);
+
+  Instrumento obj;
+  bool restaurado = copiarArchivo(backup, nombre, &obj, sizeof(obj));
+
+  delete backup;
+  return restaurado;
 }
