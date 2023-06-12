@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 
 #include "cargarCadena.h"
 
@@ -17,9 +18,13 @@ void Pais::Cargar(int autoId) {
 }
 
 void Pais::Mostrar() {
-  std::cout << "ID: " << id << '\n';
-  std::cout << "NOMBRE: " << nombre << '\n';
-  std::cout << "CONTINENTE: " << continente << '\n';
+  std::cout << std::right << std::setw(26) << "ID: " << id << '\n';
+  std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
+  std::cout << std::right << std::setw(26) << "CONTINENTE: " << continente << '\n';
+}
+
+void Pais::MostrarSeleccion() {
+  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(4) << id << " - " << nombre;
 }
 
 // gets

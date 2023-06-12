@@ -2,10 +2,14 @@
 
 #include <cstring>
 #include <iostream>
+#include <iomanip>
+
+#include "rlutil.h"
 
 #include "cargarCadena.h"
 #include "claseFecha.h"
 #include "claseInstrumento.h"
+#include "interfaz.h"
 
 ArchivoInstrumento::ArchivoInstrumento(const char *nuevoArchivo) {
   int tam = strlen(nuevoArchivo) + 1;
@@ -62,10 +66,17 @@ void ArchivoInstrumento::mostrarRegistros() {
   }
 
   Instrumento obj;
+  rlutil::locate((rlutil::tcols() - strlen("instrumentos")) / 2, 2);
+  std::cout << "INTRUMENTOS"<< "\n\n";
+  int space = 4;
+  rlutil::locate(10, space);
+  std::cout << "----------------------------------------\n";
   while (fread(&obj, sizeof obj, 1, archivo) == 1) {
     if (obj.getEstado()) {
       obj.Mostrar();
-      std::cout << "-----------------------------------\n";
+      space += 4;
+      rlutil::locate(10, space);
+      std::cout << "----------------------------------------\n";
     }
   }
   fclose(archivo);
@@ -260,4 +271,107 @@ bool ArchivoInstrumento::restaurarCopia() {
 
   delete backup;
   return restaurado;
+}
+
+int listarSeleccion(int pagina, int height, int posx, int posy, Instrumento vRegistros[], int cantActivos) {
+  int mostrados = 0;
+  for (int i = pagina * (height); i < cantActivos && mostrados < height; ++i) {
+    rlutil::locate(posx, posy + mostrados);
+    if (vRegistros[i].getEstado()) {
+      vRegistros[i].MostrarSeleccion();
+      ++mostrados;
+    }
+  }
+  return mostrados;
+}
+
+int ArchivoInstrumento::seleccionarRegistro(int posx, int posy, int boxWidth, int boxHeight) {
+  if (posx < 0) {
+    posx = rlutil::tcols() - boxWidth;
+  }
+
+  if (boxHeight < 0) {
+    boxHeight = rlutil::trows() - 10;
+  }
+
+  innerBox inner = dibujarCajaTitulo(posx, posy, boxWidth, boxHeight, "SELECCIONAR INSTRUMENTO");
+  int cantRegistros = contarRegistros();
+
+  Instrumento *vRegistros = new Instrumento[cantRegistros];
+  int cantActivos = 0;
+  for (int i = 0; i < cantRegistros; ++i) {
+    vRegistros[cantActivos] = leerRegistro(i);
+    if (vRegistros[cantActivos].getEstado()) {
+      ++cantActivos;
+    }
+  }
+
+  int cantPaginas = cantActivos / inner.height;
+  int pagina = 0;
+
+  int mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
+
+  int cursor = inner.posy;
+  int seleccionado = 0;
+  rlutil::locate(inner.posx, cursor);
+  std::cout << '>';
+  while (true) {
+    switch (rlutil::getkey()) {
+      case rlutil::KEY_DOWN: {
+        rlutil::locate(inner.posx, cursor);
+        std::cout << ' ';
+
+        ++cursor;
+        if (cursor > inner.posy + mostrados - 1) {
+          cursor = inner.posy + mostrados - 1;
+          if (cantPaginas > 0 && pagina < cantPaginas) {
+            ++pagina;
+            clearInnerBox(inner);
+            mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
+            cursor = inner.posy;
+          }
+        }
+        seleccionado = cursor - inner.posy;
+
+        rlutil::locate(inner.posx, cursor);
+        std::cout << '>';
+      } break;
+
+      case rlutil::KEY_UP: {
+        rlutil::locate(inner.posx, cursor);
+        std::cout << ' ';
+
+        --cursor;
+        if (cursor < inner.posy) {
+          cursor = inner.posy;
+          if (cantPaginas > 0 && pagina > 0) {
+            --pagina;
+            clearInnerBox(inner);
+            mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
+            cursor = inner.posy + mostrados - 1;
+          }
+        }
+        seleccionado = cursor - inner.posy;
+
+        rlutil::locate(inner.posx, cursor);
+        std::cout << '>';
+      } break;
+
+      case rlutil::KEY_LEFT: {
+        // Hacer que cargatInt();
+        // checkeando en el vector si existe el id del instrumento
+        // y está en alta.
+      } break;
+
+      case rlutil::KEY_ENTER: {
+        int id_seleccionada = vRegistros[seleccionado].getId();
+        delete[] vRegistros;
+        clearBox(posx, posy, boxWidth, boxHeight);
+        return id_seleccionada;
+      } break;
+    }
+  }
+
+  delete[] vRegistros;
+  return 0;
 }

@@ -7,6 +7,9 @@
 #include "claseFecha.h"
 #include "claseGeneroMusical.h"
 
+#include "interfaz.h"
+#include "rlutil.h"
+
 ArchivoGeneroMusical::ArchivoGeneroMusical(const char *nuevoArchivo) {
   int tam = strlen(nuevoArchivo) + 1;
 
@@ -34,7 +37,7 @@ void ArchivoGeneroMusical::agregarRegistro() {
   GeneroMusical obj;
   obj.Cargar(autoId);
 
-  int pos = buscarGeneroMusical(obj.getId());
+  int pos = buscarRegistro(obj.getId());
 
   if (pos == -2) {
     std::cout << "El archivo no se encontro. Creando archivo.\n";
@@ -71,7 +74,7 @@ void ArchivoGeneroMusical::mostrarRegistros() {
   fclose(fileGeneroMusical);
 }
 
-GeneroMusical ArchivoGeneroMusical::leerGeneroMusical(int p) {
+GeneroMusical ArchivoGeneroMusical::leerRegistro(int p) {
   GeneroMusical obj;
 
   if (p < 0) {
@@ -96,7 +99,7 @@ GeneroMusical ArchivoGeneroMusical::leerGeneroMusical(int p) {
   return obj;
 }
 
-int ArchivoGeneroMusical::buscarGeneroMusical(int id) {
+int ArchivoGeneroMusical::buscarRegistro(int id) {
   FILE *fileGeneroMusical = fopen(nombre, "rb");
   if (fileGeneroMusical == NULL) {
     return -2;
@@ -165,7 +168,7 @@ int ArchivoGeneroMusical::contarRegistros() {
 void ArchivoGeneroMusical::buscarPorID() {
   int ID = cargarInt("INGRESE EL ID A BUSCAR: ");
 
-  int pos = buscarGeneroMusical(ID);
+  int pos = buscarRegistro(ID);
   if (pos == -2) {
     std::cout << "No se pudo abrir el archivo.\n";
     return;
@@ -174,7 +177,7 @@ void ArchivoGeneroMusical::buscarPorID() {
     return;
   }
 
-  GeneroMusical obj = leerGeneroMusical(pos);
+  GeneroMusical obj = leerRegistro(pos);
   if (!obj.getEstado()) {
     std::cout << "Registro dado de baja.\n";
     return;
@@ -199,7 +202,7 @@ bool ArchivoGeneroMusical::bajaLogica() {
   int id = cargarInt("INGRESE EL ID A BUSCAR: ");
 
   // Buscar el registro en el archivo
-  int pos = buscarGeneroMusical(id);
+  int pos = buscarRegistro(id);
   if (pos == -1) {
     std::cout << "NO EXISTE GENERO CON ESE ID.\n";
     return false;
@@ -209,7 +212,7 @@ bool ArchivoGeneroMusical::bajaLogica() {
     return false;
   }
 
-  GeneroMusical obj = leerGeneroMusical(pos);
+  GeneroMusical obj = leerRegistro(pos);
 
   if (obj.getEstado() == false) {
     std::cout << "EL GENERO INGRESADO YA ESTA DADO DE BAJA.\n";
@@ -226,7 +229,7 @@ bool ArchivoGeneroMusical::bajaLogica() {
 bool ArchivoGeneroMusical::modificarAnioOrigen() {
   int ID = cargarInt("Ingrese el ID a buscar: ");
 
-  int pos = buscarGeneroMusical(ID);
+  int pos = buscarRegistro(ID);
   if (pos == -1) {
     std::cout << "No existe genero con ese ID.\n";
     return false;
@@ -236,7 +239,7 @@ bool ArchivoGeneroMusical::modificarAnioOrigen() {
     return false;
   }
 
-  GeneroMusical obj = leerGeneroMusical(pos);
+  GeneroMusical obj = leerRegistro(pos);
 
   if (!obj.getEstado()) {
     std::cout << "Registro dado de baja.\n";
@@ -274,4 +277,107 @@ bool ArchivoGeneroMusical::restaurarCopia() {
 
   delete backup;
   return restaurado;
+}
+
+int listarSeleccion(int pagina, int height, int posx, int posy, GeneroMusical vRegistros[], int cantActivos) {
+  int mostrados = 0;
+  for (int i = pagina * (height); i < cantActivos && mostrados < height; ++i) {
+    rlutil::locate(posx, posy + mostrados);
+    if (vRegistros[i].getEstado()) {
+      vRegistros[i].MostrarSeleccion();
+      ++mostrados;
+    }
+  }
+  return mostrados;
+}
+
+int ArchivoGeneroMusical::seleccionarRegistro(int posx, int posy, int boxWidth, int boxHeight) {
+  if (posx < 0) {
+    posx = rlutil::tcols() - boxWidth;
+  }
+
+  if (boxHeight < 0) {
+    boxHeight = rlutil::trows() - 10;
+  }
+
+  innerBox inner = dibujarCajaTitulo(posx, posy, boxWidth, boxHeight, "SELECCIONAR PAIS");
+  int cantRegistros = contarRegistros();
+
+  GeneroMusical *vRegistros = new GeneroMusical[cantRegistros];
+  int cantActivos = 0;
+  for (int i = 0; i < cantRegistros; ++i) {
+    vRegistros[cantActivos] = leerRegistro(i);
+    if (vRegistros[cantActivos].getEstado()) {
+      ++cantActivos;
+    }
+  }
+
+  int cantPaginas = cantActivos / inner.height;
+  int pagina = 0;
+
+  int mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
+
+  int cursor = inner.posy;
+  int seleccionado = 0;
+  rlutil::locate(inner.posx, cursor);
+  std::cout << '>';
+  while (true) {
+    switch (rlutil::getkey()) {
+      case rlutil::KEY_DOWN: {
+        rlutil::locate(inner.posx, cursor);
+        std::cout << ' ';
+
+        ++cursor;
+        if (cursor > inner.posy + mostrados - 1) {
+          cursor = inner.posy + mostrados - 1;
+          if (cantPaginas > 0 && pagina < cantPaginas) {
+            ++pagina;
+            clearInnerBox(inner);
+            mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
+            cursor = inner.posy;
+          }
+        }
+        seleccionado = cursor - inner.posy;
+
+        rlutil::locate(inner.posx, cursor);
+        std::cout << '>';
+      } break;
+
+      case rlutil::KEY_UP: {
+        rlutil::locate(inner.posx, cursor);
+        std::cout << ' ';
+
+        --cursor;
+        if (cursor < inner.posy) {
+          cursor = inner.posy;
+          if (cantPaginas > 0 && pagina > 0) {
+            --pagina;
+            clearInnerBox(inner);
+            mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
+            cursor = inner.posy + mostrados - 1;
+          }
+        }
+        seleccionado = cursor - inner.posy;
+
+        rlutil::locate(inner.posx, cursor);
+        std::cout << '>';
+      } break;
+
+      case rlutil::KEY_LEFT: {
+        // Hacer que cargatInt();
+        // checkeando en el vector si existe el id del instrumento
+        // y está en alta.
+      } break;
+
+      case rlutil::KEY_ENTER: {
+        int id_seleccionada = vRegistros[seleccionado].getId();
+        delete[] vRegistros;
+        clearBox(posx, posy, boxWidth, boxHeight);
+        return id_seleccionada;
+      } break;
+    }
+  }
+
+  delete[] vRegistros;
+  return 0;
 }

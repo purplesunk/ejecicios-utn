@@ -44,6 +44,7 @@ class Musico {
 
     void Cargar();
     void Mostrar();
+    void MostrarSeleccion();
 };
 
 #endif  // MUSICO_H_INCLUDED

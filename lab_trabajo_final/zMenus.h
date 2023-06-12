@@ -1,25 +1,55 @@
 #ifndef ZMENUS_H_INCLUDED
 #define ZMENUS_H_INCLUDED
 
-int menuMusicos() {
+void mostrarOpciones(const char *titulo, const char *atras, char opciones[][60], int cantOpciones, int posx, int y) {
+  rlutil::locate(posx, 2);
+  std::cout << titulo;
+  // dibujarCaja(posx - 10, 1, 80, 20);
+
+  for (int i = 0; i < cantOpciones; ++i) {
+    mostrarOpcion(opciones[i], posx, 5 + i,  y == (i + 1));
+  }
+
+  mostrarOpcion(atras, posx, 5 + cantOpciones + 2, y == 0);
+}
+
+int elegirOpcion(int y, const int MAX_OPT, int (*func)(int)) {
+  char key = rlutil::getkey();
+  switch(key) {
+    case rlutil::KEY_DOWN: {
+      ++y;
+      if (y > MAX_OPT) {
+        y = 0;
+      }
+    } break;
+
+    case rlutil::KEY_UP: {
+      --y;
+      if (y < 0) {
+        y = MAX_OPT;
+      }
+    } break;
+
+    case rlutil::KEY_ENTER: {
+      if (func(y) == 0) {
+        return -1;
+      }
+    } break;
+
+    default: {
+      int opcion = key - 48;
+      if (opcion >= 0 && opcion <= MAX_OPT) {
+        y = opcion;
+      }
+    }
+  }
+  return y;
+}
+
+int opcionesMusicos(int y) {
+  rlutil::cls();
   ArchivoMusico archivo("musicos.dat");
-
-  while (true) {
-    std::cout << "  MENU MUSICOS\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "1) AGREGAR MUSICOS\n";
-    std::cout << "2) LISTAR MUSICO POR DNI\n";
-    std::cout << "3) LISTAR TODOS LOS MUSICOS\n";
-    std::cout << "4) MODIFICAR FECHA DE INSCRIPCION\n";
-    std::cout << "5) ELIMINAR REGISTRO DE MUSICO\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "0) VOLVER AL MENÚ PRINCIPAL\n\n";
-
-    int opcion = cargarInt("SELECCIONAR OPCION: ");
-
-    rlutil::cls();
-
-    switch (opcion) {
+  switch (y) {
     case 1:
       archivo.agregarRegistro();
       break;
@@ -46,34 +76,32 @@ int menuMusicos() {
     case 0:
       return 0;
       break;
-    default:
-      std::cout << "LA OPCION NO EXISTE.\n";
-      break;
-    }
-    rlutil::anykey();
-    rlutil::cls();
+  }
+  pause();
+  rlutil::cls();
+  return y;
+}
+
+void menuMusicos(int posx) {
+  int y = 1;
+  const int MAX_OPT = 5;
+  char opciones[MAX_OPT][60];
+  strncpy(opciones[0],  "1) AGREGAR MUSICO", 60);
+  strncpy(opciones[1],  "2) LISTAR MUSICO POR DNI", 60);
+  strncpy(opciones[2],  "3) LISTAR TODO", 60);
+  strncpy(opciones[3],  "4) MODIFICAR FECHA DE INSCRIPCION", 60);
+  strncpy(opciones[4],  "5) ELIMINAR REGISTRO", 60);
+  while (true) {
+    mostrarOpciones("MENU MUSICOS", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
+    y = elegirOpcion(y, MAX_OPT, &opcionesMusicos);
+    if (y == -1) return;
   }
 }
 
-int menuGeneros() {
+int opcionesGeneros(int y) {
+  rlutil::cls();
   ArchivoGeneroMusical archivo("generos.dat");
-
-  while (true) {
-    std::cout << "  MENU GÉNEROS\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "1) AGREGAR GÉNERO\n";
-    std::cout << "2) LISTAR GÉNERO POR ID\n";
-    std::cout << "3) LISTAR TODO\n";
-    std::cout << "4) MODIFICAR AÑO DE ORIGEN\n";
-    std::cout << "5) ELIMINAR REGISTRO\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "0) VOLVER AL MENÚ PRINCIPAL\n\n";
-
-    int opcion = cargarInt("SELECCIONAR OPCION: ");
-
-    rlutil::cls();
-
-    switch (opcion) {
+  switch (y) {
     case 1:
       archivo.agregarRegistro();
       break;
@@ -100,173 +128,32 @@ int menuGeneros() {
     case 0:
       return 0;
       break;
-    default:
-      std::cout << "LA OPCION NO EXISTE.\n";
-      break;
-    }
-    rlutil::anykey();
-    rlutil::cls();
   }
+  pause();
+  rlutil::cls();
+  return y;
 }
 
-int menuConfiguracion() {
+void menuGeneros(int posx) {
+  int y = 1;
+  const int MAX_OPT = 5;
+  char opciones[MAX_OPT][60];
+  strncpy(opciones[0],  "1) AGREGAR GENERO", 60);
+  strncpy(opciones[1],  "2) LISTAR GENERO POR ID", 60);
+  strncpy(opciones[2],  "3) LISTAR TODO", 60);
+  strncpy(opciones[3],  "4) MODIFICAR AÑO DE ORIGEN", 60);
+  strncpy(opciones[4],  "5) ELIMINAR REGISTRO", 60);
   while (true) {
-    std::cout << "  MENÚ CONFIGURACIÓN\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "1) COPIA DE SEGURIDAD DEL ARCHIVO DE MUSICOS\n";
-    std::cout << "2) COPIA DE SEGURIDAD DEL ARCHIVO DE GENEROS\n";
-    std::cout << "3) COPIA DE SEGURIDAD DEL ARCHIVO DE INSTRUMENTOS\n";
-    std::cout << "4) COPIA DE SEGURIDAD DEL ARCHIVO DE PAISES\n";
-    std::cout << "5) RESTAURAR EL ARCHIVO DE MUSICOS\n";
-    std::cout << "6) RESTAURAR EL ARCHIVO DE GENEROS\n";
-    std::cout << "7) RESTAURAR EL ARCHIVO DE INSTRUMENTOS\n";
-    std::cout << "8) RESTAURAR EL ARCHIVO DE PAISES\n";
-    std::cout << "9) ESTABLECER DATOS DE INICIO\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "0) VOLVER AL MENÚ PRINCIPAL\n\n";
-
-    int opcion = cargarInt("SELECCIONAR OPCION: ");
-
-    rlutil::cls();
-
-    switch (opcion) {
-    case 1: {
-      ArchivoMusico archivo("musicos.dat");
-      if (archivo.copiaSeguridad()) {
-        std::cout << "Copia de seguridad completada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo completar.\n";
-      }
-    } break;
-    case 2: {
-      ArchivoGeneroMusical archivo("generos.dat");
-      if (archivo.copiaSeguridad()) {
-        std::cout << "Copia de seguridad completada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo completar.\n";
-      }
-    } break;
-    case 3: {
-      ArchivoInstrumento archivo("instrumentos.dat");
-      if (archivo.copiaSeguridad()) {
-        std::cout << "Copia de seguridad completada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo completar.\n";
-      }
-    } break;
-    case 4: {
-      ArchivoPais archivo("paises.dat");
-      if (archivo.copiaSeguridad()) {
-        std::cout << "Copia de seguridad completada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo completar.\n";
-      }
-    } break;
-
-    case 5: {
-      ArchivoMusico archivo("musicos.dat");
-      if (archivo.restaurarCopia()) {
-        std::cout << "Copia de seguridad restaurada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo restaurar.\n";
-      }
-    } break;
-    case 6: {
-      ArchivoGeneroMusical archivo("generos.dat");
-      if (archivo.restaurarCopia()) {
-        std::cout << "Copia de seguridad restaurada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo restaurar.\n";
-      }
-    } break;
-    case 7: {
-      ArchivoInstrumento archivo("instrumentos.dat");
-      if (archivo.restaurarCopia()) {
-        std::cout << "Copia de seguridad restaurada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo restaurar.\n";
-      }
-    } break;
-    case 8: {
-      ArchivoPais archivo("paises.dat");
-      if (archivo.restaurarCopia()) {
-        std::cout << "Copia de seguridad restaurada.\n";
-      } else {
-        std::cout << "Copia de seguridad no se pudo restaurar.\n";
-      }
-    } break;
-    case 9:
-      if (restablecerInicio()) {
-        std::cout << "Datos iniciales restablecidos.\n";
-      } else {
-        std::cout
-            << "Datos iniciales no pudieron ser restablecidos correctamente.\n";
-      }
-      break;
-    case 0:
-      return 0;
-      break;
-    default:
-      std::cout << "LA OPCION NO EXISTE.\n";
-      break;
-    }
-    rlutil::anykey();
-    rlutil::cls();
+    mostrarOpciones("MENU GENEROS MUSICALES", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
+    y = elegirOpcion(y, MAX_OPT, &opcionesGeneros);
+    if (y == -1) return;
   }
 }
 
-void menuReportes() {
-  while (true) {
-    std::cout << "  REPORTES\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "1) Listar Bateristas\n";
-    std::cout << "2) Instrumento con menos Músicos\n";
-    std::cout << "3) Generar archivo\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "0) VOLVER AL MENU PRINCIPAL\n\n";
-
-    int opcion = cargarInt("SELECCIONAR OPCION: ");
-
-    rlutil::cls();
-
-    switch (opcion) {
-    case 1:
-      listarBateristas();
-      break;
-    case 2:
-      instrumentoMenosMusicos();
-      break;
-    case 3:
-      generarNoGuitarristas();
-      break;
-    case 0:
-      return;
-      break;
-    }
-    rlutil::anykey();
-    rlutil::cls();
-  }
-}
-
-void menuPaises() {
+int opcionesPaises(int y) {
+  rlutil::cls();
   ArchivoPais archivo("paises.dat");
-
-  while (true) {
-    std::cout << "  MENU PAISES\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "1) AGREGAR PAISES\n";
-    std::cout << "2) LISTAR PAIS POR ID\n";
-    std::cout << "3) LISTAR TODO\n";
-    std::cout << "4) MODIFICAR CONTINENTE\n";
-    std::cout << "5) ELIMINAR REGISTRO\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "0) VOLVER AL MENU PRINCIPAL\n\n";
-
-    int opcion = cargarInt("SELECCIONAR OPCION: ");
-
-    rlutil::cls();
-
-    switch (opcion) {
+  switch (y) {
     case 1:
       archivo.agregarRegistro();
       break;
@@ -291,36 +178,35 @@ void menuPaises() {
       }
       break;
     case 0:
-      return;
+      return 0;
       break;
-    default:
-      std::cout << "LA OPCION NO EXISTE.\n";
-      break;
-    }
-    rlutil::anykey();
-    rlutil::cls();
   }
+  pause();
+  rlutil::cls();
+  return y;
 }
 
-void menuInstrumentos() {
-  ArchivoInstrumento archivo("instrumentos.dat");
-
+void menuPaises(int posx) {
+  int y = 1;
+  const int MAX_OPT = 5;
+  char opciones[MAX_OPT][60];
+  strncpy(opciones[0],  "1) AGREGAR PAIS", 60);
+  strncpy(opciones[1],  "2) LISTAR PAIS POR ID", 60);
+  strncpy(opciones[2],  "3) LISTAR TODO", 60);
+  strncpy(opciones[3],  "4) MODIFICAR CONTINENTE", 60);
+  strncpy(opciones[4],  "5) ELIMINAR REGISTRO", 60);
   while (true) {
-    std::cout << "  MENU INSTRUMENTOS\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "1) AGREGAR Instrumento\n";
-    std::cout << "2) LISTAR Instrumento POR ID\n";
-    std::cout << "3) LISTAR TODO\n";
-    std::cout << "4) MODIFICAR Clasificacion\n";
-    std::cout << "5) ELIMINAR REGISTRO\n";
-    std::cout << "---------------------------------------\n";
-    std::cout << "0) VOLVER AL MENU PRINCIPAL\n\n";
+    mostrarOpciones("MENU PAISES", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
+    y = elegirOpcion(y, MAX_OPT, &opcionesPaises);
+    if (y == -1) return;
+  }
 
-    int opcion = cargarInt("SELECCIONAR OPCION: ");
+}
 
-    rlutil::cls();
-
-    switch (opcion) {
+int opcionesInstrumentos(int y) {
+  rlutil::cls();
+  ArchivoInstrumento archivo("instrumentos.dat");
+  switch (y) {
     case 1:
       archivo.agregarRegistro();
       break;
@@ -339,20 +225,143 @@ void menuInstrumentos() {
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        std::cout << "Registro eliminado correctamente.\n";
+        std::cout << "Registro eliminado correctamente.\n"; 
       } else {
         std::cout << "No se pudo eliminar el registro.\n";
       }
       break;
     case 0:
-      return;
+      return 0;
       break;
-    default:
-      std::cout << "LA OPCION NO EXISTE.\n";
+  }
+  pause();
+  rlutil::cls();
+  return y;
+}
+
+void menuInstrumentos(int posx) {
+  int y = 1;
+  const int MAX_OPT = 5;
+  char opciones[MAX_OPT][60];
+  strncpy(opciones[0],  "1) AGREGAR INSTRUMENTO", 60);
+  strncpy(opciones[1],  "2) LISTAR INSTRUMENTO POR ID", 60);
+  strncpy(opciones[2],  "3) LISTAR TODO", 60);
+  strncpy(opciones[3],  "4) MODIFICAR CLASIFICACION", 60);
+  strncpy(opciones[4],  "5) ELIMINAR REGISTRO", 60);
+  while (true) {
+    mostrarOpciones("MENU INSTRUMENTOS", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
+    y = elegirOpcion(y, MAX_OPT, &opcionesInstrumentos);
+    if (y == -1) return;
+  }
+}
+
+int opcionesConfiguracion(int y) {
+  rlutil::cls();
+  bool hecho;
+  switch (y) {
+    case 1: {
+      ArchivoMusico archivo("musicos.dat");
+      hecho = archivo.copiaSeguridad();
+    } break;
+    case 2: {
+      ArchivoGeneroMusical archivo("generos.dat");
+      hecho = archivo.copiaSeguridad();
+    } break;
+    case 3: {
+      ArchivoInstrumento archivo("instrumentos.dat");
+      hecho = archivo.copiaSeguridad();
+    } break;
+    case 4: {
+      ArchivoPais archivo("paises.dat");
+      hecho = archivo.copiaSeguridad();
+    } break;
+    case 5: {
+      ArchivoMusico archivo("musicos.dat");
+      hecho = archivo.restaurarCopia();
+    } break;
+    case 6: {
+      ArchivoGeneroMusical archivo("generos.dat");
+      hecho = archivo.restaurarCopia();
+    } break;
+    case 7: {
+      ArchivoInstrumento archivo("instrumentos.dat");
+      hecho = archivo.restaurarCopia();
+    } break;
+    case 8: {
+      ArchivoPais archivo("paises.dat");
+      hecho = archivo.restaurarCopia();
+    } break;
+    case 9:
+      hecho = restablecerInicio();
       break;
-    }
-    rlutil::anykey();
-    rlutil::cls();
+    case 0:
+      return 0;
+      break;
+  }
+
+  if (hecho) {
+    std::cout << "ACCION REALIZADA CORRECTAMENTE.\n";
+  } else {
+    std::cout << "NO SE PUDO REALIZAR LA ACCION.\n";
+  }
+
+  pause();
+  rlutil::cls();
+  return y;
+}
+
+void menuConfiguracion(int posx) {
+  int y = 1;
+  const int MAX_OPT = 9;
+  char opciones[MAX_OPT][60];
+  strncpy(opciones[0], "1) COPIA DE SEGURIDAD DEL ARCHIVO DE MUSICOS", 60);
+  strncpy(opciones[1], "2) COPIA DE SEGURIDAD DEL ARCHIVO DE GENEROS", 60);
+  strncpy(opciones[2], "3) COPIA DE SEGURIDAD DEL ARCHIVO DE INSTRUMENTOS", 60);
+  strncpy(opciones[3], "4) COPIA DE SEGURIDAD DEL ARCHIVO DE PAISES", 60);
+  strncpy(opciones[4], "5) RESTAURAR EL ARCHIVO DE MUSICOS", 60);
+  strncpy(opciones[5], "6) RESTAURAR EL ARCHIVO DE GENEROS", 60);
+  strncpy(opciones[6], "7) RESTAURAR EL ARCHIVO DE INSTRUMENTOS", 60);
+  strncpy(opciones[7], "8) RESTAURAR EL ARCHIVO DE PAISES", 60);
+  strncpy(opciones[8], "9) ESTABLECER DATOS DE INICION", 60);
+  while (true) {
+    mostrarOpciones("MENU CONFIGURACION", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
+    y = elegirOpcion(y, MAX_OPT, &opcionesConfiguracion);
+    if (y == -1) return;
+  }
+}
+
+int opcinesReportes(int y) {
+  rlutil::cls();
+  switch (y) {
+    case 1:
+      listarBateristas();
+      break;
+    case 2:
+      instrumentoMenosMusicos();
+      break;
+    case 3:
+      generarNoGuitarristas();
+      break;
+    case 0:
+      return 0;
+      break;
+  }
+  pause();
+  rlutil::cls();
+  return y;
+}
+
+void menuReportes(int posx) {
+  int y = 1;
+  const int MAX_OPT = 3;
+  char opciones[MAX_OPT][60];
+  strncpy(opciones[0], "1) LISTAR BATERISTAS", 60);
+  strncpy(opciones[1], "2) INSTRUMENTO CON MENOS MUSICOS", 60);
+  strncpy(opciones[2], "3) GENERAR ARCHIVO", 60);
+  while (true) {
+    mostrarOpciones("MENU REPORTES", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
+    y = elegirOpcion(y, MAX_OPT, &opcionesConfiguracion);
+    if (y == -1) return;
   }
 }
 

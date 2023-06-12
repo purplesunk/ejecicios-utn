@@ -16,4 +16,8 @@ void clearBox(int posx, int poxy, int width, int height);
 void ponerColores(int fondo, int letra);
 void mostrarOpcion(const char* texto, int posx, int posy, bool seleccionado);
 
+void centrarTexto(const char *texto, int posy);
+
+void pause();
+
 #endif

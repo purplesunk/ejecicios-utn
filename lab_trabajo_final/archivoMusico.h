@@ -34,6 +34,8 @@ public:
   // BACKUPS
   bool copiaSeguridad();
   bool restaurarCopia();
+
+  int seleccionarRegistro(int posx = -1, int posy = 4, int boxWidth = 40, int boxHeight = -1);
 };
 
 #endif // ARCHIVOCLIENTE_H_INCLUDED

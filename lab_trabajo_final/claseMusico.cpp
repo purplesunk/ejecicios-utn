@@ -2,9 +2,14 @@
 
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 
+#include "archivoInstrumento.h"
+#include "archivoGenero.h"
 #include "cargarCadena.h"
 #include "claseFecha.h"
+
+#include "rlutil.h"
 
 int Musico::getDni() { return dni; }
 const char* Musico::getNombre() { return nombre; }
@@ -27,18 +32,18 @@ void Musico::setEstado(bool b) { estado = b; }
 void Musico::setFechaInscripcion(Fecha nuevaFecha) { fechaInscripcion = nuevaFecha; }
 
 void Musico::setClaustro(int x) {
-    if (x > 0 || x < 5) {
+    if (x > 0 && x < 5) {
         claustro = x;
     }
 }
 void Musico::setInstrumento(int x) {
-    if (x > 0 || x < 16) {
+    if (x > 0 && x < 16) {
         instrumento = x;
     }
 }
 
 void Musico::setTipoMusica(int x) {
-    if (x > 0 || x < 11) {
+    if (x > 0 && x < 11) {
         tipoMusica = x;
     }
 }
@@ -67,11 +72,10 @@ void Musico::Cargar() {
         claustro = cargarInt("CLAUSTRO: ");
     }
 
-    instrumento = cargarInt("INSTRUMENTO: ");
-    while (instrumento < 1 || instrumento > 15) {
-        std::cout << "INSTRUMENTO INVALIDO. ";
-        instrumento = cargarInt("INSTRUMENTO: ");
-    }
+    ArchivoInstrumento instrumentos("instrumentos.dat");
+    instrumento = instrumentos.seleccionarRegistro();
+    std::cout << "INSTRUMENTO: ";
+    std::cout << instrumento << '\n';
 
     tipoMusica = cargarInt("TIPO DE MÚSICA: ");
     while (tipoMusica < 1 || tipoMusica > 10) {
@@ -92,16 +96,21 @@ void Musico::Cargar() {
 }
 
 void Musico::Mostrar() {
-    std::cout << "DNI: " << dni << '\n';
-    std::cout << "NOMBRE: " << nombre << '\n';
-    std::cout << "APELLIDO: " << apellido << '\n';
-    std::cout << "EMAIL: " << email << '\n';
-    std::cout << "TELEFONO: " << telefono << '\n';
-    std::cout << "CLAUSTRO: " << claustro << '\n';
-    std::cout << "INTRUMENTRO PRINCIPAL: " << instrumento << '\n';
-    std::cout << "TIPO DE MÚSICA: " << tipoMusica << '\n';
+    std::cout << std::right << std::setw(26) << "DNI: " << dni << '\n';
+    std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
+    std::cout << std::right << std::setw(26) << "APELLIDO: " << apellido << '\n';
+    std::cout << std::right << std::setw(26) << "EMAIL: " << email << '\n';
+    std::cout << std::right << std::setw(26) << "TELEFONO: " << telefono << '\n';
+    std::cout << std::right << std::setw(26) << "CLAUSTRO: " << claustro << '\n';
+    std::cout << std::right << std::setw(26) << "INTRUMENTRO PRINCIPAL: " << instrumento << '\n';
+    std::cout << std::right << std::setw(26) << "TIPO DE MÚSICA: " << tipoMusica << '\n';
     // Mostrar fecha de inscripción
-    std::cout << "FECHA DE INSCRIPCION: ";
+    std::cout << std::right << std::setw(26) << "FECHA DE INSCRIPCION: ";
     fechaInscripcion.Mostrar();
-    std::cout << "\nMATRÍCULA: " << matricula << '\n';
+    std::cout << '\n';
+    std::cout << std::right << std::setw(26) << "MATRÍCULA: " << matricula << '\n';
+}
+
+void Musico::MostrarSeleccion() {
+  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(10) << dni << " - " << nombre << ' ' << apellido;
 }

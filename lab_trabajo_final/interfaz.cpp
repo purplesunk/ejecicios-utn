@@ -84,21 +84,28 @@ void ponerColores(int fondo, int letra) {
 }
 
 void mostrarOpcion(const char* texto, int posx, int posy, bool seleccionado) {
+    rlutil::locate(posx-2,posy);
     if (seleccionado) {
-        ponerColores(rlutil::MAGENTA, rlutil::BLACK);
-        rlutil::locate(posx-2,posy);
-        std::cout << " >" << texto << "< ";
-        ponerColores(rlutil::BLACK, rlutil::WHITE);
+      ponerColores(rlutil::MAGENTA, rlutil::BLACK);
+      std::cout << " > " << std::left << std::setfill(' ') << std::setw(30) << texto << " < ";
     } else {
-        ponerColores(rlutil::BLACK, rlutil::WHITE);
-        rlutil::locate(posx-2,posy);
-        std::cout << "  " << texto << "  ";
+      std::cout << "   " << std::left << std::setfill(' ') << std::setw(30) << texto << "   ";
     }
-    rlutil::setColor(rlutil::BLACK);
+    ponerColores(rlutil::BLACK, rlutil::WHITE);
+}
+
+void centrarTexto(const char *texto, int posy) {
+  int text_width = strlen(texto);
+  int term_width = rlutil::tcols();
+
+  int centro = (term_width - text_width) / 2;
+  
+  rlutil::locate(centro, posy);
+  std::cout << texto;
 }
 
 void pause() {
-  // Make an aviso o algo xd
+  centrarTexto("Presione una tecla para continuar.", rlutil::tcols());
   rlutil::anykey();
 }
 

@@ -12,6 +12,7 @@ class GeneroMusical {
    public:
     void Cargar(int autoId);
     void Mostrar();
+    void MostrarSeleccion();
 
     int getId();
     bool getEstado();

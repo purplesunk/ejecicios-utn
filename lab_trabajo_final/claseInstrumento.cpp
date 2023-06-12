@@ -2,17 +2,18 @@
 
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 
 #include "cargarCadena.h"
 
 void Instrumento::Cargar(int autoId) {
-  std::cout << "Nombre de Instrumento: ";
+  std::cout << "NOMBRE DE INSTRUMENTO: ";
   cargarCadena(nombre, 30);
 
-  clasificacion = cargarInt("Clasificación: ");
+  clasificacion = cargarInt("CLASIFICACION: ");
   while (clasificacion < 1 || clasificacion > 100) {
-    std::cout << "Clasificación Inválida. ";
-    clasificacion = cargarInt("Clasificación: ");
+    std::cout << "CLASIFICACION INVALIDA. ";
+    clasificacion = cargarInt("CLASIFICACION: ");
   }
 
   id = autoId;
@@ -20,9 +21,13 @@ void Instrumento::Cargar(int autoId) {
 }
 
 void Instrumento::Mostrar() {
-  std::cout << "ID: " << id << '\n';
-  std::cout << "NOMBRE: " << nombre << '\n';
-  std::cout << "CLASIFICACIÓN: " << clasificacion << '\n';
+  std::cout << std::right << std::setw(26) << "ID: " << id << '\n';
+  std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
+  std::cout << std::right << std::setw(26) << "CLASIFICACION: " << clasificacion << '\n';
+}
+
+void Instrumento::MostrarSeleccion() {
+  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(4) << id << " - " << nombre;
 }
 
 // gets

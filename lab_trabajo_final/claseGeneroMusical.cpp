@@ -3,6 +3,7 @@
 #include <cstring>
 #include <ctime>
 #include <iostream>
+#include <iomanip>
 
 #include "cargarCadena.h"
 
@@ -31,10 +32,14 @@ void GeneroMusical::Cargar(int autoId) {
 }
 
 void GeneroMusical::Mostrar() {
-    std::cout << "ID: " << id << '\n';
-    std::cout << "NOMBRE: " << nombre << '\n';
-    std::cout << "PAIS DE ORIGEN: " << paisOrigen << '\n';
-    std::cout << "AÑO DE ORIGEN: " << anioOrigen << '\n';
+    std::cout << std::right << std::setw(26) << "ID: " << id << '\n';
+    std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
+    std::cout << std::right << std::setw(26) << "PAIS DE ORIGEN: " << paisOrigen << '\n';
+    std::cout << std::right << std::setw(26) << "AÑO DE ORIGEN: " << anioOrigen << '\n';
+}
+
+void GeneroMusical::MostrarSeleccion() {
+  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(4) << id << " - " << nombre;
 }
 
 // gets
