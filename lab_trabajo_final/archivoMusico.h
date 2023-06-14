@@ -11,29 +11,23 @@ public:
   ArchivoMusico(const char *nombreArchivo);
   ~ArchivoMusico();
 
-  // ALTA
   void agregarRegistro();
   void mostrarRegistros();
-
-  bool escribirRegistro(Musico obj);
-
-  // BAJA
-  Musico leerMusico(int p);
-  int buscarMusico(int dni);
-  bool bajaLogica();
-
-  // MODIFICACION
-  bool modificarRegistro(Musico obj, int pos);
-  bool modificarFecha();
-
   int contarRegistros();
 
-  // LISTADOS
   void buscarPorDNI();
+  int buscarMusico(int dni);
+  Musico leerMusico(int p);
+
+  // MODIFICACION
+  bool bajaLogica();
+  bool modificarRegistro(Musico obj, int pos);
+  bool modificarFecha();
 
   // BACKUPS
   bool copiaSeguridad();
   bool restaurarCopia();
+  bool restaurarInicio();
 
   int seleccionarRegistro(int posx = -1, int posy = 4, int boxWidth = 40, int boxHeight = -1);
 };

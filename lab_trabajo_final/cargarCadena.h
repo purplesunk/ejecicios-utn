@@ -1,21 +1,15 @@
 #ifndef CARGARCADENA_H_INCLUDED
 #define CARGARCADENA_H_INCLUDED
 
-#include <iostream>
-
 void ignoreLine();
 
 void cargarCadena(char *cadena, int tam);
+void cargarCadena(const char *pregunta, char *cadena, int tam, int posx, int posy);
 
 int cargarInt(const char *pregunta);
+int cargarInt(const char *pregunta, int posx, int posy);
 
 float cargarFloat(const char *pregunta);
-
-bool copiarArchivo(const char *fuente, const char *destino, void *obj,
-                   size_t tam);
-
-bool restablecerInicio();
-
-const char *agregarExtensionBackup(const char *nombreArchivo);
+float cargarFloat(const char *pregunta, int posx, int posy);
 
 #endif

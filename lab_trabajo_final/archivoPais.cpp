@@ -4,10 +4,12 @@
 #include <iostream>
 
 #include "cargarCadena.h"
+#include "archivo_utils.h"
 #include "claseFecha.h"
 #include "clasePais.h"
 
 #include "interfaz.h"
+
 #include "rlutil.h"
 
 ArchivoPais::ArchivoPais(const char *nuevoArchivo) {
@@ -46,32 +48,32 @@ void ArchivoPais::agregarRegistro() {
     return;
   }
 
-  FILE *fileGeneroMusical = fopen(nombre, "ab");
-  if (fileGeneroMusical == NULL) {
+  FILE *archivo = fopen(nombre, "ab");
+  if (archivo == NULL) {
     std::cout << "No se pudo abrir el archivo.\n";
     return;
   }
 
-  fwrite(&obj, sizeof(Pais), 1, fileGeneroMusical);
+  fwrite(&obj, sizeof(Pais), 1, archivo);
 
-  fclose(fileGeneroMusical);
+  fclose(archivo);
 }
 
 void ArchivoPais::mostrarRegistros() {
-  FILE *fileGeneroMusical = fopen(nombre, "rb");
-  if (fileGeneroMusical == NULL) {
+  FILE *archivo = fopen(nombre, "rb");
+  if (archivo == NULL) {
     std::cout << "NO SE PUDO LEER EL ARCHIVO.\n";
     return;
   }
 
   Pais obj;
-  while (fread(&obj, sizeof obj, 1, fileGeneroMusical) == 1) {
+  while (fread(&obj, sizeof obj, 1, archivo) == 1) {
     if (obj.getEstado()) {
       obj.Mostrar();
       std::cout << "-----------------------------------\n";
     }
   }
-  fclose(fileGeneroMusical);
+  fclose(archivo);
 }
 
 Pais ArchivoPais::leerRegistro(int p) {
@@ -82,73 +84,62 @@ Pais ArchivoPais::leerRegistro(int p) {
     return obj;
   }
 
-  FILE *fileGeneroMusical = fopen(nombre, "rb");
-  if (fileGeneroMusical == NULL) {
+  FILE *archivo = fopen(nombre, "rb");
+  if (archivo == NULL) {
     obj.setId(-2);
     return obj;
   }
 
-  fseek(fileGeneroMusical, (sizeof(Pais) * p), SEEK_SET);
+  fseek(archivo, (sizeof(Pais) * p), SEEK_SET);
 
-  if (!fread(&obj, sizeof(Pais), 1, fileGeneroMusical)) {
+  if (!fread(&obj, sizeof(Pais), 1, archivo)) {
     obj.setId(-1);
   }
 
-  fclose(fileGeneroMusical);
+  fclose(archivo);
 
   return obj;
 }
 
 int ArchivoPais::buscarRegistro(int id) {
-  FILE *fileGeneroMusical = fopen(nombre, "rb");
-  if (fileGeneroMusical == NULL) {
+  FILE *archivo = fopen(nombre, "rb");
+  if (archivo == NULL) {
     return -2;
   }
 
   int pos = 0;
   Pais obj;
 
-  while (fread(&obj, sizeof(obj), 1, fileGeneroMusical) == 1) {
+  while (fread(&obj, sizeof(obj), 1, archivo) == 1) {
     if (id == obj.getId()) {
-      fclose(fileGeneroMusical);
+      fclose(archivo);
       return pos;
     }
     ++pos;
   }
 
-  fclose(fileGeneroMusical);
+  fclose(archivo);
 
   return -1;
 }
 
 bool ArchivoPais::modificarRegistro(Pais obj, int pos) {
-  FILE *fileGeneroMusical = fopen(nombre, "rb+");
-  if (fileGeneroMusical == NULL) {
+  FILE *archivo = fopen(nombre, "rb+");
+  if (archivo == NULL) {
     std::cout << "ERROR AL REABRIR EL ARCHIVO.\n";
     return false;
   }
 
-  fseek(fileGeneroMusical, sizeof(Pais) * pos, SEEK_SET);
+  fseek(archivo, sizeof(Pais) * pos, SEEK_SET);
 
-  bool aux = fwrite(&obj, sizeof(Pais), 1, fileGeneroMusical);
-  fclose(fileGeneroMusical);
+  bool aux = fwrite(&obj, sizeof(Pais), 1, archivo);
+  fclose(archivo);
 
   return aux;
 }
 
 int ArchivoPais::contarRegistros() {
-  FILE *generos = fopen(nombre, "rb");
-  if (generos == NULL) {
-    return -1;
-  }
-
-  fseek(generos, 0, SEEK_END);
-
-  int cantidad = ftell(generos) / sizeof(Pais);
-
-  fclose(generos);
-
-  return cantidad;
+  return numeroRegistros(nombre, sizeof(Pais));
 }
 
 void ArchivoPais::buscarPorID() {
@@ -212,9 +203,8 @@ bool ArchivoPais::bajaLogica() {
   return modificarRegistro(obj, pos);
 }
 
-bool ArchivoPais::modificarContinente() {
+bool ArchivoPais::modificarNombre() {
   int ID = cargarInt("Ingrese el ID a buscar: ");
-
   int pos = buscarRegistro(ID);
   if (pos == -1) {
     std::cout << "No existe genero con ese ID.\n";
@@ -235,50 +225,12 @@ bool ArchivoPais::modificarContinente() {
   std::cout << "---------------------------------------------------------------"
                "----\n";
   std::cout << "Pais: " << obj.getNombre() << '\n';
-  std::cout << "Continente Actual: " << obj.getContinente() << '\n';
-  std::cout << "---------------------------------------------------------------"
-               "----\n";
-
-  char continente[30];
-  std::cout << "Ingrese nuevo contienente: ";
-  cargarCadena(continente, 30);
-
-  obj.setContinente(continente);
-
-  return modificarRegistro(obj, pos);
-}
-
-bool ArchivoPais::modificarNombre() {
-  int ID = cargarInt("Ingrese el ID a buscar: ");
-
-  int pos = buscarRegistro(ID);
-  if (pos == -1) {
-    std::cout << "No existe genero con ese ID.\n";
-    return false;
-  }
-  if (pos == -2) {
-    std::cout << "No se pudo abrir el archivo.\n";
-    return false;
-  }
-
-  Pais obj = leerRegistro(pos);
-
-  if (!obj.getEstado()) {
-    std::cout << "Registro dado de baja.\n";
-    return false;
-  }
-
-  std::cout << "---------------------------------------------------------------"
-               "----\n";
-  std::cout << "Nombre Actual: " << obj.getNombre() << '\n';
-  std::cout << "Continente: " << obj.getContinente() << '\n';
   std::cout << "---------------------------------------------------------------"
                "----\n";
 
   char nombre[30];
-  std::cout << "Ingrese nuevo nombre: ";
+  std::cout << "NUEVO NOMBRE: ";
   cargarCadena(nombre, 30);
-
   obj.setNombre(nombre);
 
   return modificarRegistro(obj, pos);
@@ -306,32 +258,18 @@ bool ArchivoPais::restaurarCopia() {
   return restaurado;
 }
 
-int listarSeleccion(int pagina, int height, int posx, int posy, Pais vRegistros[], int cantActivos) {
-  int mostrados = 0;
-  for (int i = pagina * (height); i < cantActivos && mostrados < height; ++i) {
-    rlutil::locate(posx, posy + mostrados);
-    if (vRegistros[i].getEstado()) {
-      vRegistros[i].MostrarSeleccion();
-      ++mostrados;
-    }
-  }
-  return mostrados;
+bool ArchivoPais::restaurarInicio() {
+  Pais obj;
+  return copiarArchivo("datosInicialesPaises.dat", nombre, &obj, sizeof(obj));
 }
 
 int ArchivoPais::seleccionarRegistro(int posx, int posy, int boxWidth, int boxHeight) {
-  if (posx < 0) {
-    posx = rlutil::tcols() - boxWidth;
-  }
-
-  if (boxHeight < 0) {
-    boxHeight = rlutil::trows() - 10;
-  }
-
-  innerBox inner = dibujarCajaTitulo(posx, posy, boxWidth, boxHeight, "SELECCIONAR PAIS");
-  int cantRegistros = contarRegistros();
-
-  Pais *vRegistros = new Pais[cantRegistros];
   int cantActivos = 0;
+  int cantRegistros = contarRegistros();
+  Pais *vRegistros = new Pais[cantRegistros];
+  if (vRegistros == NULL) {
+    return -1;
+  }
   for (int i = 0; i < cantRegistros; ++i) {
     vRegistros[cantActivos] = leerRegistro(i);
     if (vRegistros[cantActivos].getEstado()) {
@@ -339,72 +277,23 @@ int ArchivoPais::seleccionarRegistro(int posx, int posy, int boxWidth, int boxHe
     }
   }
 
-  int cantPaginas = cantActivos / inner.height;
-  int pagina = 0;
-
-  int mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
-
-  int cursor = inner.posy;
-  int seleccionado = 0;
-  rlutil::locate(inner.posx, cursor);
-  std::cout << '>';
-  while (true) {
-    switch (rlutil::getkey()) {
-      case rlutil::KEY_DOWN: {
-        rlutil::locate(inner.posx, cursor);
-        std::cout << ' ';
-
-        ++cursor;
-        if (cursor > inner.posy + mostrados - 1) {
-          cursor = inner.posy + mostrados - 1;
-          if (cantPaginas > 0 && pagina < cantPaginas) {
-            ++pagina;
-            clearInnerBox(inner);
-            mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
-            cursor = inner.posy;
-          }
-        }
-        seleccionado = cursor - inner.posy;
-
-        rlutil::locate(inner.posx, cursor);
-        std::cout << '>';
-      } break;
-
-      case rlutil::KEY_UP: {
-        rlutil::locate(inner.posx, cursor);
-        std::cout << ' ';
-
-        --cursor;
-        if (cursor < inner.posy) {
-          cursor = inner.posy;
-          if (cantPaginas > 0 && pagina > 0) {
-            --pagina;
-            clearInnerBox(inner);
-            mostrados = listarSeleccion(pagina, inner.height, inner.posx, inner.posy, vRegistros, cantActivos);
-            cursor = inner.posy + mostrados - 1;
-          }
-        }
-        seleccionado = cursor - inner.posy;
-
-        rlutil::locate(inner.posx, cursor);
-        std::cout << '>';
-      } break;
-
-      case rlutil::KEY_LEFT: {
-        // Hacer que cargatInt();
-        // checkeando en el vector si existe el id del instrumento
-        // y está en alta.
-      } break;
-
-      case rlutil::KEY_ENTER: {
-        int id_seleccionada = vRegistros[seleccionado].getId();
-        delete[] vRegistros;
-        clearBox(posx, posy, boxWidth, boxHeight);
-        return id_seleccionada;
-      } break;
-    }
+  int tamNombres = 50;
+  char *long_string = new char[tamNombres * cantActivos];
+  char **nombreRegistros = new char*[cantActivos];
+  for (int i = 0; i < cantActivos; ++i) {
+    nombreRegistros[i] = (long_string + (tamNombres * i));
   }
 
+  for (int i = 0; i < cantActivos; ++i) {
+    strncpy(nombreRegistros[i], vRegistros[i].getNombre(), tamNombres);
+  }
+
+  int seleccionado = seleccionarObjeto(posx, posy, boxWidth, boxHeight, nombreRegistros, cantActivos, "SELECCIONAR PAIS");
+  int id_seleccionado = vRegistros[seleccionado].getId();
+
+  delete[] long_string;
+  delete[] nombreRegistros;
   delete[] vRegistros;
-  return 0;
+
+  return id_seleccionado;
 }

@@ -2,9 +2,9 @@
 
 #include <cstring>
 #include <iostream>
-#include <iomanip>
 
 #include "cargarCadena.h"
+#include "interfaz.h"
 
 void Instrumento::Cargar(int autoId) {
   std::cout << "NOMBRE DE INSTRUMENTO: ";
@@ -21,13 +21,9 @@ void Instrumento::Cargar(int autoId) {
 }
 
 void Instrumento::Mostrar() {
-  std::cout << std::right << std::setw(26) << "ID: " << id << '\n';
-  std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
-  std::cout << std::right << std::setw(26) << "CLASIFICACION: " << clasificacion << '\n';
-}
-
-void Instrumento::MostrarSeleccion() {
-  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(4) << id << " - " << nombre;
+  mostrarDato("ID: ", id);
+  mostrarDato("NOMBRE: ", nombre);
+  mostrarDato("CLASIFICACION: ", clasificacion);
 }
 
 // gets
@@ -39,7 +35,7 @@ const char *Instrumento::getNombre() { return nombre; }
 // sets
 void Instrumento::setId(int nuevoId) { id = nuevoId; }
 void Instrumento::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
-void Instrumento::setNombre(const char *n) { strncpy(nombre, n, 30); }
+void Instrumento::setNombre(const char *n) { strncpy(nombre, n, 29); }
 
 void Instrumento::setClasificacion(int c) {
   if (c > 0 && c < 101) {

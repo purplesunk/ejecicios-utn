@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 
+#include "archivo_utils.h"
 #include "cargarCadena.h"
 #include "claseFecha.h"
 #include "claseMusico.h"
@@ -22,8 +23,6 @@ ArchivoMusico::~ArchivoMusico() { delete nombre; }
 
 void ArchivoMusico::agregarRegistro() {
   Musico obj;
-  std::cout << " Ingrese los datos del músico: \n";
-  std::cout << "--------------------------------\n";
   obj.Cargar();
 
   int pos = buscarMusico(obj.getDni());
@@ -158,20 +157,6 @@ void ArchivoMusico::mostrarRegistros() {
   fclose(pCli);
 }
 
-bool ArchivoMusico::escribirRegistro(Musico obj) {
-  FILE *archivo = fopen(nombre, "ab");
-  if (archivo == NULL) {
-    std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
-    return false;
-  }
-
-  bool aux = fwrite(&obj, sizeof(obj), 1, archivo);
-
-  fclose(archivo);
-
-  return aux;
-}
-
 void ArchivoMusico::buscarPorDNI() {
   int DNI = cargarInt("INGRESE EL DNI A BUSCAR: ");
 
@@ -243,21 +228,9 @@ bool ArchivoMusico::modificarFecha() {
 }
 
 int ArchivoMusico::contarRegistros() {
-  FILE *musicos = fopen(nombre, "rb");
-  if (musicos == NULL) {
-    return -1;
-  }
-
-  fseek(musicos, 0, SEEK_END);
-
-  int cantidad = ftell(musicos) / sizeof(Musico);
-
-  fclose(musicos);
-
-  return cantidad;
+  return numeroRegistros(nombre, sizeof(Musico));
 }
 
-// añadir auto creado de nombre.bkp o algo así
 bool ArchivoMusico::copiaSeguridad() {
   const char *backup = agregarExtensionBackup(nombre);
   Musico obj;
@@ -276,4 +249,9 @@ bool ArchivoMusico::restaurarCopia() {
 
   delete backup;
   return restaurado;
+}
+
+bool ArchivoMusico::restaurarInicio() {
+  Musico obj;
+  return copiarArchivo("datosInicialesMusicos.dat", nombre, &obj, sizeof(obj));
 }

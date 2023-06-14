@@ -2,9 +2,9 @@
 
 #include <cstring>
 #include <iostream>
-#include <iomanip>
 
 #include "cargarCadena.h"
+#include "interfaz.h"
 
 void Pais::Cargar(int autoId) {
   std::cout << "Nombre de Pais: ";
@@ -18,13 +18,9 @@ void Pais::Cargar(int autoId) {
 }
 
 void Pais::Mostrar() {
-  std::cout << std::right << std::setw(26) << "ID: " << id << '\n';
-  std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
-  std::cout << std::right << std::setw(26) << "CONTINENTE: " << continente << '\n';
-}
-
-void Pais::MostrarSeleccion() {
-  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(4) << id << " - " << nombre;
+  mostrarDato("ID: ", id);
+  mostrarDato("NOMBRE: ", nombre);
+  mostrarDato("CONTINENTE: ", continente);
 }
 
 // gets
@@ -36,6 +32,5 @@ const char *Pais::getNombre() { return nombre; }
 // sets
 void Pais::setId(int nuevoId) { id = nuevoId; }
 void Pais::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
-void Pais::setNombre(const char *n) { strncpy(nombre, n, 30); }
-
-void Pais::setContinente(const char *c) { strncpy(continente, c, 30); }
+void Pais::setNombre(const char *n) { strncpy(nombre, n, 29); }
+void Pais::setContinente(const char *c) { strncpy(continente, c, 29); }

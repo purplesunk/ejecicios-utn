@@ -47,7 +47,7 @@ void Fecha::CargaValida() {
     }
 
     x = cargarInt("Ingresar Mes: ");
-    while (x > mesMax || x < 0) {
+    while (x > mesMax || x <= 0) {
         std::cout << "Mes no válido. ";
         x = cargarInt("Ingresar Mes: ");
     }
@@ -67,7 +67,7 @@ void Fecha::CargaValida() {
     }
 
     x = cargarInt("Ingresar Día: ");
-    while (x > diaMax || x < 0) {
+    while (x > diaMax || x <= 0) {
         std::cout << "Día no válido. ";
         x = cargarInt("Ingresar Día: ");
     }

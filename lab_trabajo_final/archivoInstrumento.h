@@ -11,28 +11,23 @@ public:
   ArchivoInstrumento(const char *nombreArchivo);
   ~ArchivoInstrumento();
 
-  // ALTA
   void agregarRegistro();
   void mostrarRegistros();
-
-  // BAJA
-  Instrumento leerRegistro(int p);
-  int buscarRegistro(int id);
-
-  bool bajaLogica();
-
-  void buscarPorID();
-
   int contarRegistros();
 
+  Instrumento leerRegistro(int p);
+  int buscarRegistro(int id);
+  void buscarPorID();
+
   // MODIFICACION
+  bool bajaLogica();
   bool modificarRegistro(Instrumento obj, int pos);
-  bool modificarClasificacion();
   bool modificarNombre();
 
   // BACKUP
   bool copiaSeguridad();
   bool restaurarCopia();
+  bool restaurarInicio();
 
   int seleccionarRegistro(int posx = -1, int posy = 4, int boxWidth = 40, int boxHeight = -1);
 };

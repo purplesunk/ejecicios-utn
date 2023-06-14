@@ -11,7 +11,6 @@ private:
 public:
   void Cargar(int autoId);
   void Mostrar();
-  void MostrarSeleccion();
 
   int getId();
   const char *getNombre();

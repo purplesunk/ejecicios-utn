@@ -29,7 +29,7 @@ int main() {
   rlutil::cls();
   rlutil::hidecursor();
 
-  int posx = 40;
+  int posx = 10;
   int y = 1;
   const int MAX_OPT = 6;
 
@@ -48,7 +48,7 @@ int main() {
 }
 
 int opcionesMenuPrincipal(int y) {
-  int posx = 40;
+  int posx = 10;
   rlutil::cls();
   switch (y) {
     case 1:

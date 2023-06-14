@@ -2,15 +2,15 @@
 #define ZMENUS_H_INCLUDED
 
 void mostrarOpciones(const char *titulo, const char *atras, char opciones[][60], int cantOpciones, int posx, int y) {
-  rlutil::locate(posx, 2);
+  rlutil::locate(posx + 6, 2);
   std::cout << titulo;
   // dibujarCaja(posx - 10, 1, 80, 20);
 
   for (int i = 0; i < cantOpciones; ++i) {
-    mostrarOpcion(opciones[i], posx, 5 + i,  y == (i + 1));
+    mostrarOpcion(opciones[i], posx, 4 + i,  y == (i + 1));
   }
 
-  mostrarOpcion(atras, posx, 5 + cantOpciones + 2, y == 0);
+  mostrarOpcion(atras, posx, 6 + cantOpciones, y == 0);
 }
 
 int elegirOpcion(int y, const int MAX_OPT, int (*func)(int)) {
@@ -38,6 +38,7 @@ int elegirOpcion(int y, const int MAX_OPT, int (*func)(int)) {
 
     default: {
       int opcion = key - 48;
+      // solo funciona hastas 9 opciones
       if (opcion >= 0 && opcion <= MAX_OPT) {
         y = opcion;
       }
@@ -164,10 +165,10 @@ int opcionesPaises(int y) {
       archivo.mostrarRegistros();
       break;
     case 4:
-      if (archivo.modificarContinente()) {
-        std::cout << "Continenete modificado.";
+      if (archivo.modificarNombre()) {
+        std::cout << "Nombre modificado.";
       } else {
-        std::cout << "No se pudo modificar el continente.\n";
+        std::cout << "No se pudo modificar el nombre.\n";
       }
       break;
     case 5:
@@ -193,7 +194,7 @@ void menuPaises(int posx) {
   strncpy(opciones[0],  "1) AGREGAR PAIS", 60);
   strncpy(opciones[1],  "2) LISTAR PAIS POR ID", 60);
   strncpy(opciones[2],  "3) LISTAR TODO", 60);
-  strncpy(opciones[3],  "4) MODIFICAR CONTINENTE", 60);
+  strncpy(opciones[3],  "4) MODIFICAR NOMBRE", 60);
   strncpy(opciones[4],  "5) ELIMINAR REGISTRO", 60);
   while (true) {
     mostrarOpciones("MENU PAISES", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
@@ -217,10 +218,10 @@ int opcionesInstrumentos(int y) {
       archivo.mostrarRegistros();
       break;
     case 4:
-      if (archivo.modificarClasificacion()) {
-        std::cout << "Clasificacion modificada correctamente.\n";
+      if (archivo.modificarNombre()) {
+        std::cout << "Nombre modificado correctamente.\n";
       } else {
-        std::cout << "Clasificacion no pudo ser modificado.\n";
+        std::cout << "Nombre no pudo ser modificado.\n";
       }
       break;
     case 5:
@@ -246,7 +247,7 @@ void menuInstrumentos(int posx) {
   strncpy(opciones[0],  "1) AGREGAR INSTRUMENTO", 60);
   strncpy(opciones[1],  "2) LISTAR INSTRUMENTO POR ID", 60);
   strncpy(opciones[2],  "3) LISTAR TODO", 60);
-  strncpy(opciones[3],  "4) MODIFICAR CLASIFICACION", 60);
+  strncpy(opciones[3],  "4) MODIFICAR NOMBRE", 60);
   strncpy(opciones[4],  "5) ELIMINAR REGISTRO", 60);
   while (true) {
     mostrarOpciones("MENU INSTRUMENTOS", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
@@ -291,9 +292,18 @@ int opcionesConfiguracion(int y) {
       ArchivoPais archivo("paises.dat");
       hecho = archivo.restaurarCopia();
     } break;
-    case 9:
-      hecho = restablecerInicio();
-      break;
+    case 9:{
+      ArchivoPais paises("paises.dat");
+      ArchivoMusico musicos("musicos.dat");
+      ArchivoInstrumento instrumentos("instrumentos.dat");
+      ArchivoGeneroMusical generos("generos.dat");
+      bool p = paises.restaurarInicio();
+      bool m = musicos.restaurarInicio();
+      bool i = instrumentos.restaurarInicio();
+      bool g = generos.restaurarInicio();
+      hecho = p && m && i && g;
+    }
+    break;
     case 0:
       return 0;
       break;

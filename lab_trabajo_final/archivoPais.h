@@ -11,29 +11,23 @@ public:
   ArchivoPais(const char *nombreArchivo);
   ~ArchivoPais();
 
-  // ALTA
   void agregarRegistro();
   void mostrarRegistros();
-
-  // BAJA
-  Pais leerRegistro(int p);
-  int buscarRegistro(int id);
-
-  bool bajaLogica();
-
-  void buscarPorID();
-
   int contarRegistros();
 
-  // MODIFICACION
-  bool modificarRegistro(Pais obj, int pos);
+  Pais leerRegistro(int p);
+  int buscarRegistro(int id);
+  void buscarPorID();
 
+  // MODIFICACION
+  bool bajaLogica();
+  bool modificarRegistro(Pais obj, int pos);
   bool modificarNombre();
-  bool modificarContinente();
 
   // BACKUP
   bool copiaSeguridad();
   bool restaurarCopia();
+  bool restaurarInicio();
 
   int seleccionarRegistro(int posx = -1, int posy = 4, int boxWidth = 40, int boxHeight = -1);
 };

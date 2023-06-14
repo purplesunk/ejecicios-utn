@@ -2,14 +2,13 @@
 
 #include <cstring>
 #include <iostream>
-#include <iomanip>
 
 #include "archivoInstrumento.h"
 #include "archivoGenero.h"
 #include "cargarCadena.h"
 #include "claseFecha.h"
 
-#include "rlutil.h"
+#include "interfaz.h"
 
 int Musico::getDni() { return dni; }
 const char* Musico::getNombre() { return nombre; }
@@ -55,62 +54,62 @@ void Musico::setMatricula(int x) {
 }
 
 void Musico::Cargar() {
-    dni = cargarInt("DNI: ");
+    int posx = 1;
 
-    std::cout << "NOMBRE: ";
-    cargarCadena(nombre, 30);
-    std::cout << "APELLIDO: ";
-    cargarCadena(apellido, 30);
-    std::cout << "EMAIL: ";
-    cargarCadena(email, 30);
-    std::cout << "TELEFONO: ";
-    cargarCadena(telefono, 30);
+    posicion(posx, 2);
+    std::cout << "MUSICO: ";
+    posicion(posx, 3);
+    std::cout << "---------------\n";
 
-    claustro = cargarInt("CLAUSTRO: ");
+    dni = cargarInt("DNI: ", posx, 5);
+    cargarCadena("NOMBRE: ", nombre, 30, posx, 6);
+    cargarCadena("APELLIDO: ", apellido, 30, posx, 7);
+    cargarCadena("EMAIL: ", email, 30, posx, 8);
+    cargarCadena("TELEFONO: ", telefono, 30, posx, 9);
+    claustro = cargarInt("CLAUSTRO: ", posx, 10);
     while (claustro < 1 || claustro > 4) {
-        std::cout << "CLAUTRO INVALIDO. ";
-        claustro = cargarInt("CLAUSTRO: ");
+        mostrarError("CLAUSTRO INVALIDO.");
+        claustro = cargarInt("CLAUSTRO: ", posx, 10);
     }
-
+    
+    posicion(posx, 11);
+    mostrarAviso("INSTRUMENTO: ");
     ArchivoInstrumento instrumentos("instrumentos.dat");
     instrumento = instrumentos.seleccionarRegistro();
-    std::cout << "INSTRUMENTO: ";
-    std::cout << instrumento << '\n';
 
-    tipoMusica = cargarInt("TIPO DE MÚSICA: ");
+    posicion(posx, 11);
+    mostrarDato("INSTRUMENTO: ", instrumento);
+
+    tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
     while (tipoMusica < 1 || tipoMusica > 10) {
-        std::cout << "TIPO DE MÚSICA INVALIDO. ";
-        tipoMusica = cargarInt("TIPO DE MUSICA: ");
+        mostrarError("TIPO DE MUSICA INVALIDO.");
+        tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
     }
 
-    std::cout << "FECHA DE INSCRIPCION: \n";
+    posicion(posx, 13);
+    mostrarAviso("FECHA DE INSCRIPCION:\n");
     fechaInscripcion.CargaValida();
 
-    matricula = cargarFloat("MATRICULA: ");
+    matricula = cargarFloat("MATRICULA: ", posx, 17);
     while (matricula < 0) {
-        std::cout << "MATRICULA INVALIDA. ";
-        matricula = cargarFloat("MATRICULA: ");
+        mostrarError("MATRICULA INVALIDA.");
+        matricula = cargarFloat("MATRICULA: ", posx, 17);
     }
 
     estado = true;
 }
 
 void Musico::Mostrar() {
-    std::cout << std::right << std::setw(26) << "DNI: " << dni << '\n';
-    std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
-    std::cout << std::right << std::setw(26) << "APELLIDO: " << apellido << '\n';
-    std::cout << std::right << std::setw(26) << "EMAIL: " << email << '\n';
-    std::cout << std::right << std::setw(26) << "TELEFONO: " << telefono << '\n';
-    std::cout << std::right << std::setw(26) << "CLAUSTRO: " << claustro << '\n';
-    std::cout << std::right << std::setw(26) << "INTRUMENTRO PRINCIPAL: " << instrumento << '\n';
-    std::cout << std::right << std::setw(26) << "TIPO DE MÚSICA: " << tipoMusica << '\n';
-    // Mostrar fecha de inscripción
-    std::cout << std::right << std::setw(26) << "FECHA DE INSCRIPCION: ";
+    mostrarDato("DNI: ", dni);
+    mostrarDato("NOMBRE: ", nombre);
+    mostrarDato("APELLIDO: ", apellido);
+    mostrarDato("EMAIL: ", email);
+    mostrarDato("TELEFONO: ", telefono);
+    mostrarDato("CLAUSTRO: ", claustro);
+    mostrarDato("INTRUMENTRO PRINCIPAL: ", instrumento);
+    mostrarDato("TIPO DE MÚSICA: ", tipoMusica);
+    mostrarAviso("FECHA DE INSCRIPCION: ");
     fechaInscripcion.Mostrar();
     std::cout << '\n';
-    std::cout << std::right << std::setw(26) << "MATRÍCULA: " << matricula << '\n';
-}
-
-void Musico::MostrarSeleccion() {
-  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(10) << dni << " - " << nombre << ' ' << apellido;
+    mostrarDato("MATRÍCULA: ", matricula);
 }

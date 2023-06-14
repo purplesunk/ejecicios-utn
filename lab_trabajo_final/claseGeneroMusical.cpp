@@ -3,9 +3,9 @@
 #include <cstring>
 #include <ctime>
 #include <iostream>
-#include <iomanip>
 
 #include "cargarCadena.h"
+#include "interfaz.h"
 
 void GeneroMusical::Cargar(int autoId) {
     std::cout << "Nombre de Género: ";
@@ -32,14 +32,10 @@ void GeneroMusical::Cargar(int autoId) {
 }
 
 void GeneroMusical::Mostrar() {
-    std::cout << std::right << std::setw(26) << "ID: " << id << '\n';
-    std::cout << std::right << std::setw(26) << "NOMBRE: " << nombre << '\n';
-    std::cout << std::right << std::setw(26) << "PAIS DE ORIGEN: " << paisOrigen << '\n';
-    std::cout << std::right << std::setw(26) << "AÑO DE ORIGEN: " << anioOrigen << '\n';
-}
-
-void GeneroMusical::MostrarSeleccion() {
-  std::cout << ' ' << std::right << std::setfill(' ') << std::setw(4) << id << " - " << nombre;
+    mostrarDato("ID: ", id);
+    mostrarDato("NOMBRE: ", nombre);
+    mostrarDato("PAIS DE ORIGEN: ", paisOrigen);
+    mostrarDato("AÑO DE ORIGEN: ", anioOrigen);
 }
 
 // gets
@@ -52,7 +48,7 @@ const char *GeneroMusical::getNombre() { return nombre; }
 // sets
 void GeneroMusical::setId(int nuevoId) { id = nuevoId; }
 void GeneroMusical::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
-void GeneroMusical::setNombre(const char *n) { strncpy(nombre, n, 30); }
+void GeneroMusical::setNombre(const char *n) { strncpy(nombre, n, 29); }
 
 void GeneroMusical::setPaisOrigen(int nuevoPais) {
     if (nuevoPais > 0 && nuevoPais < 101) {
