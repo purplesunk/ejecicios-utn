@@ -20,8 +20,8 @@ public:
   void buscarPorID();
 
   // MODIFICACION
+  int modificarRegistro(Pais obj, int pos);
   bool bajaLogica();
-  bool modificarRegistro(Pais obj, int pos);
   bool modificarNombre();
 
   // BACKUP

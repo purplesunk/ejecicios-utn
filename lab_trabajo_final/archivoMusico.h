@@ -16,12 +16,12 @@ public:
   int contarRegistros();
 
   void buscarPorDNI();
-  int buscarMusico(int dni);
-  Musico leerMusico(int p);
+  int buscarRegistro(int dni);
+  Musico leerRegistro(int p);
 
   // MODIFICACION
   bool bajaLogica();
-  bool modificarRegistro(Musico obj, int pos);
+  int modificarRegistro(Musico obj, int pos);
   bool modificarFecha();
 
   // BACKUPS

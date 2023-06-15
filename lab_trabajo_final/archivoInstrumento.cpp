@@ -21,88 +21,72 @@ ArchivoInstrumento::ArchivoInstrumento(const char *nuevoArchivo) {
 
 ArchivoInstrumento::~ArchivoInstrumento() { delete nombre; }
 
+
 void ArchivoInstrumento::agregarRegistro() {
   int autoId = contarRegistros();
+  std::cout << autoId << '\n';
   if (autoId == -1) {
     autoId = 1;
   } else {
     ++autoId;
   }
 
-  std::cout << " Ingrese los datos del instrumento musical: \n";
-  std::cout << "---------------------------------------------\n";
-
   Instrumento obj;
   obj.Cargar(autoId);
 
   int pos = buscarRegistro(obj.getId());
-
   if (pos == -2) {
-    std::cout << "El archivo no se encontro. Creando archivo.\n";
+    mostrarAviso("\nEL ARCHIVO NO SE ENCONTRO. CREANDO ARCHIVO.\n");
   } else if (pos != -1) {
-    std::cout << "Ya hay un registro con ese ID.\n";
+    mostrarAviso("\nYA HAY UN REGISTRO CON ESE ID.\n");
     return;
   }
 
-  FILE *archivo = fopen(nombre, "ab");
-  if (archivo == NULL) {
-    std::cout << "No se pudo abrir el archivo.\n";
-    return;
+  int agregado = appendRegistro(&obj, sizeof(obj), nombre);
+  if (agregado == -1) {
+    mostrarAviso("\nNO SE PUDO ABRIR EL ARCHIVO.\n");
+  } else if (agregado == 0) {
+    mostrarAviso("\nNO SE PUDO AGREGAR EL REGISTRO.\n");
   }
-
-  fwrite(&obj, sizeof(Instrumento), 1, archivo);
-
-  fclose(archivo);
 }
 
+
 void ArchivoInstrumento::mostrarRegistros() {
+  std::cout << '\n';
   FILE *archivo = fopen(nombre, "rb");
   if (archivo == NULL) {
-    std::cout << "NO SE PUDO LEER EL ARCHIVO.\n";
+    mostrarAviso("NO SE PUDO LEER EL ARCHIVO.\n");
     return;
   }
-
   Instrumento obj;
-  // rlutil::locate((rlutil::tcols() - strlen("instrumentos")) / 2, 2);
-  std::cout << "INTRUMENTOS"<< "\n\n";
-  // int space = 4;
-  // rlutil::locate(10, space);
-  std::cout << "----------------------------------------\n";
+  mostrarAviso("INSTRUMENTOS");
+  std::cout << "\n\n";
   while (fread(&obj, sizeof obj, 1, archivo) == 1) {
     if (obj.getEstado()) {
       obj.Mostrar();
-      // space += 4;
-      // rlutil::locate(10, space);
-      std::cout << "----------------------------------------\n";
+      std::cout << '\n';
     }
   }
   fclose(archivo);
 }
 
-Instrumento ArchivoInstrumento::leerRegistro(int p) {
-  Instrumento obj;
 
-  if (p < 0) {
+Instrumento ArchivoInstrumento::leerRegistro(int pos) {
+  Instrumento obj;
+  if (pos < 0) {
     obj.setId(-3);
     return obj;
   }
 
-  FILE *archivo = fopen(nombre, "rb");
-  if (archivo == NULL) {
-    obj.setId(-2);
-    return obj;
-  }
-
-  fseek(archivo, (sizeof(Instrumento) * p), SEEK_SET);
-
-  if (!fread(&obj, sizeof(Instrumento), 1, archivo)) {
+  int leido = readRegistro(&obj, sizeof(obj), pos, nombre);
+  if (leido == -1) {
     obj.setId(-1);
+  } else if (leido == 0) {
+    obj.setId(-2);
   }
-
-  fclose(archivo);
-
   return obj;
 }
+
 
 int ArchivoInstrumento::buscarRegistro(int id) {
   FILE *archivo = fopen(nombre, "rb");
@@ -112,7 +96,6 @@ int ArchivoInstrumento::buscarRegistro(int id) {
 
   int pos = 0;
   Instrumento obj;
-
   while (fread(&obj, sizeof(obj), 1, archivo) == 1) {
     if (id == obj.getId()) {
       fclose(archivo);
@@ -120,124 +103,117 @@ int ArchivoInstrumento::buscarRegistro(int id) {
     }
     ++pos;
   }
-
   fclose(archivo);
-
   return -1;
 }
 
-bool ArchivoInstrumento::modificarRegistro(Instrumento obj, int pos) {
-  FILE *archivo = fopen(nombre, "rb+");
-  if (archivo == NULL) {
-    std::cout << "ERROR AL REABRIR EL ARCHIVO.\n";
-    return false;
-  }
-
-  fseek(archivo, sizeof(Instrumento) * pos, SEEK_SET);
-
-  bool aux = fwrite(&obj, sizeof(Instrumento), 1, archivo);
-  fclose(archivo);
-
-  return aux;
+int ArchivoInstrumento::modificarRegistro(Instrumento obj, int pos) {
+  return modifyRegistro(&obj, sizeof(obj), pos, nombre);
 }
 
 int ArchivoInstrumento::contarRegistros() {
   return numeroRegistros(nombre, sizeof(Instrumento));
 }
 
+
 void ArchivoInstrumento::buscarPorID() {
+  std::cout << '\n';
   int ID = cargarInt("INGRESE EL ID A BUSCAR: ");
 
   int pos = buscarRegistro(ID);
   if (pos == -2) {
-    std::cout << "No se pudo abrir el archivo.\n";
+    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
     return;
   } else if (pos == -1) {
-    std::cout << "No se encontró el registro.\n";
+    mostrarAviso("NO SE ENCONTRO EL REGISTRO.\n");
     return;
   }
 
   Instrumento obj = leerRegistro(pos);
-  if (!obj.getEstado()) {
-    std::cout << "Registro dado de baja.\n";
+  if (obj.getEstado() == false) {
+    mostrarAviso("REGISTRO DADO DE BAJA.\n");
     return;
   }
 
   if (obj.getId() > 0) {
-    std::cout << "---------------------------------\n";
+    std::cout << '\n';
     obj.Mostrar();
-    std::cout << "---------------------------------\n";
-
   } else if (obj.getId() == -3) {
-    std::cout << "Se puso una posición inválida.\n";
+    mostrarAviso("SE PUSO UNA POSICION INVALIDA.\n");
   } else if (obj.getId() == -1) {
-    std::cout << "No se pudo leer el registro.\n";
+    mostrarAviso("NO SE PUDO LEER EL REGISTRO.\n");
   } else {
-    std::cout << "No se pudo abrir el archivo.\n";
+    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
   }
 }
 
 bool ArchivoInstrumento::bajaLogica() {
-  // Solicitar que registro se quiere dar de baja
+  std::cout << '\n';
   int id = cargarInt("INGRESE EL ID A BUSCAR: ");
 
-  // Buscar el registro en el archivo
   int pos = buscarRegistro(id);
   if (pos == -1) {
-    std::cout << "NO EXISTE GENERO CON ESE ID.\n";
+    mostrarAviso("NO EXISTE INSTRUMENTO CON ESE ID.\n");
     return false;
   }
   if (pos == -2) {
-    std::cout << "NO SE PUDO ABRIR ARCHIVO.\n";
+    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   Instrumento obj = leerRegistro(pos);
-
-  if (obj.getEstado() == false) {
-    std::cout << "EL GENERO INGRESADO YA ESTA DADO DE BAJA.\n";
+  if (!obj.getEstado()) {
+    mostrarAviso("EL INSTRUMENTO INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
+  } else {
+    obj.setEstado(false);
   }
 
-  // Modificarmos el campo estado (lo ponemos en false)
-  obj.setEstado(false);
-
-  // Sobreescribir
-  return modificarRegistro(obj, pos);
+  int modificado = modificarRegistro(obj, pos);
+  if (modificado == -1) {
+    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    return false;
+  } else if (modificado == 0){
+    return false;
+  } else {
+    return true;
+  }
 }
 
 bool ArchivoInstrumento::modificarNombre() {
-  int ID = cargarInt("Ingrese el ID a buscar: ");
+  std::cout << '\n';
+  int id = cargarInt("INGRESE EL ID A BUSCAR: ");
 
-  int pos = buscarRegistro(ID);
+  int pos = buscarRegistro(id);
   if (pos == -1) {
-    std::cout << "No existe genero con ese ID.\n";
+    mostrarAviso("NO EXISTE INSTRUMENTO CON ESE ID.\n");
     return false;
   }
   if (pos == -2) {
-    std::cout << "No se pudo abrir el archivo.\n";
+    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   Instrumento obj = leerRegistro(pos);
-
-  if (!obj.getEstado()) {
-    std::cout << "Registro dado de baja.\n";
+  if (obj.getEstado() == false) {
+    mostrarAviso("EL INSTRUMENTO INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
+  } else {
+    char nuevo_nombre[30];
+    mostrarAviso("NUEVO NOMBRE: ");
+    cargarCadena(nuevo_nombre, 30);
+    obj.setNombre(nuevo_nombre);
   }
 
-  std::cout << "---------------------------------------------------------------"
-               "----\n";
-  std::cout << "Instrumento: " << obj.getNombre() << '\n';
-  std::cout << "---------------------------------------------------------------"
-               "----\n";
-
-  char nuevo_nombre[30];
-  std::cout << "NUEVO NOMBRE: ";
-  cargarCadena(nuevo_nombre, 30);
-  obj.setNombre(nuevo_nombre);
-
-  return modificarRegistro(obj, pos);
+  int modificado = modificarRegistro(obj, pos);
+  if (modificado == -1) {
+    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    return false;
+  } else if (modificado == 0){
+    return false;
+  } else {
+    return true;
+  }
 }
 
 bool ArchivoInstrumento::copiaSeguridad() {

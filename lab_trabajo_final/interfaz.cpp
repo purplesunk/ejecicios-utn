@@ -95,13 +95,13 @@ void mostrarOpcion(const char* texto, int posx, int posy, bool seleccionado, int
 }
 
 void mostrarSeleccion(int num, const char* texto, int posx, int posy, bool seleccionado, int fondo, int letra, int minWidth) {
-    minWidth -= 11;
+    minWidth -= 10;
     rlutil::locate(posx,posy);
     if (seleccionado) {
       ponerColores(fondo, letra);
-      std::cout << "> " << std:: right << std::setfill(' ') << std::setw(3) << num << " - " << std::left << std::setw(minWidth) << texto << " <";
+      std::cout << "> " << std:: right << std::setfill(' ') << std::setw(3) << num << ") " << std::left << std::setw(minWidth) << texto << " <";
     } else {
-      std::cout << "  " << std:: right << std::setfill(' ') << std::setw(3) << num << " - " << std::left << std::setw(minWidth) << texto << "  ";
+      std::cout << "  " << std:: right << std::setfill(' ') << std::setw(3) << num << ") " << std::left << std::setw(minWidth) << texto << "  ";
     }
     ponerColores(rlutil::BLACK, rlutil::WHITE);
 }
@@ -144,6 +144,9 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
     }
   }
   innerBox inner = dibujarCajaTitulo(posx, posy, boxWidth, boxHeight, titulo);
+  if (inner.height == 0) {
+    return -1;
+  }
 
   int pagina = 0;
   int posxPagina = posx + (boxWidth / 2) - 5;
@@ -231,19 +234,19 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
 }
 
 void mostrarDato(const char *texto, const char *dato) {
-  std::cout << std::right << std::setw(26) << texto << dato << '\n';
+  std::cout << std::right << std::setw(30) << texto << dato << '\n';
 }
 
 void mostrarDato(const char *texto, float dato) {
-  std::cout << std::right << std::setw(26) << texto << dato << '\n';
+  std::cout << std::right << std::setw(30) << texto << dato << '\n';
 }
 
 void mostrarDato(const char *texto, int dato) {
-  std::cout << std::right << std::setw(26) << texto << dato << '\n';
+  std::cout << std::right << std::setw(30) << texto << dato << '\n';
 }
 
 void mostrarAviso(const char *texto) {
-  std::cout << std::right << std::setw(26) << texto;
+  std::cout << std::right << std::setw(30) << texto;
 }
 
 void posicion(int x, int y) {
@@ -285,5 +288,35 @@ void borrarLineas(int y, int cantLineas) {
   for (int i = y; i <= hasta; ++i) {
     rlutil::locate(1, i);
     std::cout << std::setfill(' ') << std::setw(anchoConsola) << ' ';
+  }
+}
+
+int preguntaBuscarRegistro() {
+  int centro = rlutil::tcols()/2;
+  int posy = rlutil::trows() - 5;
+  borrarLineas(posy, 2);
+  char pregunta[] = "ELIGIR OPCION";
+  int mitadPregunta = strlen(pregunta)/2;
+  rlutil::locate(centro - mitadPregunta , posy);
+  std::cout << pregunta;
+  int x = 2;
+  while (true) {
+    mostrarOpcion("PONER ID", centro - 15, posy+1, x == 1, rlutil::GREEN, 0, 0);
+    mostrarOpcion("SELECCIONAR", centro + 2, posy+1, x == 2, rlutil::GREEN, 0, 0);
+    switch (rlutil::getkey()) {
+      case rlutil::KEY_LEFT: {
+        x = 1;
+      } break;
+      case rlutil::KEY_RIGHT: {
+        x = 2;
+      } break;
+      case rlutil::KEY_ENTER: {
+        ponerColores(rlutil::BLACK, rlutil::WHITE);
+        return x;
+      } break;
+      case rlutil::KEY_ESCAPE: {
+        return -1;
+      } break;
+    }
   }
 }

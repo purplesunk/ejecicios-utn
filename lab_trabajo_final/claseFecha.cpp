@@ -31,6 +31,39 @@ void Fecha::Cargar() {
     this->setDia(x);
 }
 
+void Fecha::CargaValida() {
+    Fecha fechaActual("actual");
+    int anioActual = fechaActual.getAnio();
+    int mesActual = fechaActual.getMes();
+    int x = cargarInt("INGRESAR ANIO: ");
+    while (x < 0 || x > anioActual) {
+        mostrarAviso("ANIO NO VALIDO.\n");
+        x = cargarInt("INGRESAR ANIO: ");
+    }
+    anio = x;
+
+    int mesMax = 12;
+    if (anio == anioActual) {
+        mesMax = mesActual;
+    }
+
+    x = cargarInt("INGRESAR MES: ");
+    while (x > mesMax || x <= 0) {
+        mostrarAviso("MES NO VALIDO.\n");
+        x = cargarInt("INGRESAR MES: ");
+    }
+    mes = x;
+
+    int diaMax = getDiaValido(fechaActual);
+
+    x = cargarInt("INGRESAR DIA: ");
+    while (x > diaMax || x <= 0) {
+        mostrarAviso("DIA NO VALIDO.\n");
+        x = cargarInt("INGRESAR DIA: ");
+    }
+    dia = x;
+}
+
 void Fecha::CargaValida(int posx, int posy) {
     Fecha fechaActual("actual");
     int anioActual = fechaActual.getAnio();

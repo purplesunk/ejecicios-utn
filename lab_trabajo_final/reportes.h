@@ -16,7 +16,7 @@ void listarBateristas() {
     int cantBateristas = 0;
     Musico musico;
     for (int i = 0; i < cantMusicos; ++i) {
-        musico = musicos.leerMusico(i);
+        musico = musicos.leerRegistro(i);
 
         if (musico.getInstrumentro() == 5) {
             ++cantBateristas;
@@ -47,7 +47,7 @@ void instrumentoMenosMusicos() {
 
     Musico musico;
     for (int i = 0; i < cantMusicos; ++i) {
-        musico = musicos.leerMusico(i);
+        musico = musicos.leerRegistro(i);
 
         ++cantMusicosXInstrumento[musico.getInstrumentro() - 1];
     }
@@ -119,7 +119,7 @@ void generarNoGuitarristas() {
     Musico musico;
     NoGuitarristas musicoNoGuitarra;
     for (int i = 0; i < cantMusicos; ++i) {
-        musico = musicos.leerMusico(i);
+        musico = musicos.leerRegistro(i);
 
         if (musico.getInstrumentro() != 1) {
             FILE *nuevoArchivo = fopen("instrumentos.dat", "ab");

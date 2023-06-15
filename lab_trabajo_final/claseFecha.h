@@ -12,6 +12,7 @@ class Fecha {
     void Cargar();
 
     void CargaValida(int posx, int posy);
+    void CargaValida();
 
     void Mostrar();
     /// sets

@@ -28,6 +28,7 @@ void ocultarCursor();
 void mostrarError(const char *error);
 void borrarLinea(int y);
 void borrarLineas(int y, int cantLineas);
+int preguntaBuscarRegistro();
 
 int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **nombreobjetos, int cantObjetos, const char *titulo);
 

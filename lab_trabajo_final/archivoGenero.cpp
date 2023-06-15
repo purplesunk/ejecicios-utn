@@ -27,206 +27,190 @@ void ArchivoGeneroMusical::agregarRegistro() {
     ++autoId;
   }
 
-  std::cout << " Ingrese los datos del género musical: \n";
-  std::cout << "-----------------------------------------\n";
-
   GeneroMusical obj;
   obj.Cargar(autoId);
+  if (obj.getId() == -1) {
+    mostrarAviso("\nNO SE CARGO EL REGISTRO.\n");
+    return;
+  }
 
   int pos = buscarRegistro(obj.getId());
   if (pos == -2) {
-    std::cout << "El archivo no se encontro. Creando archivo.\n";
+    mostrarAviso("\nEL ARCHIVO NO SE ENCONTRO. CREANDO ARCHIVO.\n");
   } else if (pos != -1) {
-    std::cout << "Ya hay un registro con ese ID.\n";
+    mostrarAviso("\nYA HAY UN REGISTRO CON ESE ID.\n");
     return;
   }
 
-  FILE *fileGeneroMusical = fopen(nombre, "ab");
-  if (fileGeneroMusical == NULL) {
-    std::cout << "No se pudo abrir el archivo.\n";
-    return;
+  int agregado = appendRegistro(&obj, sizeof(obj), nombre);
+  if (agregado == -1) {
+    mostrarAviso("\nNO SE PUDO ABRIR EL ARCHIVO.\n");
+  } else if (agregado == 0) {
+    mostrarAviso("\nNO SE PUDO AGREGAR EL REGISTRO.\n");
   }
-
-  fwrite(&obj, sizeof(GeneroMusical), 1, fileGeneroMusical);
-
-  fclose(fileGeneroMusical);
 }
+
 
 void ArchivoGeneroMusical::mostrarRegistros() {
-  FILE *fileGeneroMusical = fopen(nombre, "rb");
-  if (fileGeneroMusical == NULL) {
-    std::cout << "NO SE PUDO LEER EL ARCHIVO.\n";
+  std::cout << '\n';
+  FILE *archivo = fopen(nombre, "rb");
+  if (archivo == NULL) {
+    mostrarAviso("NO SE PUDO LEER EL ARCHIVO.\n");
     return;
   }
-
   GeneroMusical obj;
-  while (fread(&obj, sizeof obj, 1, fileGeneroMusical) == 1) {
+  mostrarAviso("GENEROS MUSICALES");
+  std::cout << "\n\n";
+  while (fread(&obj, sizeof obj, 1, archivo) == 1) {
     if (obj.getEstado()) {
       obj.Mostrar();
-      std::cout << "-----------------------------------\n";
+      std::cout << '\n';
     }
   }
-  fclose(fileGeneroMusical);
+  fclose(archivo);
 }
 
-GeneroMusical ArchivoGeneroMusical::leerRegistro(int p) {
-  GeneroMusical obj;
 
-  if (p < 0) {
+GeneroMusical ArchivoGeneroMusical::leerRegistro(int pos) {
+  GeneroMusical obj;
+  if (pos < 0) {
     obj.setId(-3);
     return obj;
   }
 
-  FILE *fileGeneroMusical = fopen(nombre, "rb");
-  if (fileGeneroMusical == NULL) {
-    obj.setId(-2);
-    return obj;
-  }
-
-  fseek(fileGeneroMusical, (sizeof(GeneroMusical) * p), SEEK_SET);
-
-  if (!fread(&obj, sizeof(GeneroMusical), 1, fileGeneroMusical)) {
+  int leido = readRegistro(&obj, sizeof(obj), pos, nombre);
+  if (leido == -1) {
     obj.setId(-1);
+  } else if (leido == 0) {
+    obj.setId(-2);
   }
-
-  fclose(fileGeneroMusical);
-
   return obj;
 }
 
+
 int ArchivoGeneroMusical::buscarRegistro(int id) {
-  FILE *fileGeneroMusical = fopen(nombre, "rb");
-  if (fileGeneroMusical == NULL) {
+  FILE *archivo = fopen(nombre, "rb");
+  if (archivo == NULL) {
     return -2;
   }
 
   int pos = 0;
   GeneroMusical obj;
-
-  while (fread(&obj, sizeof(obj), 1, fileGeneroMusical) == 1) {
+  while (fread(&obj, sizeof(obj), 1, archivo) == 1) {
     if (id == obj.getId()) {
-      fclose(fileGeneroMusical);
+      fclose(archivo);
       return pos;
     }
     ++pos;
   }
-
-  fclose(fileGeneroMusical);
-
+  fclose(archivo);
   return -1;
 }
 
-bool ArchivoGeneroMusical::modificarRegistro(GeneroMusical obj, int pos) {
-  FILE *fileGeneroMusical = fopen(nombre, "rb+");
-  if (fileGeneroMusical == NULL) {
-    std::cout << "ERROR AL REABRIR EL ARCHIVO.\n";
-    return false;
-  }
-
-  fseek(fileGeneroMusical, sizeof(GeneroMusical) * pos, SEEK_SET);
-
-  bool aux = fwrite(&obj, sizeof(GeneroMusical), 1, fileGeneroMusical);
-  fclose(fileGeneroMusical);
-
-  return aux;
+int ArchivoGeneroMusical::modificarRegistro(GeneroMusical obj, int pos) {
+  return modifyRegistro(&obj, sizeof(obj), pos, nombre);
 }
 
 int ArchivoGeneroMusical::contarRegistros() {
   return numeroRegistros(nombre, sizeof(GeneroMusical));
 }
 
+
 void ArchivoGeneroMusical::buscarPorID() {
+  std::cout << '\n';
   int ID = cargarInt("INGRESE EL ID A BUSCAR: ");
 
   int pos = buscarRegistro(ID);
   if (pos == -2) {
-    std::cout << "No se pudo abrir el archivo.\n";
+    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
     return;
   } else if (pos == -1) {
-    std::cout << "No se encontró el registro.\n";
+    mostrarAviso("NO SE ENCONTRO EL REGISTRO.\n");
     return;
   }
 
   GeneroMusical obj = leerRegistro(pos);
   if (!obj.getEstado()) {
-    std::cout << "Registro dado de baja.\n";
+    mostrarAviso("REGISTRO DADO DE BAJA.\n");
     return;
   }
 
   if (obj.getId() > 0) {
-    std::cout << "---------------------------------\n";
+    std::cout << '\n';
     obj.Mostrar();
-    std::cout << "---------------------------------\n";
-
   } else if (obj.getId() == -3) {
-    std::cout << "Se puso una posición inválida.\n";
+    mostrarAviso("SE PUSO UNA POSICIÓN INVALIDA.\n");
   } else if (obj.getId() == -1) {
-    std::cout << "No se pudo leer el registro.\n";
+    mostrarAviso("NO SE PUDO LEER EL REGISTRO.\n");
   } else {
-    std::cout << "No se pudo abrir el archivo.\n";
+    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
   }
 }
 
 bool ArchivoGeneroMusical::bajaLogica() {
-  // Solicitar que registro se quiere dar de baja
+  std::cout << '\n';
   int id = cargarInt("INGRESE EL ID A BUSCAR: ");
 
-  // Buscar el registro en el archivo
   int pos = buscarRegistro(id);
   if (pos == -1) {
-    std::cout << "NO EXISTE GENERO CON ESE ID.\n";
+    mostrarAviso("NO EXISTE GENERO MUSICAL CON ESE ID.\n");
     return false;
   }
   if (pos == -2) {
-    std::cout << "NO SE PUDO ABRIR ARCHIVO.\n";
+    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   GeneroMusical obj = leerRegistro(pos);
-
-  if (obj.getEstado() == false) {
-    std::cout << "EL GENERO INGRESADO YA ESTA DADO DE BAJA.\n";
+  if (!obj.getEstado()) {
+    mostrarAviso("EL GENERO MUSICAL INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
+  } else {
+    obj.setEstado(false);
   }
 
-  // Modificarmos el campo estado (lo ponemos en false)
-  obj.setEstado(false);
-
-  // Sobreescribir
-  return modificarRegistro(obj, pos);
+  int modificado = modificarRegistro(obj, pos);
+  if (modificado == -1) {
+    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    return false;
+  } else if (modificado == 0){
+    return false;
+  } else {
+    return true;
+  }
 }
 
 bool ArchivoGeneroMusical::modificarAnioOrigen() {
-  int ID = cargarInt("Ingrese el ID a buscar: ");
+  std::cout << '\n';
+  int id = cargarInt("INGRESE EL ID A BUSCAR: ");
 
-  int pos = buscarRegistro(ID);
+  int pos = buscarRegistro(id);
   if (pos == -1) {
-    std::cout << "No existe genero con ese ID.\n";
+    mostrarAviso("NO EXISTE GENERO MUSICAL CON ESE ID.\n");
     return false;
-  }
-  if (pos == -2) {
-    std::cout << "No se pudo abrir el archivo.\n";
+  } else if (pos == -2) {
+    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   GeneroMusical obj = leerRegistro(pos);
-
   if (!obj.getEstado()) {
-    std::cout << "Registro dado de baja.\n";
+    mostrarAviso("EL GENERO MUSICAL INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
+  } else {
+    int nuevoAnio = cargarInt("INGRESAR NUEVO ANIO DE ORIGEN: ");
+    obj.setAnioOrigen(nuevoAnio);
   }
 
-  std::cout << "---------------------------------------------------------------"
-               "----\n";
-  std::cout << "Genero: " << obj.getNombre() << '\n';
-  std::cout << "Año de origen actual: " << obj.getAnioOrigen() << '\n';
-  std::cout << "---------------------------------------------------------------"
-               "----\n";
-
-  int nuevoAnio = cargarInt("Ingresar nuevo año de origen: ");
-  obj.setAnioOrigen(nuevoAnio);
-
-  return modificarRegistro(obj, pos);
+  int modificado = modificarRegistro(obj, pos);
+  if (modificado == -1) {
+    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    return false;
+  } else if (modificado == 0){
+    return false;
+  } else {
+    return true;
+  }
 }
 
 bool ArchivoGeneroMusical::copiaSeguridad() {

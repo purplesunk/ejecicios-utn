@@ -61,16 +61,16 @@ int opcionesMusicos(int y) {
       break;
     case 4:
       if (archivo.modificarFecha()) {
-        mostrarAviso("FECHA MODIFICADA CORRECTAMENTE.\n");
+        mostrarAviso("\nFECHA MODIFICADA CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("LA FECHA NO FUE MODIFICADA.\n");
+        mostrarAviso("\nLA FECHA NO FUE MODIFICADA.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n");
+        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("EL REGISTRO NO PUDO SER ELIMINADO.\n");
+        mostrarAviso("\nEL REGISTRO NO PUDO SER ELIMINADO.\n");
       }
       break;
     case 0:
@@ -113,16 +113,16 @@ int opcionesGeneros(int y) {
       break;
     case 4:
       if (archivo.modificarAnioOrigen()) {
-        mostrarAviso("ANIO DE ORIGEN MODIFICADO CORRECTAMENTE.\n");
+        mostrarAviso("\nANIO DE ORIGEN MODIFICADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("ANIO DE ORIGEN NO PUDO SER MODIFICADO.\n");
+        mostrarAviso("\nANIO DE ORIGEN NO PUDO SER MODIFICADO.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n");
+        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("NO SE PUDO ELIMINAR EL REGISTRO.\n");
+        mostrarAviso("\nNO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -165,16 +165,16 @@ int opcionesPaises(int y) {
       break;
     case 4:
       if (archivo.modificarNombre()) {
-        mostrarAviso("NOMBRE MODIFICADO.");
+        mostrarAviso("\nNOMBRE MODIFICADO.");
       } else {
-        mostrarAviso("NO SE PUDO MODIFICAR EL NOMBRE.\n");
+        mostrarAviso("\nNO SE PUDO MODIFICAR EL NOMBRE.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n");
+        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("NO SE PUDO ELIMINAR EL REGISTRO.\n");
+        mostrarAviso("\nNO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -218,16 +218,16 @@ int opcionesInstrumentos(int y) {
       break;
     case 4:
       if (archivo.modificarNombre()) {
-        mostrarAviso("NOMBRE MODIFICADO CORRECTAMENTE.\n");
+        mostrarAviso("\nNOMBRE MODIFICADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("NOMBRE NO PUDO SER MODIFICADO.\n");
+        mostrarAviso("\nNOMBRE NO PUDO SER MODIFICADO.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n"); 
+        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n"); 
       } else {
-        mostrarAviso("NO SE PUDO ELIMINAR EL REGISTRO.\n");
+        mostrarAviso("\nNO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -309,9 +309,9 @@ int opcionesConfiguracion(int y) {
   }
 
   if (hecho) {
-    mostrarAviso("ACCION REALIZADA CORRECTAMENTE.\n");
+    mostrarAviso("\nACCION REALIZADA CORRECTAMENTE.\n");
   } else {
-    mostrarAviso("NO SE PUDO REALIZAR LA ACCION.\n");
+    mostrarAviso("\nNO SE PUDO REALIZAR LA ACCION.\n");
   }
 
   pause();

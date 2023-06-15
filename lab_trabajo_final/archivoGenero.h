@@ -27,7 +27,7 @@ public:
   int contarRegistros();
 
   // MODIFICACION
-  bool modificarRegistro(GeneroMusical obj, int pos);
+  int modificarRegistro(GeneroMusical obj, int pos);
   bool modificarAnioOrigen();
 
   // BACKUP

@@ -6,13 +6,13 @@
 bool copiarArchivo(const char *fuente, const char *destino, void *obj, size_t tam) {
   FILE *archivo = fopen(fuente, "rb");
   if (archivo == NULL) {
-    std::cout << "No se pudo abrir el archivo " << fuente << ".\n";
+    std::cout << "  NO SE PUDO ABRIR EL ARCHIVO " << fuente << '\n';
     return false;
   }
 
   FILE *copia = fopen(destino, "wb");
   if (copia == NULL) {
-    std::cout << "No se pudo crear el archivo para copiar" << destino << ".\n";
+    std::cout << "  NO SE PUDO CREAR EL ARCHIVO PARA COPIAR " << destino << '\n';
     fclose(archivo);
     return false;
   }
@@ -40,6 +40,49 @@ int numeroRegistros(const char *nombre, size_t tam) {
   fclose(archivo);
 
   return cantidad;
+}
+
+int appendRegistro(void* obj, size_t tam, const char* nombreArchivo) {
+    FILE* archivo = fopen(nombreArchivo, "ab");
+    if (archivo == NULL) {
+        return -1;
+    }
+
+    int agregado = fwrite(obj, tam, 1, archivo);
+
+    fclose(archivo);
+
+    return agregado;
+}
+
+int modifyRegistro(void* obj, size_t tam, int pos, const char* nombreArchivo) {
+    FILE* archivo = fopen(nombreArchivo, "rb+");
+    if (archivo == NULL) {
+        return -1;
+    }
+
+    fseek(archivo, tam * pos, SEEK_SET);
+
+    int modificado = fwrite(obj, tam, 1, archivo);
+
+    fclose(archivo);
+
+    return modificado;
+}
+
+int readRegistro(void* obj, size_t tam, int pos, const char* nombreArchivo) {
+    FILE* archivo = fopen(nombreArchivo, "rb");
+    if (archivo == NULL) {
+        return -1;
+    }
+
+    fseek(archivo, tam * pos, SEEK_SET);
+
+    int leido = fread(obj, tam, 1, archivo);
+
+    fclose(archivo);
+
+    return leido;
 }
 
 const char *agregarExtensionBackup(const char *nombreArchivo) {
@@ -72,20 +115,3 @@ const char *agregarExtensionBackup(const char *nombreArchivo) {
 
   return backup;
 }
-
-/* Meibi do all the generics here?
-bool ArchivoGeneroMusical::escribirRegistro(GeneroMusical obj) {
-  FILE *archivo = fopen(nombre, "ab");
-  if (archivo == NULL) {
-    std::cout << "NO SE PUDO CREAR EL ARCHIVO.\n";
-    return false;
-  }
-
-  bool aux = fwrite(&obj, sizeof(obj), 1, archivo);
-
-  fclose(archivo);
-
-  return aux;
-} 
-*/
-

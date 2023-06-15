@@ -78,28 +78,46 @@ void Musico::Cargar() {
     }
     
     ++posy;
-    posicion(posx, posy);
-    mostrarAviso("INSTRUMENTO: ");
     ArchivoInstrumento instrumentos("instrumentos.dat");
-    instrumento = instrumentos.seleccionarRegistro();
-    posicion(posx, posy);
-    mostrarDato("INSTRUMENTO: ", instrumento);
+    instrumento = cargarInt("INSTRUMENTO: ", posx, posy);
+    while (instrumentos.buscarRegistro(instrumento) == -1) {
+        mostrarError("INSTRUMENTO NO ENCONTRADO.");
+        int opcion = preguntaBuscarRegistro();
+        if (opcion == 1) {
+            instrumento = cargarInt("INSTRUMENTO: ", posx, posy);
+        } else if (opcion == 2) {
+            borrarLinea(posy);
+            posicion(posx, posy);
+            mostrarAviso("INSTRUMENTO: ");
+            instrumento = instrumentos.seleccionarRegistro();
+            posicion(posx, posy);
+            mostrarDato("INSTRUMENTO: ", instrumento);
+        } else {
+            dni = -1;
+            return;
+        }
+    }
 
     ++posy;
-    posicion(posx, posy);
-    pause();
-    borrarLinea(posy + 1);
-    // tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
-    // while (tipoMusica < 1 || tipoMusica > 10) {
-    //     mostrarError("TIPO DE MUSICA INVALIDO.");
-    //     tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
-    // }
-    posicion(posx, posy);
-    mostrarAviso("TIPO DE MUSICA: ");
     ArchivoGeneroMusical generos("generos.dat");
-    tipoMusica = generos.seleccionarRegistro();
-    posicion(posx, posy);
-    mostrarDato("TIPO DE MUSICA: ", tipoMusica);
+    tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, posy);
+    while (instrumentos.buscarRegistro(instrumento) == -1) {
+        mostrarError("GENERO MUSICAL NO ENCONTRADO.");
+        int opcion = preguntaBuscarRegistro();
+        if (opcion == 1) {
+            tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, posy);
+        } else if (opcion == 2) {
+            borrarLinea(posy);
+            mostrarAviso("TIPO DE MUSICA: ");
+            posicion(posx, posy);
+            tipoMusica = generos.seleccionarRegistro();
+            posicion(posx, posy);
+            mostrarDato("TIPO DE MUSICA: ", tipoMusica);
+        } else {
+            dni = -1;
+            return;
+        }
+    }
 
     ++posy;
     posicion(posx, posy);
@@ -129,9 +147,9 @@ void Musico::Mostrar() {
     mostrarDato("TELEFONO: ", telefono);
     mostrarDato("CLAUSTRO: ", claustro);
     mostrarDato("INTRUMENTRO PRINCIPAL: ", instrumento);
-    mostrarDato("TIPO DE MÚSICA: ", tipoMusica);
+    mostrarDato("TIPO DE MUSICA: ", tipoMusica);
     mostrarAviso("FECHA DE INSCRIPCION: ");
     fechaInscripcion.Mostrar();
     std::cout << '\n';
-    mostrarDato("MATRÍCULA: ", matricula);
+    mostrarDato("MATRICULA: ", matricula);
 }

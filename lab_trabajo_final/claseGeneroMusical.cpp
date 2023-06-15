@@ -18,17 +18,25 @@ void GeneroMusical::Cargar(int autoId) {
     cargarCadena("NOMBRE DE GENERO MUSICAL: ", nombre, 30, posx, posy);
 
     ++posy;
-    // paisOrigen = cargarInt("PAIS DE ORIGEN: ", posx, posy);
-    // while (paisOrigen < 1 || paisOrigen > 100) {
-    //     mostrarError("PAIS DE ORIGEN INVALIDO. ");
-    //     paisOrigen = cargarInt("PAIS DE ORIGEN: ", posx, posy);
-    // }
-    posicion(posx, posy);
-    mostrarAviso("PAIS DE ORIGEN: ");
     ArchivoPais paises("paises.dat");
-    paisOrigen = paises.seleccionarRegistro();
-    posicion(posx, posy);
-    mostrarDato("PAIS DE ORIGEN: ", paisOrigen);
+    paisOrigen = cargarInt("PAIS DE ORIGEN: ", posx, posy);
+    while (paises.buscarRegistro(paisOrigen) == -1) {
+        mostrarError("PAIS NO ENCONTRADO NO ENCONTRADO.");
+        int opcion = preguntaBuscarRegistro();
+        if (opcion == 1) {
+            paisOrigen = cargarInt("INSTRUMENTO: ", posx, posy);
+        } else if (opcion == 2) {
+            borrarLinea(posy);
+            posicion(posx, posy);
+            mostrarAviso("PAIS DE ORIGEN: ");
+            paisOrigen = paises.seleccionarRegistro();
+            posicion(posx, posy);
+            mostrarDato("PAIS DE ORIGEN: ", paisOrigen);
+        } else {
+            id = -1;
+            return;
+        }
+    }
 
 
     ++posy;
