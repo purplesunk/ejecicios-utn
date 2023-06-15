@@ -149,6 +149,9 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
   int posxPagina = posx + (boxWidth / 2) - 5;
   int posyPagina = inner.posy + inner.height + 1;
   int cantPaginas = cantObjetos / inner.height;
+  if (cantObjetos % inner.height == 0) {
+    --cantPaginas;
+  }
   int mostrados = 0;
   int seleccionado = 0;
   int cursor = inner.posy;
@@ -159,8 +162,10 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
     std::cout << "Pagina " << std::left << std::setfill(' ') << std::setw(4) << pagina + 1;
 
     int pos_max_mostrados = inner.posy + mostrados - 1;
+    
 
-    switch (rlutil::getkey()) {
+    char key = rlutil::getkey();
+    switch (key) {
       case rlutil::KEY_DOWN: {
         ++cursor;
         if (cursor > pos_max_mostrados) {
@@ -184,9 +189,6 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
             cursor = pos_max_mostrados;
           }
         }
-        if (cursor > pos_max_mostrados) {
-          cursor = pos_max_mostrados;
-        }
         seleccionado = (pagina * inner.height) + cursor - inner.posy;
       } break;
 
@@ -195,6 +197,7 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
         if (pagina < 0) {
           pagina = 0;
         }
+        seleccionado = (pagina * inner.height) + cursor - inner.posy;
         clearInnerBox(inner);
       } break;
 
@@ -202,6 +205,10 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
         ++pagina;
         if (pagina > cantPaginas) {
           pagina = cantPaginas;
+        }
+        seleccionado = (pagina * inner.height) + cursor - inner.posy;
+        if(seleccionado > cantObjetos) {
+          seleccionado = cantObjetos - 1;
         }
         clearInnerBox(inner);
       } break;
@@ -212,9 +219,15 @@ int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **no
         std::cout << std::setfill(' ') << std::setw(10) << ' ';
         return seleccionado;
       } break;
+
+      default: {
+        int opcion = key - 48;
+        if (opcion >= 0 && opcion <= pos_max_mostrados) {
+          seleccionado = (pagina * inner.height) + opcion;
+        }
+      } break;
     }
   }
-  return 0;
 }
 
 void mostrarDato(const char *texto, const char *dato) {
@@ -250,7 +263,6 @@ void mostrarError(const char *error) {
     int centrox = (anchoConsola / 2) - (strlen(error) / 2);
     int posy = rlutil::trows() - 1;
 
-    ocultarCursor();
     ponerColores(4, 0);
     rlutil::locate(1, posy);
     std::cout << std::setfill(' ') << std::setw(anchoConsola) << ' ';
@@ -259,4 +271,19 @@ void mostrarError(const char *error) {
     std::cout << error;
 
     ponerColores(0, rlutil::WHITE);
+}
+
+void borrarLinea(int y) {
+  int anchoConsola = rlutil::tcols();
+  rlutil::locate(1, y);
+  std::cout << std::setfill(' ') << std::setw(anchoConsola) << ' ';
+}
+
+void borrarLineas(int y, int cantLineas) {
+  int hasta = y + cantLineas;
+  int anchoConsola = rlutil::tcols();
+  for (int i = y; i <= hasta; ++i) {
+    rlutil::locate(1, i);
+    std::cout << std::setfill(' ') << std::setw(anchoConsola) << ' ';
+  }
 }

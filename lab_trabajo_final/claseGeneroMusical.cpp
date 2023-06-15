@@ -1,30 +1,42 @@
 #include "claseGeneroMusical.h"
 
 #include <cstring>
-#include <ctime>
 #include <iostream>
 
 #include "cargarCadena.h"
+#include "claseFecha.h"
+#include "archivoPais.h"
 #include "interfaz.h"
 
 void GeneroMusical::Cargar(int autoId) {
-    std::cout << "Nombre de Género: ";
-    cargarCadena(nombre, 30);
+    int posx = 1;
+    int posy = 2;
+    posicion(posx, posy);
+    mostrarAviso("CARGA GENERO MUSICAL");
 
-    paisOrigen = cargarInt("Pais de Origen: ");
-    while (paisOrigen < 1 || paisOrigen > 100) {
-        std::cout << "Pais de Origen Inválido. ";
-        paisOrigen = cargarInt("Pais de Origen: ");
-    }
+    posy += 2;
+    cargarCadena("NOMBRE DE GENERO MUSICAL: ", nombre, 30, posx, posy);
 
-    // Conseguir fecha actual
-    time_t tiempo = time(NULL);
-    struct tm *fechaActual = localtime(&tiempo);
+    ++posy;
+    // paisOrigen = cargarInt("PAIS DE ORIGEN: ", posx, posy);
+    // while (paisOrigen < 1 || paisOrigen > 100) {
+    //     mostrarError("PAIS DE ORIGEN INVALIDO. ");
+    //     paisOrigen = cargarInt("PAIS DE ORIGEN: ", posx, posy);
+    // }
+    posicion(posx, posy);
+    mostrarAviso("PAIS DE ORIGEN: ");
+    ArchivoPais paises("paises.dat");
+    paisOrigen = paises.seleccionarRegistro();
+    posicion(posx, posy);
+    mostrarDato("PAIS DE ORIGEN: ", paisOrigen);
 
-    anioOrigen = cargarInt("Año de origen: ");
-    while (anioOrigen < 1500 || anioOrigen > fechaActual->tm_year + 1900) {
-        std::cout << "Año de origen Inválido. ";
-        anioOrigen = cargarInt("Año de origen: ");
+
+    ++posy;
+    Fecha fechaActual("actual");
+    anioOrigen = cargarInt("ANIO DE ORIGEN: ", posx, posy);
+    while (anioOrigen < 1500 || anioOrigen > fechaActual.getAnio()) {
+        mostrarError("ANIO DE ORIGEN INVALIDO. ");
+        anioOrigen = cargarInt("ANIO DE ORIGEN: ", posx, posy);
     }
 
     id = autoId;
@@ -35,7 +47,7 @@ void GeneroMusical::Mostrar() {
     mostrarDato("ID: ", id);
     mostrarDato("NOMBRE: ", nombre);
     mostrarDato("PAIS DE ORIGEN: ", paisOrigen);
-    mostrarDato("AÑO DE ORIGEN: ", anioOrigen);
+    mostrarDato("ANIO DE ORIGEN: ", anioOrigen);
 }
 
 // gets
@@ -51,15 +63,15 @@ void GeneroMusical::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
 void GeneroMusical::setNombre(const char *n) { strncpy(nombre, n, 29); }
 
 void GeneroMusical::setPaisOrigen(int nuevoPais) {
+    // verificar acá también
     if (nuevoPais > 0 && nuevoPais < 101) {
         paisOrigen = nuevoPais;
     }
 }
 
 void GeneroMusical::setAnioOrigen(int nuevoAnio) {
-    time_t tiempo = time(NULL);
-    struct tm *fechaActual = localtime(&tiempo);
-    if (nuevoAnio > 1500 || nuevoAnio <= fechaActual->tm_year + 1900) {
+    Fecha fechaActual("actual");
+    if (nuevoAnio > 1500 && nuevoAnio <= fechaActual.getAnio()) {
         anioOrigen = nuevoAnio;
     }
 }

@@ -7,11 +7,11 @@ class Fecha {
 
    public:
     Fecha();
-    Fecha(int d, int m, int a);
+    Fecha(const char *texto);
 
     void Cargar();
 
-    void CargaValida();
+    void CargaValida(int posx, int posy);
 
     void Mostrar();
     /// sets
@@ -24,6 +24,7 @@ class Fecha {
     int getAnio();
 
     bool anioBisiesto();
+    int getDiaValido(Fecha &fechaActual);
 };
 
 #endif  // FECHA_H_INCLUDED

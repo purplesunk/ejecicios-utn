@@ -5,10 +5,7 @@
 
 #include "archivo_utils.h"
 #include "cargarCadena.h"
-
-#include "claseFecha.h"
 #include "claseInstrumento.h"
-
 #include "interfaz.h"
 
 ArchivoInstrumento::ArchivoInstrumento(const char *nuevoArchivo) {

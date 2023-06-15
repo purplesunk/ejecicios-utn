@@ -55,45 +55,67 @@ void Musico::setMatricula(int x) {
 
 void Musico::Cargar() {
     int posx = 1;
+    int posy = 2;
 
-    posicion(posx, 2);
-    std::cout << "MUSICO: ";
-    posicion(posx, 3);
-    std::cout << "---------------\n";
+    posicion(posx, posy);
+    mostrarAviso("CARGAR MUSICO");
 
-    dni = cargarInt("DNI: ", posx, 5);
-    cargarCadena("NOMBRE: ", nombre, 30, posx, 6);
-    cargarCadena("APELLIDO: ", apellido, 30, posx, 7);
-    cargarCadena("EMAIL: ", email, 30, posx, 8);
-    cargarCadena("TELEFONO: ", telefono, 30, posx, 9);
-    claustro = cargarInt("CLAUSTRO: ", posx, 10);
+    posy += 2;
+    dni = cargarInt("DNI: ", posx, posy);
+    ++posy;
+    cargarCadena("NOMBRE: ", nombre, 30, posx, posy);
+    ++posy;
+    cargarCadena("APELLIDO: ", apellido, 30, posx, posy);
+    ++posy;
+    cargarCadena("EMAIL: ", email, 30, posx, posy);
+    ++posy;
+    cargarCadena("TELEFONO: ", telefono, 30, posx, posy);
+    ++posy;
+    claustro = cargarInt("CLAUSTRO: ", posx, posy);
     while (claustro < 1 || claustro > 4) {
         mostrarError("CLAUSTRO INVALIDO.");
-        claustro = cargarInt("CLAUSTRO: ", posx, 10);
+        claustro = cargarInt("CLAUSTRO: ", posx, posy);
     }
     
-    posicion(posx, 11);
+    ++posy;
+    posicion(posx, posy);
     mostrarAviso("INSTRUMENTO: ");
     ArchivoInstrumento instrumentos("instrumentos.dat");
     instrumento = instrumentos.seleccionarRegistro();
-
-    posicion(posx, 11);
+    posicion(posx, posy);
     mostrarDato("INSTRUMENTO: ", instrumento);
 
-    tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
-    while (tipoMusica < 1 || tipoMusica > 10) {
-        mostrarError("TIPO DE MUSICA INVALIDO.");
-        tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
-    }
+    ++posy;
+    posicion(posx, posy);
+    pause();
+    borrarLinea(posy + 1);
+    // tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
+    // while (tipoMusica < 1 || tipoMusica > 10) {
+    //     mostrarError("TIPO DE MUSICA INVALIDO.");
+    //     tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, 12);
+    // }
+    posicion(posx, posy);
+    mostrarAviso("TIPO DE MUSICA: ");
+    ArchivoGeneroMusical generos("generos.dat");
+    tipoMusica = generos.seleccionarRegistro();
+    posicion(posx, posy);
+    mostrarDato("TIPO DE MUSICA: ", tipoMusica);
 
-    posicion(posx, 13);
+    ++posy;
+    posicion(posx, posy);
     mostrarAviso("FECHA DE INSCRIPCION:\n");
-    fechaInscripcion.CargaValida();
+    ++posy;
+    fechaInscripcion.CargaValida(posx, posy);
+    borrarLineas(--posy, 4);
+    posicion(posx, posy);
+    mostrarAviso("FECHA DE INSCRIPCION: ");
+    fechaInscripcion.Mostrar();
 
-    matricula = cargarFloat("MATRICULA: ", posx, 17);
+    ++posy;
+    matricula = cargarFloat("MATRICULA: ", posx, posy);
     while (matricula < 0) {
         mostrarError("MATRICULA INVALIDA.");
-        matricula = cargarFloat("MATRICULA: ", posx, 17);
+        matricula = cargarFloat("MATRICULA: ", posx, posy);
     }
 
     estado = true;

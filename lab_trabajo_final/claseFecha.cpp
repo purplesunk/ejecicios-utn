@@ -1,43 +1,44 @@
 #include "claseFecha.h"
 
 #include <ctime>
+#include <cstring>
 #include <iostream>
 
 #include "cargarCadena.h"
+#include "interfaz.h"
 
-Fecha::Fecha() {
-    dia = 0;
-    mes = 0;
-    anio = 0;
+Fecha::Fecha(const char *texto) {
+    if (strcmp(texto, "actual") == 0) {
+        time_t tiempo = time(NULL);
+        struct tm *fechaActual = localtime(&tiempo);
+
+        anio = fechaActual->tm_year + 1900;
+        mes = fechaActual->tm_mon + 1;
+        dia = fechaActual->tm_mday;
+    }
 }
 
-Fecha::Fecha(int d, int m, int a) {
-    dia = d;
-    mes = m;
-    anio = a;
-}
+Fecha::Fecha() {}
 
 void Fecha::Cargar() {
-    int x = cargarInt("Ingresar Año: ");
+    int x = cargarInt("INGRESAR ANIO: ");
     this->setAnio(x);
 
-    x = cargarInt("Ingresar Mes: ");
+    x = cargarInt("INGRESAR MES: ");
     this->setMes(x);
 
-    x = cargarInt("Ingresar Día: ");
+    x = cargarInt("INGRESAR DIA: ");
     this->setDia(x);
 }
 
-void Fecha::CargaValida() {
-    time_t tiempo = time(NULL);
-    struct tm *fechaActual = localtime(&tiempo);
-    int anioActual = fechaActual->tm_year + 1900;
-    int mesActual = fechaActual->tm_mon + 1;
-
-    int x = cargarInt("Ingresar Año: ");
+void Fecha::CargaValida(int posx, int posy) {
+    Fecha fechaActual("actual");
+    int anioActual = fechaActual.getAnio();
+    int mesActual = fechaActual.getMes();
+    int x = cargarInt("INGRESAR ANIO: ", posx, posy);
     while (x < 0 || x > anioActual) {
-        std::cout << "Año no válido. ";
-        x = cargarInt("Ingresar Año: ");
+        mostrarError("ANIO NO VALIDO.");
+        x = cargarInt("INGRESAR ANIO: ", posx, posy);
     }
     anio = x;
 
@@ -46,30 +47,19 @@ void Fecha::CargaValida() {
         mesMax = mesActual;
     }
 
-    x = cargarInt("Ingresar Mes: ");
+    x = cargarInt("INGRESAR MES: ", posx, posy + 1);
     while (x > mesMax || x <= 0) {
-        std::cout << "Mes no válido. ";
-        x = cargarInt("Ingresar Mes: ");
+        mostrarError("MES NO VALIDO.");
+        x = cargarInt("INGRESAR MES: ", posx, posy + 1);
     }
     mes = x;
 
-    int diaMax = 31;
-    if (anio == anioActual && mes == mesActual) {
-        diaMax = fechaActual->tm_mday;
-    } else if (mes == 2) {
-        if (this->anioBisiesto()) {
-            diaMax = 29;
-        } else {
-            diaMax = 28;
-        }
-    } else if (mes % 2 != 0) {
-        diaMax = 30;
-    }
+    int diaMax = getDiaValido(fechaActual);
 
-    x = cargarInt("Ingresar Día: ");
+    x = cargarInt("INGRESAR DIA: ", posx, posy + 2);
     while (x > diaMax || x <= 0) {
-        std::cout << "Día no válido. ";
-        x = cargarInt("Ingresar Día: ");
+        mostrarError("DIA NO VALIDO.");
+        x = cargarInt("INGRESAR DIA: ", posx, posy + 2);
     }
     dia = x;
 }
@@ -125,4 +115,20 @@ bool Fecha::anioBisiesto() {
     } else {
         return false;
     }
+}
+
+int Fecha::getDiaValido(Fecha &fechaActual) {
+    int diaMax = 31;
+    if (anio == fechaActual.getAnio() && mes == fechaActual.getMes()) {
+        diaMax = fechaActual.getDia();
+    } else if (mes == 2) {
+        if (this->anioBisiesto()) {
+            diaMax = 29;
+        } else {
+            diaMax = 28;
+        }
+    } else if (mes % 2 != 0) {
+        diaMax = 30;
+    }
+    return diaMax;
 }

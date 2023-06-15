@@ -7,10 +7,17 @@
 #include "interfaz.h"
 
 void Pais::Cargar(int autoId) {
-  std::cout << "Nombre de Pais: ";
-  cargarCadena(nombre, 30);
+  int posx = 1;
+  int posy = 2;
+  posicion(posx, posy);
+  mostrarAviso("CARGA PAIS");
 
-  std::cout << "Continente al que pertenece: \n";
+  posy += 2;
+  cargarCadena("NOMBRE PAIS: ", nombre, 30, posx, posy);
+
+  ++posy;
+  mostrarAviso("CONTINENTE: ");
+  // seleccionar continente función xd
   cargarCadena(continente, 30);
 
   id = autoId;

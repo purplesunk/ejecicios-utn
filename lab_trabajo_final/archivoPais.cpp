@@ -5,12 +5,9 @@
 
 #include "cargarCadena.h"
 #include "archivo_utils.h"
-#include "claseFecha.h"
 #include "clasePais.h"
 
 #include "interfaz.h"
-
-#include "rlutil.h"
 
 ArchivoPais::ArchivoPais(const char *nuevoArchivo) {
   int tam = strlen(nuevoArchivo) + 1;

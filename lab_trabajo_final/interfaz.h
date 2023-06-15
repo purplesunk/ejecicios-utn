@@ -26,6 +26,8 @@ void posicion(int x, int y);
 void mostrarCursor();
 void ocultarCursor();
 void mostrarError(const char *error);
+void borrarLinea(int y);
+void borrarLineas(int y, int cantLineas);
 
 int seleccionarObjeto(int posx, int posy, int boxWidth, int boxHeight, char **nombreobjetos, int cantObjetos, const char *titulo);
 

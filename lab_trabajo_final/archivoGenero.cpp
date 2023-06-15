@@ -5,11 +5,9 @@
 
 #include "archivo_utils.h"
 #include "cargarCadena.h"
-#include "claseFecha.h"
 #include "claseGeneroMusical.h"
 
 #include "interfaz.h"
-#include "rlutil.h"
 
 ArchivoGeneroMusical::ArchivoGeneroMusical(const char *nuevoArchivo) {
   int tam = strlen(nuevoArchivo) + 1;

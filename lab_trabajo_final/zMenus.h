@@ -4,7 +4,6 @@
 void mostrarOpciones(const char *titulo, const char *atras, char opciones[][60], int cantOpciones, int posx, int y) {
   rlutil::locate(posx + 6, 2);
   std::cout << titulo;
-  // dibujarCaja(posx - 10, 1, 80, 20);
 
   for (int i = 0; i < cantOpciones; ++i) {
     mostrarOpcion(opciones[i], posx, 4 + i,  y == (i + 1));
@@ -42,7 +41,7 @@ int elegirOpcion(int y, const int MAX_OPT, int (*func)(int)) {
       if (opcion >= 0 && opcion <= MAX_OPT) {
         y = opcion;
       }
-    }
+    } break;
   }
   return y;
 }
@@ -62,16 +61,16 @@ int opcionesMusicos(int y) {
       break;
     case 4:
       if (archivo.modificarFecha()) {
-        std::cout << "Fecha modificada correctamente.\n";
+        mostrarAviso("FECHA MODIFICADA CORRECTAMENTE.\n");
       } else {
-        std::cout << "La fecha no fue modificada.\n";
+        mostrarAviso("LA FECHA NO FUE MODIFICADA.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        std::cout << "Registro eliminado correctamente.\n";
+        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        std::cout << "El registro no pudo ser eliminado.\n";
+        mostrarAviso("EL REGISTRO NO PUDO SER ELIMINADO.\n");
       }
       break;
     case 0:
@@ -114,16 +113,16 @@ int opcionesGeneros(int y) {
       break;
     case 4:
       if (archivo.modificarAnioOrigen()) {
-        std::cout << "Año de origen modificado correctamente.\n";
+        mostrarAviso("ANIO DE ORIGEN MODIFICADO CORRECTAMENTE.\n");
       } else {
-        std::cout << "Año de origen no pudo ser modificado.\n";
+        mostrarAviso("ANIO DE ORIGEN NO PUDO SER MODIFICADO.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        std::cout << "Registro eliminado correctamente.\n";
+        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        std::cout << "No se pudo eliminar el registro.\n";
+        mostrarAviso("NO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -142,7 +141,7 @@ void menuGeneros(int posx) {
   strncpy(opciones[0],  "1) AGREGAR GENERO", 60);
   strncpy(opciones[1],  "2) LISTAR GENERO POR ID", 60);
   strncpy(opciones[2],  "3) LISTAR TODO", 60);
-  strncpy(opciones[3],  "4) MODIFICAR AÑO DE ORIGEN", 60);
+  strncpy(opciones[3],  "4) MODIFICAR ANIO DE ORIGEN", 60);
   strncpy(opciones[4],  "5) ELIMINAR REGISTRO", 60);
   while (true) {
     mostrarOpciones("MENU GENEROS MUSICALES", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
@@ -166,16 +165,16 @@ int opcionesPaises(int y) {
       break;
     case 4:
       if (archivo.modificarNombre()) {
-        std::cout << "Nombre modificado.";
+        mostrarAviso("NOMBRE MODIFICADO.");
       } else {
-        std::cout << "No se pudo modificar el nombre.\n";
+        mostrarAviso("NO SE PUDO MODIFICAR EL NOMBRE.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        std::cout << "Registro eliminado correctamente.\n";
+        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        std::cout << "No se pudo eliminar el registro.\n";
+        mostrarAviso("NO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -219,16 +218,16 @@ int opcionesInstrumentos(int y) {
       break;
     case 4:
       if (archivo.modificarNombre()) {
-        std::cout << "Nombre modificado correctamente.\n";
+        mostrarAviso("NOMBRE MODIFICADO CORRECTAMENTE.\n");
       } else {
-        std::cout << "Nombre no pudo ser modificado.\n";
+        mostrarAviso("NOMBRE NO PUDO SER MODIFICADO.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        std::cout << "Registro eliminado correctamente.\n"; 
+        mostrarAviso("REGISTRO ELIMINADO CORRECTAMENTE.\n"); 
       } else {
-        std::cout << "No se pudo eliminar el registro.\n";
+        mostrarAviso("NO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -310,9 +309,9 @@ int opcionesConfiguracion(int y) {
   }
 
   if (hecho) {
-    std::cout << "ACCION REALIZADA CORRECTAMENTE.\n";
+    mostrarAviso("ACCION REALIZADA CORRECTAMENTE.\n");
   } else {
-    std::cout << "NO SE PUDO REALIZAR LA ACCION.\n";
+    mostrarAviso("NO SE PUDO REALIZAR LA ACCION.\n");
   }
 
   pause();

@@ -7,13 +7,19 @@
 #include "interfaz.h"
 
 void Instrumento::Cargar(int autoId) {
-  std::cout << "NOMBRE DE INSTRUMENTO: ";
-  cargarCadena(nombre, 30);
+  int posx = 1;
+  int posy = 2;
+  posicion(posx, posy);
+  mostrarAviso("CARGA INSTRUMENTO");
 
-  clasificacion = cargarInt("CLASIFICACION: ");
-  while (clasificacion < 1 || clasificacion > 100) {
-    std::cout << "CLASIFICACION INVALIDA. ";
-    clasificacion = cargarInt("CLASIFICACION: ");
+  posy += 2;
+  cargarCadena("NOMBRE DE INSTRUMENTO: ", nombre, 30, posx, posy);
+
+  ++posy;
+  clasificacion = cargarInt("CLASIFICACION: ", posx, posy);
+  while (clasificacion < 1 || clasificacion > 10) {
+    mostrarError("CLASIFICACION INVALIDA. ");
+    clasificacion = cargarInt("CLASIFICACION: ", posx, posy);
   }
 
   id = autoId;
@@ -38,7 +44,7 @@ void Instrumento::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
 void Instrumento::setNombre(const char *n) { strncpy(nombre, n, 29); }
 
 void Instrumento::setClasificacion(int c) {
-  if (c > 0 && c < 101) {
+  if (c > 0 && c < 10) {
     clasificacion = c;
   }
 }
