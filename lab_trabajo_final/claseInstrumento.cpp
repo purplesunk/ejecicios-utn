@@ -17,7 +17,7 @@ void Instrumento::Cargar(int autoId) {
 
   ++posy;
   clasificacion = cargarInt("CLASIFICACION: ", posx, posy);
-  while (clasificacion < 1 || clasificacion > 10) {
+  while (clasificacion < 1 || clasificacion > 4) {
     mostrarError("CLASIFICACION INVALIDA. ");
     clasificacion = cargarInt("CLASIFICACION: ", posx, posy);
   }
@@ -44,7 +44,7 @@ void Instrumento::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
 void Instrumento::setNombre(const char *n) { strncpy(nombre, n, 29); }
 
 void Instrumento::setClasificacion(int c) {
-  if (c > 0 && c < 10) {
+  if (c > 0 && c < 4) {
     clasificacion = c;
   }
 }

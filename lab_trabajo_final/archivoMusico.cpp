@@ -27,23 +27,23 @@ void ArchivoMusico::agregarRegistro() {
   Musico obj;
   obj.Cargar();
   if (obj.getDni() == -1) {
-    mostrarAviso("\nNO SE CARGO EL REGISTRO.\n");
+    mostrarAviso("  NO SE CARGO EL REGISTRO.\n");
     return;
   }
 
   int pos = buscarRegistro(obj.getDni());
   if (pos == -2) {
-    mostrarAviso("\nEL ARCHIVO NO SE ENCONTRO. CREANDO ARCHIVO.\n");
+    mostrarAviso("  EL ARCHIVO NO SE ENCONTRO. CREANDO ARCHIVO.\n");
   } else if (pos != -1) {
-    mostrarAviso("\nYA HAY UN REGISTRO CON ESE DNI.\n");
+    mostrarAviso("  YA HAY UN REGISTRO CON ESE DNI.\n");
     return;
   }
 
   int agregado = appendRegistro(&obj, sizeof(obj), nombre);
   if (agregado == -1) {
-    mostrarAviso("\nNO SE PUDO ABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR EL ARCHIVO.\n");
   } else if (agregado == 0) {
-    mostrarAviso("\nNO SE PUDO AGREGAR EL REGISTRO.\n");
+    mostrarAviso("  NO SE PUDO AGREGAR EL REGISTRO.\n");
   }
 }
 
@@ -52,11 +52,11 @@ void ArchivoMusico::mostrarRegistros() {
   std::cout << '\n';
   FILE *archivo = fopen(nombre, "rb");
   if (archivo == NULL) {
-    mostrarAviso("NO SE PUDO LEER EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO LEER EL ARCHIVO.\n");
     return;
   }
   Musico obj;
-  mostrarAviso("MUSICOS");
+  mostrarAviso("  MUSICOS");
   std::cout << "\n\n";
   while (fread(&obj, sizeof obj, 1, archivo) == 1) {
     if (obj.getEstado()) {
@@ -119,16 +119,16 @@ void ArchivoMusico::buscarPorDNI() {
 
   int pos = buscarRegistro(DNI);
   if (pos == -2) {
-    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR EL ARCHIVO.\n");
     return;
   } else if (pos == -1) {
-    mostrarAviso("NO SE ENCONTRO EL REGISTRO.\n");
+    mostrarAviso("  NO SE ENCONTRO EL REGISTRO.\n");
     return;
   }
 
   Musico obj = leerRegistro(pos);
   if (!obj.getEstado()) {
-    mostrarAviso("REGISTRO DADO DE BAJA.\n");
+    mostrarAviso("  REGISTRO DADO DE BAJA.\n");
     return;
   }
 
@@ -137,11 +137,11 @@ void ArchivoMusico::buscarPorDNI() {
     std::cout << '\n';
     obj.Mostrar();
   } else if (dni == -3) {
-    mostrarAviso("SE PUSO UNA POSICION INVALIA.\n");
+    mostrarAviso("  SE PUSO UNA POSICION INVALIA.\n");
   } else if (dni == -1) {
-    mostrarAviso("NO SE PUDO LEER EL REGISTRO.\n");
+    mostrarAviso("  NO SE PUDO LEER EL REGISTRO.\n");
   } else {
-    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR EL ARCHIVO.\n");
   }
 }
 
@@ -151,17 +151,17 @@ bool ArchivoMusico::bajaLogica() {
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
-    mostrarAviso("NO EXISTE MUSICO CON ESE DNI.\n");
+    mostrarAviso("  NO EXISTE MUSICO CON ESE DNI.\n");
     return false;
   }
   if (pos == -2) {
-    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   Musico obj = leerRegistro(pos);
   if (!obj.getEstado()) {
-    mostrarAviso("EL MUSICO INGRESADO YA ESTA DADO DE BAJA.\n");
+    mostrarAviso("  EL MUSICO INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
   } else {
     obj.setEstado(false);
@@ -169,7 +169,7 @@ bool ArchivoMusico::bajaLogica() {
 
   int modificado = modificarRegistro(obj, pos);
   if (modificado == -1) {
-    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO REABRIR EL ARCHIVO.\n");
     return false;
   } else if (modificado == 0){
     return false;
@@ -184,27 +184,27 @@ bool ArchivoMusico::modificarFecha() {
 
   int pos = buscarRegistro(dni);
   if (pos == -1) {
-    mostrarAviso("NO EXISTE MUSICO CON ESE DNI.\n");
+    mostrarAviso("  NO EXISTE MUSICO CON ESE DNI.\n");
     return false;
   } else if (pos == -2) {
-    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   Musico obj = leerRegistro(pos);
   if (!obj.getEstado()) {
-    mostrarAviso("EL MUSICO INGRESADO YA ESTA DADO DE BAJA.\n");
+    mostrarAviso("  EL MUSICO INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
   } else {
     Fecha nuevaFecha;
-    mostrarAviso("INGRESE LA NUEVA FECHA DE INSCRIPCION:\n");
+    mostrarAviso("  INGRESE LA NUEVA FECHA DE INSCRIPCION:\n");
     nuevaFecha.CargaValida();
     obj.setFechaInscripcion(nuevaFecha);
   }
 
   int modificado = modificarRegistro(obj, pos);
   if (modificado == -1) {
-    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO REABRIR EL ARCHIVO.\n");
     return false;
   } else if (modificado == 0){
     return false;

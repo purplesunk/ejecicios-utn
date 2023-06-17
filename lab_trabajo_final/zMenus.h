@@ -61,16 +61,16 @@ int opcionesMusicos(int y) {
       break;
     case 4:
       if (archivo.modificarFecha()) {
-        mostrarAviso("\nFECHA MODIFICADA CORRECTAMENTE.\n");
+        mostrarAviso("  FECHA MODIFICADA CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("\nLA FECHA NO FUE MODIFICADA.\n");
+        mostrarAviso("  LA FECHA NO FUE MODIFICADA.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n");
+        mostrarAviso("  REGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("\nEL REGISTRO NO PUDO SER ELIMINADO.\n");
+        mostrarAviso("  EL REGISTRO NO PUDO SER ELIMINADO.\n");
       }
       break;
     case 0:
@@ -113,16 +113,16 @@ int opcionesGeneros(int y) {
       break;
     case 4:
       if (archivo.modificarAnioOrigen()) {
-        mostrarAviso("\nANIO DE ORIGEN MODIFICADO CORRECTAMENTE.\n");
+        mostrarAviso("  ANIO DE ORIGEN MODIFICADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("\nANIO DE ORIGEN NO PUDO SER MODIFICADO.\n");
+        mostrarAviso("  ANIO DE ORIGEN NO PUDO SER MODIFICADO.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n");
+        mostrarAviso("  REGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("\nNO SE PUDO ELIMINAR EL REGISTRO.\n");
+        mostrarAviso("  NO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -165,16 +165,16 @@ int opcionesPaises(int y) {
       break;
     case 4:
       if (archivo.modificarNombre()) {
-        mostrarAviso("\nNOMBRE MODIFICADO.");
+        mostrarAviso("  NOMBRE MODIFICADO.");
       } else {
-        mostrarAviso("\nNO SE PUDO MODIFICAR EL NOMBRE.\n");
+        mostrarAviso("  NO SE PUDO MODIFICAR EL NOMBRE.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n");
+        mostrarAviso("  REGISTRO ELIMINADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("\nNO SE PUDO ELIMINAR EL REGISTRO.\n");
+        mostrarAviso("  NO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -218,16 +218,16 @@ int opcionesInstrumentos(int y) {
       break;
     case 4:
       if (archivo.modificarNombre()) {
-        mostrarAviso("\nNOMBRE MODIFICADO CORRECTAMENTE.\n");
+        mostrarAviso("  NOMBRE MODIFICADO CORRECTAMENTE.\n");
       } else {
-        mostrarAviso("\nNOMBRE NO PUDO SER MODIFICADO.\n");
+        mostrarAviso("  NOMBRE NO PUDO SER MODIFICADO.\n");
       }
       break;
     case 5:
       if (archivo.bajaLogica()) {
-        mostrarAviso("\nREGISTRO ELIMINADO CORRECTAMENTE.\n"); 
+        mostrarAviso("  REGISTRO ELIMINADO CORRECTAMENTE.\n"); 
       } else {
-        mostrarAviso("\nNO SE PUDO ELIMINAR EL REGISTRO.\n");
+        mostrarAviso("  NO SE PUDO ELIMINAR EL REGISTRO.\n");
       }
       break;
     case 0:
@@ -309,9 +309,9 @@ int opcionesConfiguracion(int y) {
   }
 
   if (hecho) {
-    mostrarAviso("\nACCION REALIZADA CORRECTAMENTE.\n");
+    mostrarAviso("  ACCION REALIZADA CORRECTAMENTE.\n");
   } else {
-    mostrarAviso("\nNO SE PUDO REALIZAR LA ACCION.\n");
+    mostrarAviso("  NO SE PUDO REALIZAR LA ACCION.\n");
   }
 
   pause();
@@ -331,7 +331,7 @@ void menuConfiguracion(int posx) {
   strncpy(opciones[5], "6) RESTAURAR EL ARCHIVO DE GENEROS", 60);
   strncpy(opciones[6], "7) RESTAURAR EL ARCHIVO DE INSTRUMENTOS", 60);
   strncpy(opciones[7], "8) RESTAURAR EL ARCHIVO DE PAISES", 60);
-  strncpy(opciones[8], "9) ESTABLECER DATOS DE INICION", 60);
+  strncpy(opciones[8], "9) ESTABLECER DATOS DE INICIO", 60);
   while (true) {
     mostrarOpciones("MENU CONFIGURACION", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
     y = elegirOpcion(y, MAX_OPT, &opcionesConfiguracion);

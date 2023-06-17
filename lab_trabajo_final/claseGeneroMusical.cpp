@@ -20,8 +20,14 @@ void GeneroMusical::Cargar(int autoId) {
     ++posy;
     ArchivoPais paises("paises.dat");
     paisOrigen = cargarInt("PAIS DE ORIGEN: ", posx, posy);
-    while (paises.buscarRegistro(paisOrigen) == -1) {
+    int busqueda;
+    while ((busqueda = paises.buscarRegistro(paisOrigen)) == -1 || busqueda < 0) {
         mostrarError("PAIS NO ENCONTRADO NO ENCONTRADO.");
+        if (busqueda == -2) {
+            mostrarAviso("NO SE PUDO COMPROBAR EN EL ARCHIVO.\n");
+            id = -1;
+            return;
+        }
         int opcion = preguntaBuscarRegistro();
         if (opcion == 1) {
             paisOrigen = cargarInt("INSTRUMENTO: ", posx, posy);
@@ -71,8 +77,8 @@ void GeneroMusical::setEstado(bool nuevoEstado) { estado = nuevoEstado; }
 void GeneroMusical::setNombre(const char *n) { strncpy(nombre, n, 29); }
 
 void GeneroMusical::setPaisOrigen(int nuevoPais) {
-    // verificar acá también
-    if (nuevoPais > 0 && nuevoPais < 101) {
+    ArchivoPais paises("paises.dat");
+    if (paises.buscarRegistro(nuevoPais) > 0) {
         paisOrigen = nuevoPais;
     }
 }

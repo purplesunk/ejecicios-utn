@@ -36,13 +36,15 @@ void Musico::setClaustro(int x) {
     }
 }
 void Musico::setInstrumento(int x) {
-    if (x > 0 && x < 16) {
+    ArchivoInstrumento instrumentos("instrumentos.dat");
+    if (instrumentos.buscarRegistro(x) > 0) {
         instrumento = x;
     }
 }
 
 void Musico::setTipoMusica(int x) {
-    if (x > 0 && x < 11) {
+    ArchivoGeneroMusical generos("generos.dat");
+    if (generos.buscarRegistro(x) > 0) {
         tipoMusica = x;
     }
 }
@@ -80,7 +82,13 @@ void Musico::Cargar() {
     ++posy;
     ArchivoInstrumento instrumentos("instrumentos.dat");
     instrumento = cargarInt("INSTRUMENTO: ", posx, posy);
-    while (instrumentos.buscarRegistro(instrumento) == -1) {
+    int busqueda;
+    while ((busqueda = instrumentos.buscarRegistro(instrumento)) == -1 || busqueda < 0) {
+        if (busqueda == -2) {
+            mostrarAviso("NO SE PUDO COMPROBAR EN EL ARCHIVO.\n");
+            dni = -1;
+            return;
+        }
         mostrarError("INSTRUMENTO NO ENCONTRADO.");
         int opcion = preguntaBuscarRegistro();
         if (opcion == 1) {
@@ -101,7 +109,12 @@ void Musico::Cargar() {
     ++posy;
     ArchivoGeneroMusical generos("generos.dat");
     tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, posy);
-    while (instrumentos.buscarRegistro(instrumento) == -1) {
+    while ((busqueda = instrumentos.buscarRegistro(tipoMusica)) == -1 || busqueda < 0) {
+        if (busqueda == -2) {
+            mostrarAviso("NO SE PUDO COMPROBAR EN EL ARCHIVO.\n");
+            dni = -1;
+            return;
+        }
         mostrarError("GENERO MUSICAL NO ENCONTRADO.");
         int opcion = preguntaBuscarRegistro();
         if (opcion == 1) {

@@ -30,23 +30,23 @@ void ArchivoGeneroMusical::agregarRegistro() {
   GeneroMusical obj;
   obj.Cargar(autoId);
   if (obj.getId() == -1) {
-    mostrarAviso("\nNO SE CARGO EL REGISTRO.\n");
+    mostrarAviso("  NO SE CARGO EL REGISTRO.\n");
     return;
   }
 
   int pos = buscarRegistro(obj.getId());
   if (pos == -2) {
-    mostrarAviso("\nEL ARCHIVO NO SE ENCONTRO. CREANDO ARCHIVO.\n");
+    mostrarAviso("  EL ARCHIVO NO SE ENCONTRO. CREANDO ARCHIVO.\n");
   } else if (pos != -1) {
-    mostrarAviso("\nYA HAY UN REGISTRO CON ESE ID.\n");
+    mostrarAviso("  YA HAY UN REGISTRO CON ESE ID.\n");
     return;
   }
 
   int agregado = appendRegistro(&obj, sizeof(obj), nombre);
   if (agregado == -1) {
-    mostrarAviso("\nNO SE PUDO ABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR EL ARCHIVO.\n");
   } else if (agregado == 0) {
-    mostrarAviso("\nNO SE PUDO AGREGAR EL REGISTRO.\n");
+    mostrarAviso("  NO SE PUDO AGREGAR EL REGISTRO.\n");
   }
 }
 
@@ -55,11 +55,11 @@ void ArchivoGeneroMusical::mostrarRegistros() {
   std::cout << '\n';
   FILE *archivo = fopen(nombre, "rb");
   if (archivo == NULL) {
-    mostrarAviso("NO SE PUDO LEER EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO LEER EL ARCHIVO.\n");
     return;
   }
   GeneroMusical obj;
-  mostrarAviso("GENEROS MUSICALES");
+  mostrarAviso("  GENEROS MUSICALES");
   std::cout << "\n\n";
   while (fread(&obj, sizeof obj, 1, archivo) == 1) {
     if (obj.getEstado()) {
@@ -122,16 +122,16 @@ void ArchivoGeneroMusical::buscarPorID() {
 
   int pos = buscarRegistro(ID);
   if (pos == -2) {
-    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR EL ARCHIVO.\n");
     return;
   } else if (pos == -1) {
-    mostrarAviso("NO SE ENCONTRO EL REGISTRO.\n");
+    mostrarAviso("  NO SE ENCONTRO EL REGISTRO.\n");
     return;
   }
 
   GeneroMusical obj = leerRegistro(pos);
   if (!obj.getEstado()) {
-    mostrarAviso("REGISTRO DADO DE BAJA.\n");
+    mostrarAviso("  REGISTRO DADO DE BAJA.\n");
     return;
   }
 
@@ -139,11 +139,11 @@ void ArchivoGeneroMusical::buscarPorID() {
     std::cout << '\n';
     obj.Mostrar();
   } else if (obj.getId() == -3) {
-    mostrarAviso("SE PUSO UNA POSICIÓN INVALIDA.\n");
+    mostrarAviso("  SE PUSO UNA POSICIÓN INVALIDA.\n");
   } else if (obj.getId() == -1) {
-    mostrarAviso("NO SE PUDO LEER EL REGISTRO.\n");
+    mostrarAviso("  NO SE PUDO LEER EL REGISTRO.\n");
   } else {
-    mostrarAviso("NO SE PUDO ABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR EL ARCHIVO.\n");
   }
 }
 
@@ -153,17 +153,17 @@ bool ArchivoGeneroMusical::bajaLogica() {
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
-    mostrarAviso("NO EXISTE GENERO MUSICAL CON ESE ID.\n");
+    mostrarAviso("  NO EXISTE GENERO MUSICAL CON ESE ID.\n");
     return false;
   }
   if (pos == -2) {
-    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   GeneroMusical obj = leerRegistro(pos);
   if (!obj.getEstado()) {
-    mostrarAviso("EL GENERO MUSICAL INGRESADO YA ESTA DADO DE BAJA.\n");
+    mostrarAviso("  EL GENERO MUSICAL INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
   } else {
     obj.setEstado(false);
@@ -171,7 +171,7 @@ bool ArchivoGeneroMusical::bajaLogica() {
 
   int modificado = modificarRegistro(obj, pos);
   if (modificado == -1) {
-    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO REABRIR EL ARCHIVO.\n");
     return false;
   } else if (modificado == 0){
     return false;
@@ -186,16 +186,16 @@ bool ArchivoGeneroMusical::modificarAnioOrigen() {
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
-    mostrarAviso("NO EXISTE GENERO MUSICAL CON ESE ID.\n");
+    mostrarAviso("  NO EXISTE GENERO MUSICAL CON ESE ID.\n");
     return false;
   } else if (pos == -2) {
-    mostrarAviso("NO SE PUDO ABRIR ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO ABRIR ARCHIVO.\n");
     return false;
   }
 
   GeneroMusical obj = leerRegistro(pos);
   if (!obj.getEstado()) {
-    mostrarAviso("EL GENERO MUSICAL INGRESADO YA ESTA DADO DE BAJA.\n");
+    mostrarAviso("  EL GENERO MUSICAL INGRESADO YA ESTA DADO DE BAJA.\n");
     return false;
   } else {
     int nuevoAnio = cargarInt("INGRESAR NUEVO ANIO DE ORIGEN: ");
@@ -204,7 +204,7 @@ bool ArchivoGeneroMusical::modificarAnioOrigen() {
 
   int modificado = modificarRegistro(obj, pos);
   if (modificado == -1) {
-    mostrarAviso("NO SE PUDO REABRIR EL ARCHIVO.\n");
+    mostrarAviso("  NO SE PUDO REABRIR EL ARCHIVO.\n");
     return false;
   } else if (modificado == 0){
     return false;
