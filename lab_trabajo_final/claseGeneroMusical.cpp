@@ -19,29 +19,10 @@ void GeneroMusical::Cargar(int autoId) {
 
     ++posy;
     ArchivoPais paises("paises.dat");
-    paisOrigen = cargarInt("PAIS DE ORIGEN: ", posx, posy);
-    int busqueda;
-    while ((busqueda = paises.buscarRegistro(paisOrigen)) == -1 || busqueda < 0) {
-        mostrarError("PAIS NO ENCONTRADO NO ENCONTRADO.");
-        if (busqueda == -2) {
-            mostrarAviso("NO SE PUDO COMPROBAR EN EL ARCHIVO.\n");
-            id = -1;
-            return;
-        }
-        int opcion = preguntaBuscarRegistro();
-        if (opcion == 1) {
-            paisOrigen = cargarInt("INSTRUMENTO: ", posx, posy);
-        } else if (opcion == 2) {
-            borrarLinea(posy);
-            posicion(posx, posy);
-            mostrarAviso("PAIS DE ORIGEN: ");
-            paisOrigen = paises.seleccionarRegistro();
-            posicion(posx, posy);
-            mostrarDato("PAIS DE ORIGEN: ", paisOrigen);
-        } else {
-            id = -1;
-            return;
-        }
+    paisOrigen = paises.cargaSeleccion("PAIS DE ORIGEN: ", posx, posy); 
+    if (paisOrigen == -1) {
+        id = -1;
+        return;
     }
 
 

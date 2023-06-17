@@ -36,6 +36,7 @@ public:
   bool restaurarInicio();
 
   int seleccionarRegistro(int posx = -1, int posy = 4, int boxWidth = 40, int boxHeight = -1);
+  int cargaSeleccion(const char *pregunta, int posx, int posy);
 };
 
 #endif // ARCHIVOGENERO_H_INCLUDED

@@ -312,6 +312,7 @@ int preguntaBuscarRegistro() {
       } break;
       case rlutil::KEY_ENTER: {
         ponerColores(rlutil::BLACK, rlutil::WHITE);
+        borrarLineas(posy, 3);
         return x;
       } break;
       case rlutil::KEY_ESCAPE: {

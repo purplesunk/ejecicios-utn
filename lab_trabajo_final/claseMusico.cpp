@@ -72,6 +72,7 @@ void Musico::Cargar() {
     cargarCadena("EMAIL: ", email, 30, posx, posy);
     ++posy;
     cargarCadena("TELEFONO: ", telefono, 30, posx, posy);
+
     ++posy;
     claustro = cargarInt("CLAUSTRO: ", posx, posy);
     while (claustro < 1 || claustro > 4) {
@@ -81,55 +82,18 @@ void Musico::Cargar() {
     
     ++posy;
     ArchivoInstrumento instrumentos("instrumentos.dat");
-    instrumento = cargarInt("INSTRUMENTO: ", posx, posy);
-    int busqueda;
-    while ((busqueda = instrumentos.buscarRegistro(instrumento)) == -1 || busqueda < 0) {
-        if (busqueda == -2) {
-            mostrarAviso("NO SE PUDO COMPROBAR EN EL ARCHIVO.\n");
-            dni = -1;
-            return;
-        }
-        mostrarError("INSTRUMENTO NO ENCONTRADO.");
-        int opcion = preguntaBuscarRegistro();
-        if (opcion == 1) {
-            instrumento = cargarInt("INSTRUMENTO: ", posx, posy);
-        } else if (opcion == 2) {
-            borrarLinea(posy);
-            posicion(posx, posy);
-            mostrarAviso("INSTRUMENTO: ");
-            instrumento = instrumentos.seleccionarRegistro();
-            posicion(posx, posy);
-            mostrarDato("INSTRUMENTO: ", instrumento);
-        } else {
-            dni = -1;
-            return;
-        }
+    instrumento = instrumentos.cargaSeleccion("INSTRUMENTO: ", posx, posy);
+    if (instrumento == -1) {
+        dni = -1;
+        return;
     }
 
     ++posy;
     ArchivoGeneroMusical generos("generos.dat");
-    tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, posy);
-    while ((busqueda = instrumentos.buscarRegistro(tipoMusica)) == -1 || busqueda < 0) {
-        if (busqueda == -2) {
-            mostrarAviso("NO SE PUDO COMPROBAR EN EL ARCHIVO.\n");
-            dni = -1;
-            return;
-        }
-        mostrarError("GENERO MUSICAL NO ENCONTRADO.");
-        int opcion = preguntaBuscarRegistro();
-        if (opcion == 1) {
-            tipoMusica = cargarInt("TIPO DE MUSICA: ", posx, posy);
-        } else if (opcion == 2) {
-            borrarLinea(posy);
-            mostrarAviso("TIPO DE MUSICA: ");
-            posicion(posx, posy);
-            tipoMusica = generos.seleccionarRegistro();
-            posicion(posx, posy);
-            mostrarDato("TIPO DE MUSICA: ", tipoMusica);
-        } else {
-            dni = -1;
-            return;
-        }
+    tipoMusica = generos.cargaSeleccion("TIPO DE MUSICA: ", posx, posy);
+    if (tipoMusica == -1) {
+        dni = -1;
+        return;
     }
 
     ++posy;

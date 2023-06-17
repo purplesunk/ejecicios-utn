@@ -116,8 +116,7 @@ int ArchivoInstrumento::contarRegistros() {
 
 
 void ArchivoInstrumento::buscarPorID() {
-  std::cout << '\n';
-  int ID = cargarInt("INGRESE EL ID A BUSCAR: ");
+  int ID = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
 
   int pos = buscarRegistro(ID);
   if (pos == -2) {
@@ -147,8 +146,7 @@ void ArchivoInstrumento::buscarPorID() {
 }
 
 bool ArchivoInstrumento::bajaLogica() {
-  std::cout << '\n';
-  int id = cargarInt("INGRESE EL ID A BUSCAR: ");
+  int id = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
@@ -180,8 +178,7 @@ bool ArchivoInstrumento::bajaLogica() {
 }
 
 bool ArchivoInstrumento::modificarNombre() {
-  std::cout << '\n';
-  int id = cargarInt("INGRESE EL ID A BUSCAR: ");
+  int id = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
@@ -273,4 +270,32 @@ int ArchivoInstrumento::seleccionarRegistro(int posx, int posy, int boxWidth, in
   delete[] vRegistros;
 
   return id_seleccionado;
+}
+
+int ArchivoInstrumento::cargaSeleccion(const char *pregunta, int posx, int posy) {
+    int id = cargarInt(pregunta, posx, posy);
+    int busqueda;
+    while ((busqueda = buscarRegistro(id)) == -1 || busqueda < 0) {
+        if (busqueda == -2) {
+            mostrarAviso("  NO SE PUDO COMPROBAR EN EL ARCHIVO.\n");
+            id = -1;
+            return id;
+        }
+        mostrarError("INSTRUMENTO NO ENCONTRADO.");
+        int opcion = preguntaBuscarRegistro();
+        if (opcion == 1) {
+            id = cargarInt(pregunta, posx, posy);
+        } else if (opcion == 2) {
+            borrarLinea(posy);
+            posicion(posx, posy);
+            mostrarAviso(pregunta);
+            id = seleccionarRegistro();
+            posicion(posx, posy);
+            mostrarDato(pregunta, id);
+        } else {
+            id = -1;
+            return id;
+        }
+    }
+    return id;
 }
