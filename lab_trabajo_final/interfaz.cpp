@@ -295,7 +295,7 @@ int preguntaBuscarRegistro() {
   int centro = rlutil::tcols()/2;
   int posy = rlutil::trows() - 5;
   borrarLineas(posy, 2);
-  char pregunta[] = "ELIGIR OPCION";
+  char pregunta[] = "ELIGIR OPCION. (ESC CANCELAR)";
   int mitadPregunta = strlen(pregunta)/2;
   rlutil::locate(centro - mitadPregunta , posy);
   std::cout << pregunta;
@@ -316,6 +316,9 @@ int preguntaBuscarRegistro() {
         return x;
       } break;
       case rlutil::KEY_ESCAPE: {
+        ponerColores(rlutil::BLACK, rlutil::WHITE);
+        borrarLineas(posy, 3);
+        posicion(1, posy);
         return -1;
       } break;
     }

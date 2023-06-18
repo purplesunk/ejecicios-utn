@@ -118,6 +118,9 @@ int ArchivoPais::contarRegistros() {
 
 void ArchivoPais::buscarPorID() {
   int ID = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
+  if (ID == -1) {
+    return;
+  }
 
   int pos = buscarRegistro(ID);
   if (pos == -2) {
@@ -148,6 +151,9 @@ void ArchivoPais::buscarPorID() {
 
 bool ArchivoPais::bajaLogica() {
   int id = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
+  if (id == -1) {
+    return false;
+  }
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
@@ -180,6 +186,9 @@ bool ArchivoPais::bajaLogica() {
 
 bool ArchivoPais::modificarNombre() {
   int id = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
+  if (id == -1) {
+    return false;
+  }
 
   int pos = buscarRegistro(id);
   if (pos == -1) {

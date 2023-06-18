@@ -117,6 +117,9 @@ int ArchivoInstrumento::contarRegistros() {
 
 void ArchivoInstrumento::buscarPorID() {
   int ID = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
+  if (ID == -1) {
+    return;
+  }
 
   int pos = buscarRegistro(ID);
   if (pos == -2) {
@@ -147,6 +150,9 @@ void ArchivoInstrumento::buscarPorID() {
 
 bool ArchivoInstrumento::bajaLogica() {
   int id = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
+  if (id == -1) {
+    return false;
+  }
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
@@ -179,6 +185,9 @@ bool ArchivoInstrumento::bajaLogica() {
 
 bool ArchivoInstrumento::modificarNombre() {
   int id = cargaSeleccion("INGRESE EL ID A BUSCAR: ", 1, 2);
+  if (id == -1) {
+    return false;
+  }
 
   int pos = buscarRegistro(id);
   if (pos == -1) {
