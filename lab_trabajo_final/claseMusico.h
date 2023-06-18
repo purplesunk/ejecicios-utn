@@ -25,7 +25,7 @@ class Musico {
     const char *getTelefono();
     bool getEstado();
     int getClaustro();
-    int getInstrumentro();
+    int getInstrumento();
     int getTipoMusica();
     Fecha getFechaInscripcion();
     float getMatricula();

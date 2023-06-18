@@ -17,7 +17,7 @@ const char* Musico::getEmail() { return email; }
 const char* Musico::getTelefono() { return telefono; }
 Fecha Musico::getFechaInscripcion() { return fechaInscripcion; }
 int Musico::getClaustro() { return claustro; }
-int Musico::getInstrumentro() { return instrumento; }
+int Musico::getInstrumento() { return instrumento; }
 int Musico::getTipoMusica() { return tipoMusica; }
 float Musico::getMatricula() { return matricula; }
 bool Musico::getEstado() { return estado; }
