@@ -1,145 +1,115 @@
 #ifndef REPORTES_H_INCLUDED
 #define REPORTES_H_INCLUDED
 
-void listarBateristas() {
-    ArchivoMusico musicos("musicos.dat");
+// 1) Dado un nombre de continente que se ingresa por teclado, generar un archivo con los países que pertenezcan a ese continente con el siguiente formato:
+// Id país, nombre del país y cantidad de géneros originarios del país.
 
-    int cantMusicos = musicos.contarRegistros();
-    if (cantMusicos == -1) {
-        std::cout << "No se pudo leer el archivo.\n";
-        return;
-    } else if (cantMusicos == 0) {
-        std::cout << "No hay músicos registrados en el archivo.\n";
-        return;
-    }
-
-    int cantBateristas = 0;
-    Musico musico;
-    for (int i = 0; i < cantMusicos; ++i) {
-        musico = musicos.leerRegistro(i);
-
-        if (musico.getInstrumentro() == 5) {
-            ++cantBateristas;
-            std::cout << " Baterista " << cantBateristas << ": \n";
-            std::cout << "----------------------\n";
-            std::cout << "DNI: " << musico.getDni() << '\n';
-            std::cout << "Nombre: " << musico.getNombre() << '\n';
-            std::cout << "Apellido: " << musico.getApellido() << '\n';
-            std::cout << "Tipo de música: " << musico.getTipoMusica() << '\n';
-            std::cout << '\n';
-        }
-    }
-}
-
-void instrumentoMenosMusicos() {
-    ArchivoMusico musicos("musicos.dat");
-
-    int cantMusicos = musicos.contarRegistros();
-    if (cantMusicos == -1) {
-        std::cout << "No se pudo leer el archivo.\n";
-        return;
-    } else if (cantMusicos == 0) {
-        std::cout << "No hay músicos registrados en el archivo.\n";
-        return;
-    }
-
-    int cantMusicosXInstrumento[15] = {};
-
-    Musico musico;
-    for (int i = 0; i < cantMusicos; ++i) {
-        musico = musicos.leerRegistro(i);
-
-        ++cantMusicosXInstrumento[musico.getInstrumentro() - 1];
-    }
-
-    /*
-        int instrumentoMenosMusicos = -1;
-        for (int i = 0; i < 15; ++i) {
-            if (instrumentoMenosMusicos == -1 && cantMusicosXInstrumento[i] != 0) {
-                instrumentoMenosMusicos = i;
-
-            } else if (cantMusicosXInstrumento[i] != 0 &&
-                       cantMusicosXInstrumento[i] < cantMusicosXInstrumento[instrumentoMenosMusicos]) {
-                instrumentoMenosMusicos = i;
-            }
-        }
-    */
-
-    int instrumentoMenosMusicos = 0;
-    for (int i = 0; i < 15; ++i) {
-        if (cantMusicosXInstrumento[i] < cantMusicosXInstrumento[instrumentoMenosMusicos]) {
-            instrumentoMenosMusicos = i;
-        }
-    }
-
-    std::cout << "El intrumento con menos músicos es: " << instrumentoMenosMusicos + 1 << '\n';
-}
-
-// Generar un archivo de nombre instrumentos.dat con los músicos que no tocan guitarra (instrumento principal 1).
-// Cada registro debe tener el siguiente formato:
-// DNI, nombre, apellido y tipo de música
-struct NoGuitarristas {
-   private:
-    int dni;
+class generosPorPais {
+private:
+    int idPais;
     char nombre[30];
-    char apellido[30];
-    int tipoMusica;
-
-   public:
-    void setDni(int i) {
-        dni = i;
-    }
-    void setTipoMusica(int i) {
-        tipoMusica = i;
-    }
-    void setNombre(const char *n) {
-        strcpy(nombre, n);
-    }
-    void setApellido(const char *n) {
-        strcpy(apellido, n);
-    }
-
-    void Mostrar() {
-        std::cout << dni << " " << nombre << " " << apellido << " " << tipoMusica << '\n';
+    int cantGeneros;
+public:
+    void setIdPais(int x) { idPais = x; }
+    void setNombre(const char * n) { strcpy(nombre, n); }
+    void setCantGeneros(int x) { cantGeneros = x; }
+    void mostrar() {
+        std::cout << idPais << ' ' << nombre << ' ' << cantGeneros << '\n';
     }
 };
 
-void generarNoGuitarristas() {
-    ArchivoMusico musicos("musicos.dat");
-
-    int cantMusicos = musicos.contarRegistros();
-    if (cantMusicos == -1) {
-        std::cout << "No se pudo leer el archivo.\n";
-        return;
-    } else if (cantMusicos == 0) {
-        std::cout << "No hay músicos registrados en el archivo.\n";
-        return;
-    }
-
-    Musico musico;
-    NoGuitarristas musicoNoGuitarra;
-    for (int i = 0; i < cantMusicos; ++i) {
-        musico = musicos.leerRegistro(i);
-
-        if (musico.getInstrumentro() != 1) {
-            FILE *nuevoArchivo = fopen("instrumentos.dat", "ab");
-            if (nuevoArchivo == NULL) {
-                std::cout << "Error al abrir el archivo. \n";
-                return;
-            }
-
-            musicoNoGuitarra.setDni(musico.getDni());
-            musicoNoGuitarra.setTipoMusica(musico.getTipoMusica());
-            musicoNoGuitarra.setNombre(musico.getNombre());
-            musicoNoGuitarra.setApellido(musico.getApellido());
-
-            fwrite(&musicoNoGuitarra, sizeof(musicoNoGuitarra), 1, nuevoArchivo);
-
-            fclose(nuevoArchivo);
+int contarGenerosPais(int id, GeneroMusical *vGeneros, int cantGeneros) {
+    int conteoGeneros = 0;
+    for (int i = 0; i < cantGeneros; ++i) {
+        if (id == vGeneros[i].getId() && vGeneros[i].getEstado()) {
+            ++conteoGeneros;
         }
     }
+    return conteoGeneros;
+}
 
-    std::cout << "Archivo generado.\n";
+void punto1() {
+    char continente[30];
+    mostrarAviso("INGRESE CONTINENTE: ");
+    cargarCadena(continente, 30);
+
+    ArchivoPais paises("paises.dat"); 
+    int cantPaises = paises.contarRegistros();
+
+    ArchivoGeneroMusical generos("generos.dat");
+    int cantGeneros = generos.contarRegistros();
+    GeneroMusical *vGeneros = new GeneroMusical[cantGeneros];
+    for (int i = 0; i < cantGeneros; ++i) {
+        vGeneros[i] = generos.leerRegistro(i);
+    }
+
+    FILE *archivo = fopen("punto1.dat", "wb");
+    fclose(archivo);
+
+    Pais pais;
+    generosPorPais obj;
+    for (int i = 0; i < cantPaises; ++i) {
+        pais = paises.leerRegistro(i);
+        if (pais.getEstado()) {
+            if (strcasecmp(pais.getContinente(), continente) == 0) {
+                int id = pais.getId();
+                obj.setNombre(pais.getNombre());
+                obj.setIdPais(id);
+                obj.setCantGeneros(contarGenerosPais(id, vGeneros, cantGeneros));
+
+                FILE *archivo = fopen("punto1.dat", "ab");
+                if (archivo == NULL) { return; }
+                fwrite(&obj, sizeof(obj), 1, archivo);
+                fclose(archivo);
+            }
+        }
+    }
+    delete[] vGeneros;
+
+    archivo = fopen("punto1.dat", "rb");
+    if (archivo == NULL) { return; }
+    std::cout << "Archivo Generado:\n";
+    while (fread(&obj, sizeof(obj), 1, archivo)) {
+        obj.mostrar();
+    }
+    fclose(archivo);
+}
+
+// 2) Dar de baja a todos los músicos del claustro docente que tengan como instrumento principal el número 3.
+void punto2() {
+    ArchivoMusico musicos("musicos.dat");
+    int cantMusicos = musicos.contarRegistros();
+    
+    Musico obj;
+    for (int i = 0; i < cantMusicos; ++i) {
+        obj = musicos.leerRegistro(i);
+        if (obj.getEstado()) {
+            if (obj.getClaustro() == 1 && obj.getInstrumento() == 3) {
+                obj.setEstado(false);
+                musicos.modificarRegistro(obj, i);
+            }
+        }
+    }
+}
+
+// 3) Listar usando un vector dinámico todos los géneros cuyo año de orígen sea menor a 1900
+void punto3() {
+    ArchivoGeneroMusical generos("generos.dat");
+    int cantGeneros = generos.contarRegistros();
+
+    GeneroMusical *vGeneros = new GeneroMusical[cantGeneros];
+    for (int i = 0; i < cantGeneros; ++i) {
+        vGeneros[i] = generos.leerRegistro(i);
+    }
+
+    std::cout << "Generos con anio de origen menor a 1900:\n";
+    for (int i = 0; i < cantGeneros; ++i) {
+        if (vGeneros[i].getAnioOrigen() < 1900) {
+            vGeneros[i].Mostrar();
+            std::cout << '\n';
+        }
+    }
+    delete[] vGeneros;
 }
 
 #endif

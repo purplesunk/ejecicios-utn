@@ -339,17 +339,17 @@ void menuConfiguracion(int posx) {
   }
 }
 
-int opcinesReportes(int y) {
+int opcionesReportes(int y) {
   rlutil::cls();
   switch (y) {
     case 1:
-      listarBateristas();
+      punto1();
       break;
     case 2:
-      instrumentoMenosMusicos();
+      punto2();
       break;
     case 3:
-      generarNoGuitarristas();
+      punto3();
       break;
     case 0:
       return 0;
@@ -364,12 +364,12 @@ void menuReportes(int posx) {
   int y = 1;
   const int MAX_OPT = 3;
   char opciones[MAX_OPT][60];
-  strncpy(opciones[0], "1) LISTAR BATERISTAS", 60);
-  strncpy(opciones[1], "2) INSTRUMENTO CON MENOS MUSICOS", 60);
-  strncpy(opciones[2], "3) GENERAR ARCHIVO", 60);
+  strncpy(opciones[0], "1) PUNTO 1", 60);
+  strncpy(opciones[1], "2) PUNTO 2", 60);
+  strncpy(opciones[2], "3) PUNTO 3", 60);
   while (true) {
     mostrarOpciones("MENU REPORTES", "0) VOLVER AL MENU PRINCIPAL", opciones, MAX_OPT, posx, y);
-    y = elegirOpcion(y, MAX_OPT, &opcionesConfiguracion);
+    y = elegirOpcion(y, MAX_OPT, &opcionesReportes);
     if (y == -1) return;
   }
 }
