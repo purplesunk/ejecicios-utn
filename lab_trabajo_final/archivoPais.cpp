@@ -265,7 +265,13 @@ int ArchivoPais::seleccionarRegistro(int posx, int posy, int boxWidth, int boxHe
 
   int tamNombres = 50;
   char *long_string = new char[tamNombres * cantActivos];
+  if (long_string == NULL) {
+    return -1;
+  }
   char **nombreRegistros = new char*[cantActivos];
+  if (nombreRegistros == NULL) {
+    return -1;
+  }
   for (int i = 0; i < cantActivos; ++i) {
     nombreRegistros[i] = (long_string + (tamNombres * i));
   }
