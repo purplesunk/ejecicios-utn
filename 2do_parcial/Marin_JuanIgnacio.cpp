@@ -52,7 +52,6 @@ public:
 
         strcpy(nombre, n);
     }
-
     ~ArchivoReparacionesHechas() {
         delete nombre;
     }
