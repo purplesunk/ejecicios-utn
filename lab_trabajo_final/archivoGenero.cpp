@@ -50,6 +50,16 @@ void ArchivoGeneroMusical::agregarRegistro() {
   }
 }
 
+bool ArchivoGeneroMusical::escribirRegistro(GeneroMusical &obj) {
+  int agregado = appendRegistro(&obj, sizeof(obj), nombre);
+  if (agregado == -1) {
+    return false;
+  } else if (agregado == 0) {
+    return false;
+  }
+  return true;
+}
+
 
 void ArchivoGeneroMusical::mostrarRegistros() {
   std::cout << '\n';

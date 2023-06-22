@@ -22,7 +22,7 @@ public:
 
   void buscarPorID();
 
-  bool escribirRegistro(GeneroMusical obj);
+  bool escribirRegistro(GeneroMusical &obj);
 
   int contarRegistros();
 
