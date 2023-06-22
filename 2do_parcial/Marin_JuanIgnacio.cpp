@@ -42,14 +42,12 @@ private:
 public:
     ArchivoReparacionesHechas(const char *n) {
         int tam = strlen(n) + 1;
-
         nombre = new char[tam];
         if (nombre == NULL) {
             std::cout << "Error asignando tamanio para nombre archivo reparaciones hechas.\n";
             system("pause");
             exit(1);
         }
-
         strcpy(nombre, n);
     }
     ~ArchivoReparacionesHechas() {
@@ -63,13 +61,9 @@ public:
             obj.setDNI(-1);
             return obj;
         }
-
         fseek(archivo, sizeof(obj) * pos, SEEK_SET);
-
         fread(&obj, sizeof(obj), 1, archivo);
-
         fclose(archivo);
-
         return obj;
     }
 
@@ -78,27 +72,21 @@ public:
         if (archivo == NULL) {
             return -1;
         }
-
         fseek(archivo, 0, SEEK_END);
-
         int cantidad = ftell(archivo) / sizeof(ReparacionesHechas);
-
         fclose(archivo);
-
         return cantidad;
     }
 
-        void mostrarRegistros() {
+    void mostrarRegistros() {
         FILE *archivo = fopen(nombre, "rb");
         if (archivo == NULL) {
             return;
         }
-
         ReparacionesHechas obj;
         while(fread(&obj, sizeof(obj), 1, archivo)) {
             obj.Mostrar();
         }
-
         fclose(archivo);
     }
 
@@ -107,9 +95,7 @@ public:
         if (archivo == NULL) {
             return;
         }
-
         fwrite(&obj, sizeof(obj), 1, archivo);
-
         fclose(archivo);
     }
 };
